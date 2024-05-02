@@ -6,6 +6,7 @@ const button = cva("group w-full rounded-md font-semibold border border-white bo
   variants: {
     theme: {
       dark: ["bg-black", "text-gray", "hover:text-white", "hover:scale-105", "hover:border-opacity-30"],
+      primary: ["bg-blue", "text-white", "hover:scale-105", "hover:border-opacity-30"],
     },
     size: {
       small: ["text-sm", "py-1", "px-2"],
@@ -30,7 +31,7 @@ export const Button: React.FC<ButtonProps> = ({ className, theme, size, icon_url
           {icon_url && (
               <span className="mr-2">
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0,0,30,30">
-                  <path d={ icon_url } className={"fill-gray group-hover:fill-white"}/>
+                  <path d={ icon_url } className={theme === 'dark' ? "fill-gray group-hover:fill-white" : "fill-white"}/>
                 </svg>
               </span>
           )}
