@@ -7,6 +7,11 @@ module.exports = {
     "./stories/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    colors: {
+      "black": "#0F0E0E",
+      "gray": "#A5A5A5",
+      "white": "#FFFFFF",
+    },
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
