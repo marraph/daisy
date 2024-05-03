@@ -22,7 +22,7 @@ const alert = cva("group rounded-md font-semibold border border-white border-opa
     },
 });
 
-export interface AlertProps extends React.ButtonHTMLAttributes<HTMLDivElement>, VariantProps<typeof alert> {
+export interface AlertProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof alert> {
     title: string;
     description: string;
     icon_url?: string;

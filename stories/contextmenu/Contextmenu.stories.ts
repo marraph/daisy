@@ -1,9 +1,9 @@
-import { Checkbox } from './Checkbox';
+import { Contextmenu } from './Contextmenu';
 import {Meta, StoryObj} from "@storybook/react";
 
-const meta: Meta<typeof Checkbox> = {
-    title: "Components/Checkbox",
-    component: Checkbox,
+const meta: Meta<typeof Contextmenu> = {
+    title: "Components/Contextmenu",
+    component: Contextmenu,
     parameters: {
         layout: "centered",
     },
@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
     args: {
-        text: "hallo",
         text_color: "white",
+        options: ["Delete", "Edit ", "Notify Owner", "Cancel"],
     },
 };

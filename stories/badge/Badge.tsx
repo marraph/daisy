@@ -31,7 +31,7 @@ const badge = cva("group w-full rounded-md font-semibold", {
     },
 });
 
-export interface BadgeProps extends React.ButtonHTMLAttributes<HTMLDivElement>, VariantProps<typeof badge> {
+export interface BadgeProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof badge> {
     text: string;
     icon_url?: string;
 }

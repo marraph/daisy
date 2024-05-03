@@ -7,7 +7,7 @@ const breadcrump = cva("group w-full rounded-md font-semibold bg-opacity-20 bg-b
     variants: {},
 });
 
-export interface BreadcrumpProps extends React.ButtonHTMLAttributes<HTMLDivElement>, VariantProps<typeof breadcrump> {
+export interface BreadcrumpProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof breadcrump> {
     firstText: string;
     secondText: string;
 }

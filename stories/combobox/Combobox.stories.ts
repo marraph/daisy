@@ -1,9 +1,9 @@
-import { Checkbox } from './Checkbox';
+import { Combobox } from './Combobox';
 import {Meta, StoryObj} from "@storybook/react";
 
-const meta: Meta<typeof Checkbox> = {
-    title: "Components/Checkbox",
-    component: Checkbox,
+const meta: Meta<typeof Combobox> = {
+    title: "Components/Combobox",
+    component: Combobox,
     parameters: {
         layout: "centered",
     },
@@ -16,7 +16,8 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
     args: {
-        text: "hallo",
+        buttonTitle: "Select an option",
         text_color: "white",
+        options: ["Option 1", "Option 2", "Option 3"],
     },
 };
