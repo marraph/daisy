@@ -16,6 +16,7 @@ module.exports = {
       "warning": "#F2CF19",
       "error": "#C51919",
       "selected": "#222121",
+      "placeholder": "#7B7777",
     },
     extend: {
       backgroundImage: {

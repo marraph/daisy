@@ -7,14 +7,15 @@ const button = cva("w-full rounded-md font-semibold border border-white border-o
     theme: {
       dark: ["bg-black", "text-gray", "hover:text-white"],
       primary: ["bg-blue", "text-white"],
+      ghost: ["bg-transparent", "text-white", "border-none", "hover:bg-selected"],
     },
     size: {
       small: ["text-sm", "py-1", "px-2"],
       medium: ["text-base", "py-2", "px-4"],
-      large: ["text-lg", "py-3", "px-6"],
+      large: ["text-lg", "py-2", "px-5"],
     },
     purpose: {
-      button: ["hover:scale-105", "hover:border-opacity-30"],
+      button: ["hover:scale-105"],
       combo: [""],
     }
   },

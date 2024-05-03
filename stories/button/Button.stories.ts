@@ -41,6 +41,15 @@ export const Large: Story = {
   },
 };
 
+export const Ghost: Story = {
+  args: {
+    children: "Button",
+    theme: "ghost",
+    size: "large",
+    purpose: "button",
+  },
+};
+
 export const IconButton: Story = {
   args: {
     children: "Button",
