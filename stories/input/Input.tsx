@@ -2,11 +2,10 @@ import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
 import { cn } from "../../utils/cn";
 
-const input = cva("w-full rounded-md font-semibold border border-white border-opacity-20", {
+const input = cva("w-full rounded-md font-semibold border border-white border-opacity-20 outline-none", {
     variants: {
         theme: {
-            dark: ["bg-black", "text-gray", "focus:text-white", "placeholder-placeholder"],
-            primary: ["bg-blue", "text-white"],
+            dark: ["bg-black", "text-white", "focus:ring", "focus:ring-placeholder", "focus:ring-2", "placeholder-placeholder"],
         },
         field_size: {
             small: ["text-sm", "py-1", "px-2"],

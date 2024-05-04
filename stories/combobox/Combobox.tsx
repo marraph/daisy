@@ -37,7 +37,7 @@ export const Combobox: React.FC<ComboboxProps> = ({ text_color, buttonTitle, opt
 
     return (
         <div className={"relative inline-block"}>
-            <Button purpose={"combo"} className={cn(combobox({ text_color }), className)} {...props} onClick={handleButtonClick}>
+            <Button scaling={"none"} className={cn(combobox({ text_color }), className)} {...props} onClick={handleButtonClick}>
                 {selectedValue || buttonTitle}
                 <ChevronsUpDown className={"group-hover:text-white ml-6 text-gray"} size={15}/>
             </Button>
