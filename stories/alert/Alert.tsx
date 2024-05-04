@@ -2,7 +2,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
 import { cn } from "../../utils/cn";
 
-const alert = cva("group rounded-md font-semibold", {
+const alert = cva("group rounded-md font-semibold flex flex-col items-start", {
     variants: {
         theme: {
             dark: ["bg-black", "text-gray"],
@@ -37,14 +37,12 @@ export const Alert: React.FC<AlertProps> = ({ title, description, theme, size, b
 
     return (
         <div className={cn(alert({ theme, size, border }), className)}>
-                <div className={"flex flex-col items-start"}>
-                    <h3 className={"text-white"}>
-                        {title}
-                    </h3>
-                    <p className={"font-normal float-left"}>
-                        {description}
-                    </p>
-                </div>
+            <h3 className={"text-white"}>
+                {title}
+            </h3>
+            <p className={"font-normal float-left"}>
+                {description}
+            </p>
         </div>
     );
 };
