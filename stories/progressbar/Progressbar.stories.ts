@@ -14,11 +14,20 @@ export default meta;
 
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
+export const White: Story = {
     args: {
         theme: "white",
         width: 100,
         height: 10,
-        fill: 50,
+        fill: 30,
+    },
+};
+
+export const Primary: Story = {
+    args: {
+        theme: "primary",
+        width: 100,
+        height: 10,
+        fill: 70,
     },
 };

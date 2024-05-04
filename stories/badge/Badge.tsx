@@ -2,7 +2,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
 import { cn } from "../../utils/cn";
 
-const badge = cva("group w-full flex items-center rounded-md font-semibold", {
+const badge = cva("group w-full flex items-center font-semibold", {
     variants: {
         theme: {
             dark: ["bg-black", "text-gray"],
@@ -28,12 +28,21 @@ const badge = cva("group w-full flex items-center rounded-md font-semibold", {
             default: ["border", "border-white", "border-opacity-20", "border-2"],
             none: [""],
         },
+        roundness: {
+            full: "rounded-full",
+            ultra: "rounded-2xl",
+            super: "rounded-xl",
+            large: "rounded-lg",
+            medium: "rounded-md",
+            small: "rounded-sm",
+        }
     },
     defaultVariants: {
         theme: "dark",
         size: "medium",
         opacity: "medium",
         border: "none",
+        roundness: "medium",
     },
 });
 
@@ -41,9 +50,9 @@ export interface BadgeProps extends React.AreaHTMLAttributes<HTMLDivElement>, Va
     text: string;
 }
 
-export const Badge: React.FC<BadgeProps> = ({ className, theme, size, opacity, border, text, ...props }) => {
+export const Badge: React.FC<BadgeProps> = ({ className, theme, size, opacity, border, roundness, text, ...props }) => {
     return (
-        <div className={cn(badge({ theme, size, opacity, border }), className)} {...props}>
+        <div className={cn(badge({ theme, size, opacity, border, roundness }), className)} {...props}>
             <p>{text}</p>
         </div>
     );

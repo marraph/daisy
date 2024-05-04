@@ -17,6 +17,7 @@ const button = cva("w-full rounded-md font-semibold", {
     },
     border: {
       default: ["border", "border-white", "border-opacity-20"],
+      thick: ["border-2", "border-white", "border-opacity-20"],
       none: [""],
     },
     scaling: {

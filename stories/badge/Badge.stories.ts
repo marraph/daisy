@@ -21,6 +21,7 @@ export const Small: Story = {
         size: "small",
         opacity: "medium",
         border: "none",
+        roundness: "medium",
     },
 };
 
@@ -31,6 +32,7 @@ export const Medium: Story = {
         size: "medium",
         opacity: "medium",
         border: "none",
+        roundness: "medium",
     },
 };
 
@@ -41,6 +43,7 @@ export const Large: Story = {
         size: "large",
         opacity: "medium",
         border: "none",
+        roundness: "medium",
     },
 };
 
@@ -51,6 +54,7 @@ export const Success: Story = {
         size: "medium",
         opacity: "medium",
         border: "none",
+        roundness: "medium",
     },
 };
 
@@ -61,6 +65,7 @@ export const Warning: Story = {
         size: "medium",
         opacity: "medium",
         border: "none",
+        roundness: "medium",
     },
 };
 
@@ -71,6 +76,7 @@ export const Error: Story = {
         size: "medium",
         opacity: "medium",
         border: "none",
+        roundness: "medium",
     },
 };
 
@@ -81,5 +87,6 @@ export const Ghost: Story = {
         size: "medium",
         opacity: "medium",
         border: "default",
+        roundness: "medium",
     },
 };

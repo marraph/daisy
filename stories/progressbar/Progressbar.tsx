@@ -22,7 +22,7 @@ export interface ProgressbarProps extends React.AreaHTMLAttributes<HTMLDivElemen
 
 export const Progressbar: React.FC<ProgressbarProps> = ({ className, theme, width, height, ...props }) => {
     return (
-        <div className={"relative w-full bg-black rounded-2xl"}
+        <div className={"relative w-full bg-dark rounded-2xl"}
              style={{width: `${width}px`, height: `${height}px`}}>
             <div className={cn(progressbar({ theme }), className)}{...props} style={{width: `${props.fill}%`}}/>
         </div>
