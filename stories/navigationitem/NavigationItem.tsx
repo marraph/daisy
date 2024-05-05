@@ -1,24 +1,28 @@
-import { cva, VariantProps } from "class-variance-authority";
-import React from "react";
-import { cn } from "../../utils/cn";
-import {CalendarDays} from "lucide-react";
+import React, {ReactElement, useState} from "react";
 
-const navigationItem = cva("group rounded-md font-bold flex flex-row items-start", {
-    variants: {
-    },
-    defaultVariants: {
-    },
-});
-
-export interface NavigationItemProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof navigationItem> {
+export interface NavigationItemProps extends React.AreaHTMLAttributes<HTMLDivElement> {
     title: string;
+    icon: ReactElement;
 }
 
-export const NavigationItem: React.FC<NavigationItemProps> = ({ title, className}) => {
+export const NavigationItem: React.FC<NavigationItemProps> = ({ title, icon }) => {
+    const [selected, setSelected] = useState(false);
+
     return (
-        <div className={cn(navigationItem({ }), className)}>
-            <CalendarDays color={"white"} size={20}/>
-            <p className={"ml-4 font-bold"}>
+        <div className={selected ?
+            "group text-lg rounded-lg font-semibold cursor-pointer flex items-center " +
+            "bg-selected text-white border-2 border-white border-opacity-20" :
+            "group bg-black text-gray text-lg rounded-lg font-semibold cursor-pointer " +
+            "flex items-center hover:bg-selected"}
+            style={{width: 240}} onClick={() => setSelected(true)}>
+
+            {React.cloneElement(icon, {
+                size: 20,
+                className: selected ?
+                    "m-3 text-blue flex items-center" :
+                    "m-3 group-hover:text-white flex items-center"
+            })}
+            <p className={"m-2 font-bold group-hover:text-white"}>
                 {title}
             </p>
         </div>

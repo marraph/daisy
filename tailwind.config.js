@@ -14,13 +14,10 @@ module.exports = {
       "selected": "#222121",
       "placeholder": "#7B7777",
       "dark": "#222121",
-
       "blue": "#2622F6",
-
       "success": "#1AA60E",
       "warning": "#F2CF19",
       "error": "#C51919",
-
       "calBlue": "#4D76DF",
       "calGreen": "#5FCF56",
       "calPurple": "#A151D2",

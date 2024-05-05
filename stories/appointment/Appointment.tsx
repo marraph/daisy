@@ -20,11 +20,14 @@ const appointment = cva("relative flex w-60 h-20 text-white ", {
 export interface AppointmentProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof appointment> {
     title: string;
     description: string;
+    width: number;
+    height: number;
 }
 
-export const Appointment: React.FC<AppointmentProps> = ({ theme, title, description, className, ...props }) => {
+export const Appointment: React.FC<AppointmentProps> = ({ theme, title, description, width, height, className, ...props }) => {
     return (
-            <div className={cn(appointment({ theme }), className, "bg-opacity-10 rounded-lg")} {...props}>
+            <div className={cn(appointment({ theme }), className, "bg-opacity-10 rounded-lg")} {...props}
+                style={{width: `${width}px`, height: `${height}px`}}>
                 <div className={cn(appointment({theme}), "h-full w-3 mr-4 rounded-tl-lg rounded-bl-lg")}></div>
                 <div className={"flex flex-col py-2"}>
                     <h3 className={"text-lg font-semibold"}>{title}</h3>

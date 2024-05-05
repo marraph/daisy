@@ -19,6 +19,8 @@ export const Blue: Story = {
         theme: "blue",
         title: "Team Meeting",
         description: "03:00 PM - 04:00 PM",
+        width: 300,
+        height: 100,
     },
 };
 
@@ -27,6 +29,8 @@ export const Green: Story = {
         theme: "green",
         title: "Team Meeting",
         description: "03:00 PM - 04:00 PM",
+        width: 300,
+        height: 100,
     },
 };
 
@@ -35,6 +39,8 @@ export const Purple: Story = {
         theme: "purple",
         title: "Team Meeting",
         description: "03:00 PM - 04:00 PM",
+        width: 300,
+        height: 100,
     },
 };
 
@@ -43,6 +49,8 @@ export const Pink: Story = {
         theme: "pink",
         title: "Team Meeting",
         description: "03:00 PM - 04:00 PM",
+        width: 300,
+        height: 100,
     },
 };
 
@@ -51,5 +59,7 @@ export const Yellow: Story = {
         theme: "yellow",
         title: "Team Meeting",
         description: "03:00 PM - 04:00 PM",
+        width: 300,
+        height: 100,
     },
 };
