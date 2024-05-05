@@ -19,7 +19,7 @@ export const NavigationItem: React.FC<NavigationItemProps> = ({ title, icon }) =
             {React.cloneElement(icon, {
                 size: 20,
                 className: selected ?
-                    "m-3 text-blue flex items-center" :
+                    "m-3 text-white flex items-center" :
                     "m-3 group-hover:text-white flex items-center"
             })}
             <p className={"m-2 font-bold group-hover:text-white"}>

@@ -20,6 +20,6 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
     args: {
         title: "Calendar",
-        icon: React.createElement("icon", null, "CalendarDays"),
+        icon: <CalendarDays/>,
     },
 };

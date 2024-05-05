@@ -1,46 +1,28 @@
-import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
-import { cn } from "../../utils/cn";
+import {Basecard} from "../basecard/Basecard";
 
-const tooltip = cva("group rounded-md font-semibold flex flex-col items-start", {
-    variants: {
-        theme: {
-            dark: ["bg-black", "text-gray"],
-            white: ["bg-white", "text-black"],
-        },
-        size: {
-            small: ["p-2", "text-sm"],
-            medium: ["p-3", "text-base"],
-            large: ["p-4", "text-lg"],
-        },
-        transparency: {
-            default: ["bg-opacity-30"],
-            none: [""]
-        }
-    },
-    defaultVariants: {
-        theme: "dark",
-        size: "medium",
-        transparency: "none",
-    },
-});
-
-export interface TooltipProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof tooltip> {
+export interface TooltipProps extends React.AreaHTMLAttributes<HTMLDivElement> {
     title?: string;
     description: string;
+    theme: "dark" | "success" | "warning" | "error";
+    size: "small" | "medium" | "large";
+    border: "default" | "none";
+    opacity: "default" | "none";
 }
 
-export const Tooltip: React.FC<TooltipProps> = ({ title, description, theme, size, transparency, className}) => {
+export const Tooltip: React.FC<TooltipProps> = ({ title, description, theme, border, size, opacity, className}) => {
     return (
-        <div className={cn(tooltip({ theme, size, transparency }), className)}>
-            {title != null && (
-                <h3 className={theme === "dark" ? "text-white" : "text-black"}>
-                    {title}
-                </h3>
-            )}
-            <p className={"font-normal float-left"}>
-                {description}
-            </p>
-        </div>
+        <Basecard theme={theme} border={border} size={size} opacity={opacity} className={className}>
+            <div className={"group rounded-md font-semibold flex flex-col items-start"}>
+                {title != null && (
+                    <h3 className={theme === "dark" ? "text-white" : "text-black"}>
+                        {title}
+                    </h3>
+                )}
+                <p className={"font-normal float-left"}>
+                    {description}
+                </p>
+            </div>
+        </Basecard>
     );
 };

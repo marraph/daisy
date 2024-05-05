@@ -21,6 +21,7 @@ export const Small: Story = {
         theme: "dark",
         size: "small",
         border: "default",
+        opacity: "none",
     },
 };
 
@@ -31,6 +32,7 @@ export const Medium: Story = {
         theme: "dark",
         size: "medium",
         border: "default",
+        opacity: "none",
     },
 };
 
@@ -41,6 +43,7 @@ export const Large: Story = {
         theme: "dark",
         size: "large",
         border: "default",
+        opacity: "none",
     },
 };
 
@@ -51,6 +54,7 @@ export const Success: Story = {
         theme: "success",
         size: "medium",
         border: "default",
+        opacity: "default",
     },
 };
 
@@ -61,6 +65,7 @@ export const Warning: Story = {
         theme: "warning",
         size: "medium",
         border: "default",
+        opacity: "default",
     },
 };
 
@@ -71,6 +76,7 @@ export const Error: Story = {
         theme: "error",
         size: "medium",
         border: "default",
+        opacity: "default",
     },
 };
 
@@ -78,9 +84,10 @@ export const Ghost: Story = {
     args: {
         title: "Alert",
         description: "This is an  lorem ipsum arma virumque.",
-        theme: "ghost",
+        theme: "dark",
         size: "medium",
         border: "default",
+        opacity: "default",
     },
 };
 
@@ -91,5 +98,6 @@ export const NoBorder: Story = {
         theme: "dark",
         size: "medium",
         border: "none",
+        opacity: "default",
     },
 };

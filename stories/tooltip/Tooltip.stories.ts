@@ -20,7 +20,8 @@ export const Small: Story = {
         description: "This is an  lorem ipsum arma virumque.",
         theme: "dark",
         size: "small",
-        transparency: "none",
+        border: "default",
+        opacity: "none",
     },
 };
 
@@ -30,7 +31,8 @@ export const Medium: Story = {
         description: "This is an  lorem ipsum arma virumque.",
         theme: "dark",
         size: "medium",
-        transparency: "none",
+        border: "default",
+        opacity: "none",
     },
 };
 
@@ -40,17 +42,8 @@ export const Large: Story = {
         description: "This is an  lorem ipsum arma virumque.",
         theme: "dark",
         size: "large",
-        transparency: "none",
-    },
-};
-
-export const White: Story = {
-    args: {
-        title: "Tooltip",
-        description: "This is an  lorem ipsum arma virumque.",
-        theme: "white",
-        size: "medium",
-        transparency: "none",
+        border: "default",
+        opacity: "none",
     },
 };
 
@@ -60,7 +53,8 @@ export const Transparent: Story = {
         description: "This is an  lorem ipsum arma virumque.",
         theme: "dark",
         size: "medium",
-        transparency: "default",
+        border: "default",
+        opacity: "default",
     },
 };
 
@@ -70,6 +64,7 @@ export const WithoutTitle: Story = {
         description: "This is an  lorem ipsum arma virumque.",
         theme: "dark",
         size: "medium",
-        transparency: "none",
+        border: "default",
+        opacity: "none",
     },
 };
