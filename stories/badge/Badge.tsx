@@ -50,10 +50,11 @@ export interface BadgeProps extends React.AreaHTMLAttributes<HTMLDivElement>, Va
     text: string;
 }
 
-export const Badge: React.FC<BadgeProps> = ({ className, theme, size, opacity, border, roundness, text, ...props }) => {
-    return (
-        <div className={cn(badge({ theme, size, opacity, border, roundness }), className)} {...props}>
-            <p>{text}</p>
-        </div>
-    );
-};
+const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(({ theme, size, opacity, border, roundness, text, className, ...props }, ref) => (
+    <div className={cn(badge({ theme, size, opacity, border, roundness }), className)} ref={ref} {...props}>
+        <p>{text}</p>
+    </div>
+));
+Badge.displayName = "Badge";
+
+export { Badge };

@@ -6,9 +6,9 @@ interface ContextMenuItemProps extends React.AreaHTMLAttributes<HTMLDivElement> 
 }
 
 const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(({ title, className, ...props }, ref) => (
-        <div className={cn("cursor-pointer rounded-md hover:bg-selected hover:text-white px-4 py-2", className)} ref={ref} {...props}>
-            {title}
-        </div>
+    <div className={cn("cursor-pointer rounded-md hover:bg-selected hover:text-white px-4 py-2", className)} ref={ref} {...props}>
+        {title}
+    </div>
 ));
 ContextMenuItem.displayName = "ContextMenuItem";
 
