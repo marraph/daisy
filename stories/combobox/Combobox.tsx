@@ -3,7 +3,6 @@ import React, {useState} from "react";
 import { cn } from "../../utils/cn";
 import {Button} from "../button/Button";
 import {ChevronsUpDown} from "lucide-react";
-import {Basecard} from "../basecard/Basecard";
 
 const combobox = cva("group flex items-center", {
     variants: {
@@ -42,13 +41,13 @@ export const Combobox: React.FC<ComboboxProps> = ({ text_color, buttonTitle, opt
                 <ChevronsUpDown className={"group-hover:text-white ml-6 text-gray"} size={15}/>
             </Button>
             {isOpen && (
-                <Basecard className={"absolute top-full flex flex-col"}>
+                <div className={"absolute top-full flex flex-col w-full rounded-lg font-semibold py-2 px-2 bg-black text-gray"}>
                     {options.map((option, index) => (
                         <div key={index} className="bg-black text-gray cursor-pointer rounded-md hover:bg-selected hover:text-white py-2 pl-2" onClick={() => handleOptionClick(option)}>
                             {option}
                         </div>
                     ))}
-                </Basecard>
+                </div>
             )}
         </div>
 

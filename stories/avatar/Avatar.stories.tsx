@@ -1,3 +1,4 @@
+import React from 'react';
 import { Avatar } from './Avatar';
 import {Meta, StoryObj} from "@storybook/react";
 
@@ -12,22 +13,20 @@ const meta: Meta<typeof Avatar> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof Avatar>
 
 export const Round: Story = {
-    args: {
-        shape: "round",
-        img_url: "/image-example.jpg",
-        height: 100,
-        width: 100,
+    render: () => {
+        return (
+            <Avatar shape={"round"} width={100} height={100} img_url={"/image-example.jpg"}/>
+        );
     },
 };
 
 export const Box: Story = {
-    args: {
-        shape: "box",
-        img_url: "/image-example.jpg",
-        height: 100,
-        width: 100,
+    render: () => {
+        return (
+            <Avatar shape={"box"} width={100} height={100} img_url={"/image-example.jpg"}/>
+        );
     },
 };

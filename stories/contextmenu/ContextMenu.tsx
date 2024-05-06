@@ -1,30 +1,24 @@
 import React from "react";
-import {Basecard} from "../basecard/Basecard";
+import {cn} from "../../utils/cn";
 
-export interface ContextMenuItemProps extends React.AreaHTMLAttributes<HTMLDivElement> {
+interface ContextMenuItemProps extends React.AreaHTMLAttributes<HTMLDivElement> {
     title: string;
 }
 
-export interface ContextMenuProps extends React.AreaHTMLAttributes<HTMLDivElement> {
-    theme: "dark" | "success" | "warning" | "error";
-    size: "small" | "medium" | "large";
-    border: "default" | "none";
-    opacity: "default" | "none";
-}
-
-const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ title }) => {
-    return(
-        <div className={"w-full bg-black text-gray cursor-pointer rounded-md hover:bg-selected hover:text-white px-4 py-2"}>
+const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(({ title, className, ...props }, ref) => (
+        <div className={cn("cursor-pointer rounded-md hover:bg-selected hover:text-white px-4 py-2", className)} ref={ref} {...props}>
             {title}
         </div>
-    );
-}
+));
+ContextMenuItem.displayName = "ContextMenuItem";
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ theme, size, border, opacity, className}) => {
-    return (
-            <Basecard theme={theme} size={size} border={border} opacity={opacity} className={className}>
-            </Basecard>
-    );
-};
 
-export default Object.assign(ContextMenu, { ContextMenuItem });
+const ContextMenu = React.forwardRef<HTMLDivElement, React.AreaHTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
+    <div className={cn("group w-full rounded-lg font-semibold py-2 px-2 bg-black text-gray" , className)} ref={ref} {...props}>
+        {props.children}
+    </div>
+));
+ContextMenu.displayName = "ContextMenuItem";
+
+
+export { ContextMenu, ContextMenuItem };

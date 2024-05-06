@@ -17,22 +17,42 @@ const appointment = cva("relative flex w-60 h-20 text-white ", {
     },
 });
 
-export interface AppointmentProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof appointment> {
+interface AppointmentTitleProps extends React.AreaHTMLAttributes<HTMLDivElement> {
     title: string;
+}
+
+interface AppointmentDescriptionProps extends React.AreaHTMLAttributes<HTMLDivElement> {
     description: string;
+}
+
+export interface AppointmentProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof appointment> {
     width: number;
     height: number;
 }
 
-export const Appointment: React.FC<AppointmentProps> = ({ theme, title, description, width, height, className, ...props }) => {
-    return (
-            <div className={cn(appointment({ theme }), className, "bg-opacity-10 rounded-lg")} {...props}
-                style={{width: `${width}px`, height: `${height}px`}}>
-                <div className={cn(appointment({theme}), "h-full w-3 mr-4 rounded-tl-lg rounded-bl-lg")}></div>
-                <div className={"flex flex-col py-2"}>
-                    <h3 className={"text-lg font-semibold"}>{title}</h3>
-                    <p>{description}</p>
-                </div>
-            </div>
-    );
-};
+const AppointmentTitle = React.forwardRef<HTMLDivElement, AppointmentTitleProps>(({ title, className, ...props }, ref) => (
+    <div className={cn("text-lg font-semibold" , className)} ref={ref} {...props}>
+        {title}
+    </div>
+));
+AppointmentTitle.displayName = "AppointmentTitle";
+
+
+const AppointmentDescription = React.forwardRef<HTMLDivElement, AppointmentDescriptionProps>(({ description, className, ...props }, ref) => (
+    <div className={cn(className)} ref={ref} {...props}>
+        {description}
+    </div>
+));
+AppointmentDescription.displayName = "AppointmentDescription";
+
+const Appointment =  React.forwardRef<HTMLDivElement, AppointmentProps>(({ theme, width, height, className, ...props }, ref) => (
+    <div className={cn(appointment({ theme }), className, "bg-opacity-10 rounded-lg")} {...props} style={{width: `${width}px`, height: `${height}px`}}>
+        <div className={cn(appointment({theme}), "h-full w-3 mr-4 rounded-tl-lg rounded-bl-lg")}></div>
+        <div className={"flex flex-col py-2"}>
+            {props.children}
+        </div>
+    </div>
+));
+Appointment.displayName = "Appointment";
+
+export { Appointment, AppointmentTitle, AppointmentDescription };
