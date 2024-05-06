@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dialog, DialogTitle, DialogDescription } from './Dialog';
+import {Dialog, DialogTitle, DialogDescription, showDialog} from './Dialog';
 import {Meta, StoryObj} from "@storybook/react";
 
 const meta: Meta<typeof Dialog> = {
@@ -15,20 +15,22 @@ export default meta;
 
 type Story = StoryObj<typeof Dialog>;
 
-function showDialog() {
-    const dialog = document.querySelector("dialog");
-    if (dialog) {
-        dialog.showModal();
-    }
-}
+export const Default = () => {
+    let dialogRef = React.useRef<HTMLDialogElement>(null);
 
-export const Default: Story = {
-    render: () => {
-        return (
-            <Dialog>
-                <DialogTitle title="This is a Dialog" />
-                <DialogDescription description="oiwifwfhwfnhw nfiwfnwifnwifnwfwfw noiw ghfw on nnwiog noigwgog wiogawiogjgiwgi wawgio giowagiwg jwg hwgwog jwaogjwao gjwogjwojgowjgwajgj ogwaj gowajgowgjwaogja" />
+    const handleShowDialog = () => {
+        if (dialogRef.current) {
+            showDialog(dialogRef.current);
+        }
+    };
+
+    return (
+        <div>
+            <button className={"bg-black text-white p-2 text-base rounded-lg border border-white border-opacity-20"} onClick={handleShowDialog}>Dialog</button>
+            <Dialog ref={dialogRef}>
+                <DialogTitle title="Titel bnla bla" />
+                <DialogDescription description="Beswmow iwwni gnowwnm wgm gowgwngnwgw mw om mwogmowg wfw" />
             </Dialog>
-        );
-    },
+        </div>
+    );
 };
