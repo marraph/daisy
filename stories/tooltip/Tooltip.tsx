@@ -24,25 +24,41 @@ const tooltip = cva("group w-full rounded-lg font-semibold py-2 px-2 bg-black te
     },
 });
 
-export interface TooltipProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof tooltip> {
-    title?: string;
+interface TooltipTitleProps extends React.AreaHTMLAttributes<HTMLDivElement> {
+    title: string;
+}
+
+interface TooltipDescriptionProps extends React.AreaHTMLAttributes<HTMLDivElement> {
     description: string;
 }
 
+interface TooltipProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof tooltip> {}
 
-export const Tooltip: React.FC<TooltipProps> = ({ title, description, theme, border, opacity, className}) => {
-    return (
+
+
+const TooltipTitle = React.forwardRef<HTMLDivElement, TooltipTitleProps>(({ title, className, ...props }, ref) => (
+    <div className={""} ref={ref} {...props}>
+        {title}
+    </div>
+));
+TooltipTitle.displayName = "TooltipHeader";
+
+
+const TooltipDescription = React.forwardRef<HTMLDivElement, TooltipDescriptionProps>(({ description, className, ...props }, ref) => (
+    <div className={"font-normal float-left"} ref={ref} {...props}>
+        {description}
+    </div>
+));
+TooltipDescription.displayName = "TooltipHeader";
+
+
+const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(({ theme, border, opacity, className, ...props }, ref) => (
         <div className={cn(tooltip({ theme, border, opacity }), className)}>
             <div className={"group rounded-md font-semibold flex flex-col items-start"}>
-                {title != null && (
-                    <h3 className={theme === "dark" ? "text-white" : "text-black"}>
-                        {title}
-                    </h3>
-                )}
-                <p className={"font-normal float-left"}>
-                    {description}
-                </p>
+                {props.children}
             </div>
         </div>
-    );
-};
+));
+Tooltip.displayName = "Tooltip";
+
+export { Tooltip, TooltipTitle, TooltipDescription };
