@@ -12,22 +12,12 @@ const meta: Meta<typeof Progressbar> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof Progressbar>
 
-export const White: Story = {
+export const Default: Story = {
     args: {
-        theme: "white",
-        width: 100,
-        height: 10,
+        width: 400,
+        height: 30,
         fill: 30,
-    },
-};
-
-export const Primary: Story = {
-    args: {
-        theme: "primary",
-        width: 100,
-        height: 10,
-        fill: 70,
     },
 };

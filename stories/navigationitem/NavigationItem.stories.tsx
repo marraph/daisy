@@ -15,7 +15,7 @@ const meta: Meta<typeof NavigationItem> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof NavigationItem>
 
 export const Default: Story = {
     args: {

@@ -16,7 +16,7 @@ interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, V
 
 
 const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ title, className, ...props }, ref) => (
-    <div className={"bg-black text-gray cursor-pointer rounded-md hover:bg-selected hover:text-white py-2 pl-2"} ref={ref} {...props}>
+    <div className={"bg-black text-gray cursor-pointer rounded-lg hover:bg-selected hover:text-white py-2 pl-2"} ref={ref} {...props}>
         {title}
     </div>
 ));

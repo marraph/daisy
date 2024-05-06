@@ -15,56 +15,8 @@ export default meta;
 type Story = StoryObj<typeof meta>
 
 export const Small: Story = {
-    args: {
-        title: "Tooltip",
-        description: "This is an  lorem ipsum arma virumque.",
-        theme: "dark",
-        size: "small",
-        border: "default",
-        opacity: "none",
-    },
-};
+    render: () => {
+        return
 
-export const Medium: Story = {
-    args: {
-        title: "Tooltip",
-        description: "This is an  lorem ipsum arma virumque.",
-        theme: "dark",
-        size: "medium",
-        border: "default",
-        opacity: "none",
-    },
-};
-
-export const Large: Story = {
-    args: {
-        title: "Tooltip",
-        description: "This is an  lorem ipsum arma virumque.",
-        theme: "dark",
-        size: "large",
-        border: "default",
-        opacity: "none",
-    },
-};
-
-export const Transparent: Story = {
-    args: {
-        title: "Tooltip",
-        description: "This is an  lorem ipsum arma virumque.",
-        theme: "dark",
-        size: "medium",
-        border: "default",
-        opacity: "default",
-    },
-};
-
-export const WithoutTitle: Story = {
-    args: {
-        title: "",
-        description: "This is an  lorem ipsum arma virumque.",
-        theme: "dark",
-        size: "medium",
-        border: "default",
-        opacity: "none",
     },
 };

@@ -14,25 +14,8 @@ export default meta;
 
 type Story = StoryObj<typeof meta>
 
-export const Small: Story = {
+export const Default: Story = {
     args: {
-        size: "small",
-        firstTitle: "ButtonOne",
-        secondTitle:"ButtonTwo",
-    },
-};
-
-export const Medium: Story = {
-    args: {
-        size: "medium",
-        firstTitle: "ButtonOne",
-        secondTitle:"ButtonTwo",
-    },
-};
-
-export const Large: Story = {
-    args: {
-        size: "large",
         firstTitle: "ButtonOne",
         secondTitle:"ButtonTwo",
     },

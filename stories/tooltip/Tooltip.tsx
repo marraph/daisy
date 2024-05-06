@@ -6,9 +6,7 @@ const tooltip = cva("group w-full rounded-lg font-semibold py-2 px-2 bg-black te
     variants: {
         theme: {
             dark: ["bg-black", "text-gray"],
-            success: ["bg-success", "bg-opacity-30", "text-white"],
-            warning: ["bg-warning", "bg-opacity-30", "text-white"],
-            error: ["bg-error", "bg-opacity-30", "text-white"],
+            white: ["bg-white", "text-black"]
         },
         border: {
             default: ["border", "border-white", "border-opacity-20"],

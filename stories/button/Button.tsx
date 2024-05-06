@@ -2,7 +2,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
 import { cn } from "../../utils/cn";
 
-const button = cva("w-full rounded-md font-semibold text-base py-2 px-4", {
+const button = cva("w-full rounded-lg font-semibold text-base py-2 px-4", {
   variants: {
     theme: {
       dark: ["bg-black", "text-gray", "hover:text-white",],
