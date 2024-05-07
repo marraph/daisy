@@ -10,8 +10,10 @@ interface ContextMenuIconProps extends React.AreaHTMLAttributes<HTMLDivElement> 
 }
 
 const ContextMenuSeperator = React.forwardRef<HTMLHRElement, React.HTMLAttributes<HTMLHRElement>>(({ className, ...props }, ref) => (
-    <hr className={"flex-grow bg-white my-2 rounded-lg"} ref={ref} {...props}>
-    </hr>
+    <div className={"rounded-full"}>
+        <hr className={"flex-grow text-placeholder my-2 rounded-lg"} ref={ref} {...props}>
+        </hr>
+    </div>
 ));
 ContextMenuSeperator.displayName = "ContextMenuSeperator";
 

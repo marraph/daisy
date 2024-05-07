@@ -21,7 +21,7 @@ export const Default: Story = {
         return (
             <ContextMenu>
                 <ContextMenuItem title="Item 1">
-                    <ContextMenuIcon icon={<Archive/>} />
+                    <ContextMenuIcon icon={<Archive size={22}/>} />
                 </ContextMenuItem>
                 <ContextMenuSeperator />
                 <ContextMenuItem title="Item 2" />
