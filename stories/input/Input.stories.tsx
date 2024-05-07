@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from './Input';
+import {Input} from './Input';
 import {Meta, StoryObj} from "@storybook/react";
 
 const meta: Meta<typeof Input> = {
@@ -17,6 +17,9 @@ type Story = StoryObj<typeof Input>
 
 export const Small: Story = {
     render: () => {
-        return <Input placeholder="Small input"/>;
+        return (
+            <Input placeholder="Small input">
+            </Input>
+        );
     },
 };

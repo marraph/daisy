@@ -1,15 +1,13 @@
-import { cva, VariantProps } from "class-variance-authority";
-import React from "react";
+import React, {ReactNode} from "react";
 import { cn } from "../../utils/cn";
 
-const input = cva("w-full bg-black rounded-lg font-semibold border border-white border-opacity-20 outline-none text-base py-2 px-4 text-gray focus:text-white focus:ring-2 focus:ring-placeholder placeholder-placeholder");
-
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, VariantProps<typeof input> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>{
     placeholder: string;
 }
 
-const Input = React.forwardRef<HTMLDivElement, InputProps>(({ placeholder, className, ...props }) => (
-        <input placeholder={placeholder} className={cn(input({ }), className)} {...props}>
+const Input = React.forwardRef<HTMLInputElement, InputProps>(({ placeholder, className, ...props }, ref) => (
+        <input placeholder={placeholder} className={cn("w-full bg-black rounded-lg font-semibold border border-white border-opacity-20 outline-none text-base py-2 px-4 " +
+            "text-gray focus:text-white focus:ring-2 focus:ring-placeholder placeholder-placeholder", className)} ref={ref} {...props}>
             {props.children}
         </input>
 ));

@@ -1,6 +1,7 @@
-import {Alert, AlertTitle, AlertDescription} from './Alert';
+import {Alert, AlertTitle, AlertDescription, AlertIcon, AlertContent} from './Alert';
 import {Meta, StoryObj} from "@storybook/react";
 import React from "react";
+import {Rocket} from "lucide-react";
 
 const meta: Meta<typeof Alert> = {
     title: "Components/Alert",
@@ -19,8 +20,11 @@ export const Default: Story = {
     render: () => {
         return (
             <Alert theme={"dark"} border={"default"} opacity={"none"}>
-                <AlertTitle title="Alert" />
-                <AlertDescription description="This is an  lorem ipsum arma virumque." />
+                <AlertIcon icon={<Rocket size={30} className={"text-white"} />} />
+                <AlertContent>
+                    <AlertTitle title="Alert" />
+                    <AlertDescription description="This is an  lorem ipsum arma virumque." />
+                </AlertContent>
             </Alert>
         );
     },
