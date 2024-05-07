@@ -1,6 +1,7 @@
 import React from 'react';
-import {ContextMenu, ContextMenuItem } from './ContextMenu';
+import {ContextMenu, ContextMenuIcon, ContextMenuItem, ContextMenuSeperator} from './ContextMenu';
 import {Meta, StoryObj} from "@storybook/react";
+import {Archive} from "lucide-react";
 
 const meta: Meta<typeof ContextMenu> = {
     title: "Components/ContextMenu",
@@ -19,7 +20,10 @@ export const Default: Story = {
     render: () => {
         return (
             <ContextMenu>
-                <ContextMenuItem title="Item 1" />
+                <ContextMenuItem title="Item 1">
+                    <ContextMenuIcon icon={<Archive/>} />
+                </ContextMenuItem>
+                <ContextMenuSeperator />
                 <ContextMenuItem title="Item 2" />
                 <ContextMenuItem title="Item 3" />
             </ContextMenu>
