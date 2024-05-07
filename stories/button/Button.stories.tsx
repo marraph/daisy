@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button } from './Button';
+import {Button, ButtonIcon} from './Button';
 import {Meta, StoryObj} from "@storybook/react";
+import {Wallet} from "lucide-react";
 
 const meta: Meta<typeof Button> = {
   title: "Components/Button",
@@ -17,7 +18,11 @@ type Story = StoryObj<typeof Button>
 
 export const Default: Story = {
   render: () => {
-    return <Button text={"Button"}></Button>;
+    return (
+        <Button text={"Button"}>
+          <ButtonIcon icon={<Wallet size={20}/>} />
+        </Button>
+    );
   },
 };
 
