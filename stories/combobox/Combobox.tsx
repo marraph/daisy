@@ -1,23 +1,32 @@
-import { cva, VariantProps } from "class-variance-authority";
-import React, {useState} from "react";
+import React, {ReactNode, useState} from "react";
 import { cn } from "../../utils/cn";
 import {Button} from "../button/Button";
 import {ChevronsUpDown} from "lucide-react";
-
-const combobox = cva("group flex items-center text-gray");
 
 interface ComboboxItemProps extends React.AreaHTMLAttributes<HTMLDivElement> {
     title: string;
 }
 
-interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof combobox> {
+interface ComboboxIconProps extends React.AreaHTMLAttributes<HTMLDivElement> {
+    icon: ReactNode;
+}
+
+interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     buttonTitle: string;
 }
 
+const ComboboxIcon = React.forwardRef<HTMLDivElement, ComboboxIconProps>(({ icon, className, ...props }, ref) => (
+    <div className={cn("mr-2", className)} ref={ref} {...props}>
+        {icon}
+    </div>
+));
+ComboboxIcon.displayName = "ComboboxIcon";
+
 
 const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ title, className, ...props }, ref) => (
-    <div className={"bg-black text-gray cursor-pointer rounded-lg hover:bg-selected hover:text-white py-2 pl-2"} ref={ref} {...props}>
-        {title}
+    <div className={cn("bg-black text-gray cursor-pointer rounded-lg hover:bg-selected hover:text-white py-2 px-2 flex items-center", className)} ref={ref} {...props}>
+        {props.children}
+        <span className={""}>{title}</span>
     </div>
 ));
 ComboboxItem.displayName = "ComboboxItem";
@@ -38,12 +47,12 @@ const Combobox: React.FC<ComboboxProps> = ({buttonTitle, className, ...props}) =
     };
 
     return (
-        <div className={"relative inline-block"}>
-            <Button text={!selectedValue ? buttonTitle : selectedValue} className={cn(combobox({ }), className)} {...props} onClick={handleButtonClick}>
-                <ChevronsUpDown className={"group-hover:text-white ml-6 text-gray"} size={15}/>
+        <div className={cn("relative inline-block", className)}>
+            <Button text={!selectedValue ? buttonTitle : selectedValue} className={cn("group flex items-center text-gray whitespace-nowrap", className)} {...props} onClick={handleButtonClick}>
+                <ChevronsUpDown className={cn("group-hover:text-white ml-6 text-gray", className)} size={15}/>
             </Button>
             {isOpen && (
-                <div className={"absolute top-full flex flex-col w-full rounded-lg font-semibold py-2 px-2 bg-black text-gray"}>
+                <div className={cn("absolute top-full flex flex-col w-full rounded-lg font-semibold py-2 px-2 bg-black text-gray whitespace-nowrap", className)}>
                     {React.Children.map(props.children, (child) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
                             return React.cloneElement(child, {
@@ -58,4 +67,4 @@ const Combobox: React.FC<ComboboxProps> = ({buttonTitle, className, ...props}) =
     );
 };
 
-export { Combobox, ComboboxItem };
+export { Combobox, ComboboxItem, ComboboxIcon };
