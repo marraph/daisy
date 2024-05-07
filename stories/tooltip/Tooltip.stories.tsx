@@ -18,8 +18,8 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
     render: () => {
         return (
-        <Tooltip>
-            <TooltipTitle title={"Title"} />
+        <Tooltip theme={"dark"}>
+            <TooltipTitle title={"Title"}/>
             <TooltipDescription description={"This is lorem ipsum balni wniwgigiw"} />
         </Tooltip>
         );

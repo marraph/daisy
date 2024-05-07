@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import {cn} from "../../utils/cn";
 
 interface DialogTitleProps extends React.AreaHTMLAttributes<HTMLDivElement> {
@@ -26,7 +26,7 @@ DialogDescription.displayName = "DialogDescription";
 
 
 const Dialog = React.forwardRef<HTMLDialogElement, React.DialogHTMLAttributes<HTMLDialogElement>>(({ className, ...props }, ref) => (
-    <dialog className={cn("group rounded-lg font-semibold p-5 bg-black backdrop backdrop-brightness-0 backdrop-opacity-20" , className)} ref={ref} {...props}>
+    <dialog className={cn("group rounded-lg font-semibold p-5 bg-black backdrop backdrop-opacity-20 backdrop-brightness-0" , className)} ref={ref} {...props}>
         {props.children}
     </dialog>
 
@@ -34,7 +34,7 @@ const Dialog = React.forwardRef<HTMLDialogElement, React.DialogHTMLAttributes<HT
 Dialog.displayName = "Dialog";
 
 function showDialog(dialog: HTMLDialogElement) {
-    dialog.show();
+    dialog.showModal();
 }
 
 export { Dialog, DialogTitle, DialogDescription, showDialog };
