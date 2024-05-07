@@ -1,4 +1,4 @@
-import { NavigationItem } from './NavigationItem';
+import {NavigationIcon, NavigationItem} from './NavigationItem';
 import {Meta, StoryObj} from "@storybook/react";
 import React from "react";
 import {CalendarDays} from "lucide-react";
@@ -18,8 +18,11 @@ export default meta;
 type Story = StoryObj<typeof NavigationItem>
 
 export const Default: Story = {
-    args: {
-        title: "Calendar",
-        icon: <CalendarDays/>,
+    render: () => {
+        return (
+            <NavigationItem title={"Calendar"}>
+                <NavigationIcon icon={<CalendarDays size={20}/>} />
+            </NavigationItem>
+        );
     },
 };

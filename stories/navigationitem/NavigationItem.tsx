@@ -1,30 +1,38 @@
-import React, {ReactElement, useState} from "react";
+import React, {ReactNode, useState} from "react";
+import {cn} from "../../utils/cn";
 
-export interface NavigationItemProps extends React.AreaHTMLAttributes<HTMLDivElement> {
-    title: string;
-    icon: ReactElement;
+export interface NavigationIconProps extends React.HTMLAttributes<HTMLDivElement> {
+    icon: ReactNode;
 }
 
-export const NavigationItem: React.FC<NavigationItemProps> = ({ title, icon }) => {
+export interface NavigationItemProps extends React.HTMLAttributes<HTMLDivElement> {
+    title: string;
+}
+
+const NavigationIcon = React.forwardRef<HTMLDivElement, NavigationIconProps>(({ icon, className, ...props }, ref) => (
+    <div className={cn("m-2 ml-4 mr-2", className)} ref={ref} {...props}>
+        {icon}
+    </div>
+));
+NavigationIcon.displayName = "NavigationIcon";
+
+
+const NavigationItem: React.FC<NavigationItemProps> = ({ title, ...props }) => {
     const [selected, setSelected] = useState(false);
 
     return (
         <div className={selected ?
-            "group text-lg rounded-lg font-semibold cursor-pointer flex items-center " +
+            "text-lg rounded-lg font-semibold cursor-pointer flex items-center " +
             "bg-selected text-white border-2 border-white border-opacity-20" :
             "group bg-black text-gray text-lg rounded-lg font-semibold cursor-pointer " +
-            "flex items-center hover:bg-selected"}
+            "flex items-center hover:bg-selected hover:text-white"}
             style={{width: 240}} onClick={() => setSelected(true)}>
-
-            {React.cloneElement(icon, {
-                size: 20,
-                className: selected ?
-                    "m-3 text-white flex items-center" :
-                    "m-3 group-hover:text-white flex items-center"
-            })}
-            <p className={"m-2 font-bold group-hover:text-white"}>
+            {props.children}
+            <p className={"m-2 font-bold "}>
                 {title}
             </p>
         </div>
     );
 };
+
+export { NavigationItem, NavigationIcon };
