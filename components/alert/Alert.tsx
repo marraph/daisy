@@ -1,6 +1,6 @@
-import React, {ReactNode} from "react";
 import {cva, VariantProps} from "class-variance-authority";
 import {cn} from "../../utils/cn";
+import React, {ReactNode} from "react";
 
 const alert = cva("group w-full rounded-lg font-semibold py-2 px-2 bg-black text-gray flex flex-row items-start", {
     variants: {
