@@ -21,7 +21,7 @@ export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElemen
 export const Checkbox: React.FC<CheckboxProps> = ({ text_color, text, className, ...props }) => {
     return (
         <div className={cn(checkbox({ text_color }), className)} {...props}>
-            <input type={"checkbox"} className={"w-4 h-4 accent-black border-gray border-opacity-20 rounded-md mr-2 checked:accent-black hover:border-black"}/>
+            <input type={"checkbox"} className={"w-4 h-4 accent-black border-gray border-opacity-20 rounded-md mr-2 checked:accent-black"}/>
             <p>{text}</p>
         </div>
     );

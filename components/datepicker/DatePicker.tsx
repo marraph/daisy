@@ -1,49 +1,40 @@
-import React, {useState} from "react";
+import React, {ReactNode, useState} from "react";
 import { cn } from "../../utils/cn";
-import {DayPicker} from "react-day-picker";
+import {Button, ButtonIcon} from "../button/Button";
+import {Calendar} from "../calendar/Calendar";
+import {format} from "date-fns";
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+export interface DatePickerProps extends React.HTMLAttributes<HTMLButtonElement> {
+    text: string;
+    icon: ReactNode;
+}
 
-const DatePicker: React.FC<CalendarProps> = ({ className, classNames, ...props }) => {
-    const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
+const DatePicker: React.FC<DatePickerProps> = ({ text, icon, className, ...props }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState<Date | undefined>(undefined);
+
+    const handleButtonClick = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const handleDayClick = (day: Date | undefined) => {
+        setSelectedValue(day);
+        setIsOpen(false);
+    };
 
     return (
-        <DayPicker {...props}
-            mode={"single"}
-            selected={selectedDay}
-            onSelect={setSelectedDay}
-            showOutsideDays={true}
-            className={cn("p-3 text-white bg-black rounded-lg border border-white border-opacity-20", className)}
-            classNames={{
-                months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-                month: "space-y-4",
-                caption: "flex justify-center pt-1 relative items-center",
-                caption_label: "text-sm font-medium",
-                nav: "space-x-1 flex items-center",
-                nav_button: cn("h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"),
-                nav_button_previous: "absolute left-1",
-                nav_button_next: "absolute right-1",
-                table: "w-full border-collapse space-y-1",
-                head_row: "flex",
-                head_cell:
-                    "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
-                row: "flex w-full mt-2",
-                cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-                day: cn("h-9 w-9 p-0 font-normal aria-selected:opacity-100 cursor-pointer rounded-lg hover:bg-selected"),
-                day_range_end: "day-range-end",
-                day_selected:
-                    "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-                day_today: "bg-gray text-black rounded-lg hover:text-black hover:bg-white",
-                day_outside:
-                    "day-outside opacity-50 aria-selected:bg-accent/50 aria-selected:opacity-30",
-                day_disabled: "text-muted-foreground opacity-50",
-                day_range_middle:
-                    "aria-selected:bg-accent aria-selected:text-accent-foreground",
-                day_hidden: "invisible",
-                ...classNames,
-        }} />
-    )
-};
-DatePicker.displayName = "DatePicker";
+        <div className={cn("relative inline-block", className)}>
+            <Button text={!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))} onClick={handleButtonClick} className={cn("", className)}>
+                <ButtonIcon icon={icon} />
+            </Button>
+            {isOpen && (
+                <div className="absolute top-full left-0">
+                    <Calendar onDayClick={handleDayClick}/>
+                </div>
+            )}
+        </div>
+    );
+}
 
-export { DatePicker };
+
+export {DatePicker};
