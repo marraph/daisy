@@ -15,10 +15,10 @@ export default meta;
 
 type Story = StoryObj<typeof Input>
 
-export const Small: Story = {
+export const Default: Story = {
     render: () => {
         return (
-            <Input placeholder="Small input">
+            <Input placeholder="Small input" label={"Label Title"}>
             </Input>
         );
     },
