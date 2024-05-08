@@ -25,7 +25,7 @@ export const Default: Story = {
                 </ContextMenuItem>
                 <ContextMenuSeperator />
                 <ContextMenuItem title="Item 2">
-                    <ContextMenuShortcut shortcut={"⌘ K"} />
+                    <ContextMenuShortcut shortcut={"⌘K"} />
                 </ContextMenuItem>
                 <ContextMenuItem title="Item 3" />
             </ContextMenu>
