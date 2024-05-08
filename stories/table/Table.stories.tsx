@@ -65,20 +65,20 @@ export const Default: Story = {
         return (
             <Table>
                 <TableHeader>
-                    <TableRow>
-                        <TableHead className="w-[100px]">Invoice</TableHead>
+                    <TableRow className={"border-none"}>
+                        <TableHead>Invoice</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Method</TableHead>
-                        <TableHead className="text-right">Amount</TableHead>
+                        <TableHead>Amount</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {invoices.map((invoice) => (
                         <TableRow key={invoice.invoice}>
-                            <TableCell className="font-medium">{invoice.invoice}</TableCell>
+                            <TableCell>{invoice.invoice}</TableCell>
                             <TableCell>{invoice.paymentStatus}</TableCell>
                             <TableCell>{invoice.paymentMethod}</TableCell>
-                            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+                            <TableCell>{invoice.totalAmount}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
