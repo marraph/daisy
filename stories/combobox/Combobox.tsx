@@ -4,6 +4,7 @@ import {ChevronsUpDown} from "lucide-react";
 
 interface ComboboxItemProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
+    isSelected?: boolean;
 }
 
 interface ComboboxIconProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -22,8 +23,8 @@ const ComboboxIcon = React.forwardRef<HTMLDivElement, ComboboxIconProps>(({ icon
 ComboboxIcon.displayName = "ComboboxIcon";
 
 
-const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ title, className, ...props }, ref) => (
-    <div className={cn("bg-black text-gray cursor-pointer rounded-lg hover:bg-selected hover:text-white py-2 px-2 flex items-center", className)} ref={ref} {...props}>
+const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ title, isSelected, className, ...props }, ref) => (
+    <div className={cn("bg-black text-gray cursor-pointer rounded-lg hover:bg-selected hover:text-white py-2 px-2 flex items-center", className, isSelected ? "bg-white" : "bg-black")} ref={ref} {...props}>
         {props.children}
         <span className={cn("", className)}>{title}</span>
     </div>
@@ -40,7 +41,6 @@ const Combobox: React.FC<ComboboxProps> = ({buttonTitle, className, ...props}) =
     };
 
     const handleItemClick = (item: string) => {
-        console.log(selectedValue);
         setSelectedValue(item);
         setIsOpen(false);
     };
