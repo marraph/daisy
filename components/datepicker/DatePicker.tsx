@@ -24,11 +24,11 @@ const DatePicker: React.FC<DatePickerProps> = ({ text, icon, className, ...props
 
     return (
         <div className={cn("relative inline-block", className)}>
-            <Button text={!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))} onClick={handleButtonClick} className={cn("", className)}>
+            <Button text={!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))} onClick={handleButtonClick}>
                 <ButtonIcon icon={icon} />
             </Button>
             {isOpen && (
-                <div className="absolute top-full left-0">
+                <div className={cn("absolute top-full left-0", className)}>
                     <Calendar onDayClick={handleDayClick}/>
                 </div>
             )}

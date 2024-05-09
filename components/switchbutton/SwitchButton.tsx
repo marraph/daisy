@@ -2,7 +2,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import React, {useState} from "react";
 import { cn } from "../../utils/cn";
 
-const switchButton = cva("flex items-center rounded-md font-semibold cursor-pointer text-gray bg-dark p-0.5 border border-white border-opacity-20 text-base");
+const switchButton = cva("flex items-center rounded-lg font-semibold cursor-pointer text-gray bg-dark p-0.5 border border-white border-opacity-20 text-base");
 
 export interface SwitchButtonProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof switchButton> {
     firstTitle: string;
@@ -19,14 +19,14 @@ export const SwitchButton: React.FC<SwitchButtonProps> = ({ firstTitle, secondTi
     return (
         <div className={cn(switchButton({ }), className)} {...props}>
             <div className={selectedValue ?
-                "bg-black text-white mr-1 rounded-md px-3 py-1.5" :
-                "bg-dark text-gray mr-1 rounded-md px-3 py-1.5 hover:text-white"}
+                "bg-black text-white mr-1 rounded-lg px-3 py-1.5" :
+                "bg-dark text-gray mr-1 rounded-lg px-3 py-1.5 hover:text-white"}
                  onClick={() => handleClick(true)}>
                 {firstTitle}
             </div>
             <div className={selectedValue ?
-                "bg-dark text-gray rounded-md px-3 py-1.5 hover:text-white" :
-                "bg-black text-white rounded-md px-3 py-1.5"}
+                "bg-dark text-gray rounded-lg px-3 py-1.5 hover:text-white" :
+                "bg-black text-white rounded-lg px-3 py-1.5"}
                  onClick={() => handleClick(false)}>
                 {secondTitle}
             </div>

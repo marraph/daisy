@@ -2,7 +2,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
 import { cn } from "../../utils/cn";
 
-const badge = cva("group w-full flex items-center font-semibold", {
+const badge = cva("group w-full flex items-center font-medium py-2 px-4", {
     variants: {
         theme: {
             dark: ["bg-black", "text-gray"],
@@ -12,11 +12,6 @@ const badge = cva("group w-full flex items-center font-semibold", {
             error: ["bg-error", "text-error"],
             ghost: ["bg-opacity-100", "text-white", "text-opacity-20"],
         },
-        size: {
-            small: ["text-sm", "py-1", "px-4"],
-            medium: ["text-base", "py-1", "px-4"],
-            large: ["text-lg", "py-1", "px-4"],
-        },
         opacity: {
             light: "bg-opacity-20",
             medium: "bg-opacity-40",
@@ -25,7 +20,7 @@ const badge = cva("group w-full flex items-center font-semibold", {
             full: "bg-opacity-100",
         },
         border: {
-            default: ["border", "border-white", "border-opacity-20", "border-2"],
+            white: ["border-2", "border-white", "border-opacity-20"],
             none: [""],
         },
         roundness: {
@@ -39,19 +34,18 @@ const badge = cva("group w-full flex items-center font-semibold", {
     },
     defaultVariants: {
         theme: "dark",
-        size: "medium",
         opacity: "medium",
         border: "none",
         roundness: "medium",
     },
 });
 
-export interface BadgeProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof badge> {
+export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badge> {
     text: string;
 }
 
-const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(({ theme, size, opacity, border, roundness, text, className, ...props }, ref) => (
-    <div className={cn(badge({ theme, size, opacity, border, roundness }), className)} ref={ref} {...props}>
+const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(({ theme, opacity, border, roundness, text, className, ...props }, ref) => (
+    <div className={cn(badge({ theme, opacity, border, roundness }), className)} ref={ref} {...props}>
         <p>{text}</p>
     </div>
 ));

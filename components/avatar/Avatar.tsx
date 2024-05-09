@@ -7,7 +7,7 @@ const avatar = cva("relative inline-block object-cover object-center", {
     variants: {
         shape: {
             round: ["rounded-full"],
-            box: ["rounded-xl"],
+            box: ["rounded-2xl"],
         },
     },
     defaultVariants: {
@@ -15,7 +15,7 @@ const avatar = cva("relative inline-block object-cover object-center", {
     },
 });
 
-export interface AvatarProps extends React.MediaHTMLAttributes<HTMLImageElement>, VariantProps<typeof avatar> {
+export interface AvatarProps extends React.HTMLAttributes<HTMLImageElement>, VariantProps<typeof avatar> {
     img_url: string;
     height: number;
     width: number;

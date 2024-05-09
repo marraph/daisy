@@ -15,6 +15,7 @@ module.exports = {
       "placeholder": "#7B7777",
       "dark": "#222121",
       "blue": "#2622F6",
+      "lightblue": "#3633FD",
 
       "success": "#1AA60E",
       "warning": "#F2CF19",

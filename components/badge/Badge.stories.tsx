@@ -17,6 +17,6 @@ type Story = StoryObj<typeof Badge>
 
 export const Default: Story = {
     render: () => {
-        return <Badge text={"Hello World!"}></Badge>;
+        return <Badge text={"Hello World!"} theme={"dark"} border={"white"}></Badge>;
     },
 };

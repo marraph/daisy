@@ -15,7 +15,7 @@ export default meta;
 
 type Story = StoryObj<typeof Breadcrump>
 
-export const Small: Story = {
+export const Default: Story = {
     render: () => {
         return <Breadcrump pastText={"Home"} nowText={"About"} />
     },

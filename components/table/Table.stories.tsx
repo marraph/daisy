@@ -65,7 +65,7 @@ export const Default: Story = {
         return (
             <Table>
                 <TableHeader>
-                    <TableRow className={"border-none"}>
+                    <TableRow className={"border-none hover:bg-black"}>
                         <TableHead>Invoice</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Method</TableHead>

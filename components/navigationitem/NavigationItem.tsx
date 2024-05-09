@@ -28,7 +28,7 @@ const NavigationItem: React.FC<NavigationItemProps> = ({ title, ...props }) => {
             "flex items-center hover:bg-selected hover:text-white"}
             style={{width: 240}} onClick={() => setSelected(true)}>
             {props.children}
-            <p className={"m-2 font-bold "}>
+            <p className={"m-2 font-semibold"}>
                 {title}
             </p>
         </div>

@@ -5,19 +5,14 @@ import { cn } from "../../utils/cn";
 const button = cva("w-full rounded-lg font-semibold text-base py-2 px-4 flex items-center", {
   variants: {
     theme: {
-      dark: ["bg-black", "text-gray", "hover:text-white",],
-      primary: ["bg-blue", "text-white"],
-      ghost: ["bg-transparent", "text-white", "hover:bg-selected"],
-      white: ["bg-white", "text-placeholder", "hover:text-black"],
-    },
-    border: {
-      default: ["border", "border-white", "border-opacity-20"],
-      none: [""],
+      dark: ["bg-black", "text-gray", "hover:text-white", "border", "border-white", "border-opacity-20"],
+      primary: ["bg-blue", "text-white", "hover:bg-lightblue"],
+      white: ["bg-white", "text-dark", "hover:text-black"],
+      outline: ["bg-transparent", "text-white", "hover:bg-white", "hover:text-dark", "border-2", "border-white"],
     },
   },
   defaultVariants: {
     theme: "dark",
-    border: "default",
   },
 });
 
@@ -38,8 +33,8 @@ const ButtonIcon = React.forwardRef<HTMLDivElement, ButtonIconProps>(({ icon, cl
 ButtonIcon.displayName = "ButtonIcon";
 
 
-const Button = React.forwardRef<HTMLDivElement, ButtonProps>(({ theme, border, text, className, ...props }) => (
-    <button className={cn(button({ theme, border }), className)} {...props}>
+const Button = React.forwardRef<HTMLDivElement, ButtonProps>(({ theme, text, className, ...props }) => (
+    <button className={cn(button({ theme }), className)} {...props}>
       {props.children}
       {text}
     </button>

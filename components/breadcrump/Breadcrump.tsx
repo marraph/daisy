@@ -3,10 +3,10 @@ import React from "react";
 import { cn } from "../../utils/cn";
 import {ChevronRight} from "lucide-react";
 
-const breadcrump = cva("group w-full rounded-lg font-semibold bg-opacity-20 bg-black text-placeholder flex items-center text-sm py-1 px-4 " +
+const breadcrump = cva("group w-full rounded-lg font-normal bg-opacity-20 bg-black text-placeholder flex items-center text-sm py-1 px-4 " +
     "border border-white border-opacity-20");
 
-export interface BreadcrumpProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof breadcrump> {
+export interface BreadcrumpProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof breadcrump> {
     pastText?: string;
     nowText?: string;
 }
@@ -28,8 +28,8 @@ BreadcrumpNowItem.displayName = "BreadcrumpNowItem";
 
 
 const Breadcrump = React.forwardRef<HTMLDivElement, BreadcrumpProps>(({ pastText, nowText, ...props }, ref) => (
-    <div className={cn(breadcrump({ }))} {...props}>
-        <BreadcrumpPastItem pastText={pastText} className={"cursor-pointer hover:text-white hover:underline"} />
+    <div className={cn(breadcrump({ }))} ref={ref} {...props}>
+        <BreadcrumpPastItem pastText={pastText} className={cn("cursor-pointer hover:text-white hover:underline")} />
         <ChevronRight strokeWidth={4} size={15} color={"gray"} className={"m-2"}/>
         <BreadcrumpNowItem nowText={nowText} className={"text-gray"} />
     </div>

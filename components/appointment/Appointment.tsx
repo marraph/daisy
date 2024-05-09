@@ -17,15 +17,15 @@ const appointment = cva("relative flex w-60 h-20 text-white ", {
     },
 });
 
-interface AppointmentTitleProps extends React.AreaHTMLAttributes<HTMLDivElement> {
+interface AppointmentTitleProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
 }
 
-interface AppointmentDescriptionProps extends React.AreaHTMLAttributes<HTMLDivElement> {
+interface AppointmentDescriptionProps extends React.HTMLAttributes<HTMLDivElement> {
     description: string;
 }
 
-export interface AppointmentProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof appointment> {
+export interface AppointmentProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof appointment> {
     width: number;
     height: number;
 }
@@ -46,9 +46,9 @@ const AppointmentDescription = React.forwardRef<HTMLDivElement, AppointmentDescr
 AppointmentDescription.displayName = "AppointmentDescription";
 
 const Appointment =  React.forwardRef<HTMLDivElement, AppointmentProps>(({ theme, width, height, className, ...props }, ref) => (
-    <div className={cn(appointment({ theme }), className, "bg-opacity-10 rounded-lg")} {...props} style={{width: `${width}px`, height: `${height}px`}}>
+    <div className={cn(appointment({ theme }), className, "bg-opacity-10 rounded-lg")} ref={ref} {...props} style={{width: `${width}px`, height: `${height}px`}}>
         <div className={cn(appointment({theme}), "h-full w-3 mr-4 rounded-tl-lg rounded-bl-lg")}></div>
-        <div className={"flex flex-col py-2"}>
+        <div className={cn("flex flex-col py-2", className)}>
             {props.children}
         </div>
     </div>

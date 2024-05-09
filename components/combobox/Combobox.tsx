@@ -26,7 +26,7 @@ ComboboxIcon.displayName = "ComboboxIcon";
 const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ title, isSelected, className, ...props }, ref) => (
     <div className={cn("bg-black text-gray cursor-pointer rounded-lg hover:bg-selected hover:text-white py-2 px-2 flex items-center", className, isSelected ? "bg-white" : "bg-black")} ref={ref} {...props}>
         {props.children}
-        <span className={cn("", className)}>{title}</span>
+        <span className={cn("ml-1", className)}>{title}</span>
     </div>
 ));
 ComboboxItem.displayName = "ComboboxItem";

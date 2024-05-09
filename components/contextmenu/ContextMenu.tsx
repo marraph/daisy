@@ -23,7 +23,7 @@ ContextMenuSeperator.displayName = "ContextMenuSeperator";
 
 
 const ContextMenuShortcut = React.forwardRef<HTMLDivElement, ContextMenuShortcutProps>(({ shortcut, className, ...props }, ref) => (
-        <span className={cn("hidden group-hover:block text-sm text-gray")}>{shortcut}</span>
+        <span className={cn("hidden group-hover:block text-sm text-gray")} ref={ref} {...props} >{shortcut}</span>
 ));
 ContextMenuShortcut.displayName = "ContextMenuShortcut";
 
@@ -37,7 +37,7 @@ ContextMenuIcon.displayName = "ContextMenuIcon";
 
 
 const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(({ title, className, ...props }, ref) => (
-    <div className={cn("group cursor-pointer rounded-lg hover:bg-selected hover:text-white px-2 py-1 flex justify-between items-center", className)} ref={ref} {...props}>
+    <div className={cn("group cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex justify-between items-center", className)} ref={ref} {...props}>
         {title}
         {props.children}
     </div>

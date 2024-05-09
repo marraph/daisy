@@ -2,27 +2,17 @@ import {cva, VariantProps} from "class-variance-authority";
 import {cn} from "../../utils/cn";
 import React, {ReactNode} from "react";
 
-const alert = cva("group w-full rounded-lg font-semibold py-2 px-2 bg-black text-gray flex flex-row items-start", {
+const alert = cva("group w-full rounded-lg font-medium py-2 px-2 bg-black text-gray text-base flex flex-row items-start shadow-2xl", {
     variants: {
         theme: {
-            dark: ["bg-black", "text-gray"],
-            success: ["bg-success", "bg-opacity-30", "text-white"],
-            warning: ["bg-warning", "bg-opacity-30", "text-white"],
-            error: ["bg-error", "bg-opacity-30", "text-white"],
+            dark: ["bg-black"],
+            success: ["bg-success", "bg-opacity-30"],
+            warning: ["bg-warning", "bg-opacity-30"],
+            error: ["bg-error", "bg-opacity-30"],
         },
-        border: {
-            default: ["border", "border-white", "border-opacity-20"],
-            none: [""]
-        },
-        opacity: {
-            default: ["bg-opacity-30"],
-            none: [""],
-        }
     },
     defaultVariants: {
         theme: "dark",
-        border: "default",
-        opacity: "none",
     },
 });
 
@@ -50,7 +40,7 @@ AlertIcon.displayName = "AlertIcon";
 
 
 const AlertTitle = React.forwardRef<HTMLDivElement, AlertTitleProps>(({ title, className, ...props }, ref) => (
-        <div className={cn("text-white", className)} ref={ref} {...props}>
+        <div className={cn("text-white font-semibold", className)} ref={ref} {...props}>
             {title}
         </div>
 ));
@@ -66,15 +56,15 @@ AlertDescription.displayName = "AlertDescription";
 
 
 const AlertContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-    <div className={cn("font-normal px-2 flex flex-col items-start align-center ", className)} ref={ref} {...props}>
+    <div className={cn("px-2 py-1 flex flex-col items-start align-center ", className)} ref={ref} {...props}>
         {props.children}
     </div>
 ));
 AlertContent.displayName = "AlertContent";
 
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(({ theme, border, opacity, className, ...props }, ref) => (
-    <div className={cn(alert({ theme, }), className)} ref={ref} {...props}>
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(({ theme, className, ...props }, ref) => (
+    <div className={cn(alert({ theme }), className)} ref={ref} {...props}>
         {props.children}
     </div>
 ));
