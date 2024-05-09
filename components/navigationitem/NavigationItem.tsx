@@ -1,38 +1,30 @@
 import React, {ReactNode, useState} from "react";
 import {cn} from "../../utils/cn";
 
-interface NavigationIconProps extends React.HTMLAttributes<HTMLDivElement> {
+interface NavigationItemProps extends React.HTMLAttributes<HTMLDivElement> {
+    title: string;
     icon: ReactNode;
 }
 
-interface NavigationItemProps extends React.HTMLAttributes<HTMLDivElement> {
-    title: string;
-}
-
-const NavigationIcon = React.forwardRef<HTMLDivElement, NavigationIconProps>(({ icon, className, ...props }, ref) => (
-    <div className={cn("m-2 ml-4 mr-2", className)} ref={ref} {...props}>
-        {icon}
-    </div>
-));
-NavigationIcon.displayName = "NavigationIcon";
-
-
-const NavigationItem: React.FC<NavigationItemProps> = ({ title, ...props }) => {
+const NavigationItem: React.FC<NavigationItemProps> = ({ title, icon, ...props }) => {
     const [selected, setSelected] = useState(false);
 
     return (
         <div className={selected ?
-            "text-lg rounded-lg font-semibold cursor-pointer flex items-center " +
-            "bg-selected text-white border-2 border-white border-opacity-20" :
-            "group bg-black text-gray text-lg rounded-lg font-semibold cursor-pointer " +
+            "text-md rounded-lg font-medium cursor-pointer flex items-center " +
+            "bg-selected text-white border border-white border-opacity-20" :
+            "bg-black text-gray text-md rounded-lg font-medium cursor-pointer " +
             "flex items-center hover:bg-selected hover:text-white"}
-            style={{width: 240}} onClick={() => setSelected(true)}>
-            {props.children}
-            <p className={"m-2 font-semibold"}>
+            style={{width: 240}} onClick={() => setSelected(true)}
+            {...props}>
+            <div className={cn("m-2 ml-4 mr-2")}>
+                {icon}
+            </div>
+            <p className={"m-2"}>
                 {title}
             </p>
         </div>
     );
 };
 
-export { NavigationItem, NavigationIcon };
+export { NavigationItem };
