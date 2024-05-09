@@ -5,7 +5,7 @@ import { cn } from "../../utils/cn";
 const button = cva("w-full rounded-lg font-semibold text-base py-2 px-4 flex items-center", {
   variants: {
     theme: {
-      dark: ["bg-black", "text-gray", "hover:text-white", "border", "border-white", "border-opacity-20"],
+      dark: ["bg-black", "text-gray", "hover:text-white", "hover:bg-selected", "border", "border-white", "border-opacity-20"],
       primary: ["bg-blue", "text-white", "hover:bg-lightblue"],
       white: ["bg-white", "text-dark", "hover:text-black"],
       outline: ["bg-transparent", "text-white", "hover:bg-white", "hover:text-dark", "border-2", "border-white"],

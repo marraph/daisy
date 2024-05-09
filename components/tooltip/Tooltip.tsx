@@ -2,7 +2,7 @@ import React from "react";
 import {cva, VariantProps} from "class-variance-authority";
 import {cn} from "../../utils/cn";
 
-const tooltip = cva("group w-full rounded-lg font-medium py-2 px-2", {
+const tooltip = cva("group rounded-lg font-medium py-2 px-2", {
     variants: {
         theme: {
             dark: ["bg-black", "text-gray"],
@@ -43,12 +43,12 @@ TooltipDescription.displayName = "TooltipHeader";
 
 
 const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(({ theme, className, ...props }, ref) => (
-        <div className={cn(tooltip({ theme }), className)} ref={ref} {...props}>
-            <div className={"group rounded-md font-semibold flex flex-col items-start"}>
+        <div className={cn(tooltip({theme}), className)} ref={ref} {...props}>
+            <div className={"font-semibold flex flex-col items-start"}>
                 {props.children}
             </div>
         </div>
 ));
 Tooltip.displayName = "Tooltip";
 
-export { Tooltip, TooltipTitle, TooltipDescription };
+export {Tooltip, TooltipTitle, TooltipDescription};
