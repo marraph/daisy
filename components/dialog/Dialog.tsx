@@ -1,11 +1,11 @@
 import React from "react";
 import {cn} from "../../utils/cn";
 
-interface DialogTitleProps extends React.AreaHTMLAttributes<HTMLDivElement> {
+interface DialogTitleProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
 }
 
-interface DialogDescriptionProps extends React.AreaHTMLAttributes<HTMLDivElement> {
+interface DialogDescriptionProps extends React.HTMLAttributes<HTMLDivElement> {
     description: string;
 }
 

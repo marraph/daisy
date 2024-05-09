@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "../../utils/cn";
 
-export interface SkeletonElementProps extends React.HTMLAttributes<HTMLDivElement> {
+interface SkeletonElementProps extends React.HTMLAttributes<HTMLDivElement> {
     width: number;
     height: number;
 }

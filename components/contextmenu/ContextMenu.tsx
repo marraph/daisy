@@ -1,15 +1,15 @@
 import React, {ReactNode} from "react";
 import {cn} from "../../utils/cn";
 
-interface ContextMenuItemProps extends React.AreaHTMLAttributes<HTMLDivElement> {
+interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
 }
 
-interface ContextMenuIconProps extends React.AreaHTMLAttributes<HTMLDivElement> {
+interface ContextMenuIconProps extends React.HTMLAttributes<HTMLDivElement> {
     icon: ReactNode;
 }
 
-interface ContextMenuShortcutProps extends React.AreaHTMLAttributes<HTMLDivElement> {
+interface ContextMenuShortcutProps extends React.HTMLAttributes<HTMLDivElement> {
     shortcut: String;
 }
 

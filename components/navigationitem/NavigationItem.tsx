@@ -1,11 +1,11 @@
 import React, {ReactNode, useState} from "react";
 import {cn} from "../../utils/cn";
 
-export interface NavigationIconProps extends React.HTMLAttributes<HTMLDivElement> {
+interface NavigationIconProps extends React.HTMLAttributes<HTMLDivElement> {
     icon: ReactNode;
 }
 
-export interface NavigationItemProps extends React.HTMLAttributes<HTMLDivElement> {
+interface NavigationItemProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
 }
 

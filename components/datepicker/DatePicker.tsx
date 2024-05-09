@@ -4,7 +4,7 @@ import {Button, ButtonIcon} from "../button/Button";
 import {Calendar} from "../calendar/Calendar";
 import {format} from "date-fns";
 
-export interface DatePickerProps extends React.HTMLAttributes<HTMLButtonElement> {
+interface DatePickerProps extends React.HTMLAttributes<HTMLButtonElement> {
     text: string;
     icon: ReactNode;
 }

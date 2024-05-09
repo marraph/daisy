@@ -14,15 +14,15 @@ const tooltip = cva("group w-full rounded-lg font-medium py-2 px-2", {
     },
 });
 
-interface TooltipTitleProps extends React.AreaHTMLAttributes<HTMLDivElement>{
+interface TooltipTitleProps extends React.HTMLAttributes<HTMLDivElement>{
     title: string;
 }
 
-interface TooltipDescriptionProps extends React.AreaHTMLAttributes<HTMLDivElement> {
+interface TooltipDescriptionProps extends React.HTMLAttributes<HTMLDivElement> {
     description: string;
 }
 
-interface TooltipProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof tooltip> {}
+interface TooltipProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof tooltip> {}
 
 
 

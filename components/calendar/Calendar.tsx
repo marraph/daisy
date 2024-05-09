@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { cn } from "../../utils/cn";
 import {DayPicker} from "react-day-picker";
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
 const Calendar: React.FC<CalendarProps> = ({ className, classNames, ...props }) => {
     const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);

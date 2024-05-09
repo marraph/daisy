@@ -6,7 +6,7 @@ import {ChevronRight} from "lucide-react";
 const breadcrump = cva("group w-full rounded-lg font-normal bg-opacity-20 bg-black text-placeholder flex items-center text-sm py-1 px-4 " +
     "border border-white border-opacity-20");
 
-export interface BreadcrumpProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof breadcrump> {
+interface BreadcrumpProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof breadcrump> {
     pastText?: string;
     nowText?: string;
 }

@@ -1,10 +1,7 @@
-import { cva, VariantProps } from "class-variance-authority";
 import React, {useState} from "react";
 import { cn } from "../../utils/cn";
 
-const switchButton = cva("flex items-center rounded-lg font-semibold cursor-pointer text-gray bg-dark p-0.5 border border-white border-opacity-20 text-base");
-
-export interface SwitchButtonProps extends React.AreaHTMLAttributes<HTMLDivElement>, VariantProps<typeof switchButton> {
+interface SwitchButtonProps extends React.HTMLAttributes<HTMLDivElement> {
     firstTitle: string;
     secondTitle: string;
 }
@@ -17,7 +14,7 @@ export const SwitchButton: React.FC<SwitchButtonProps> = ({ firstTitle, secondTi
     };
 
     return (
-        <div className={cn(switchButton({ }), className)} {...props}>
+        <div className={cn("flex items-center rounded-lg font-semibold cursor-pointer text-gray bg-dark p-0.5 border border-white border-opacity-20 text-base", className)} {...props}>
             <div className={selectedValue ?
                 "bg-black text-white mr-1 rounded-lg px-3 py-1.5" :
                 "bg-dark text-gray mr-1 rounded-lg px-3 py-1.5 hover:text-white"}

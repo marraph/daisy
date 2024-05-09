@@ -25,7 +25,7 @@ interface AppointmentDescriptionProps extends React.HTMLAttributes<HTMLDivElemen
     description: string;
 }
 
-export interface AppointmentProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof appointment> {
+interface AppointmentProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof appointment> {
     width: number;
     height: number;
 }
