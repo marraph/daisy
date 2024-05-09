@@ -45,7 +45,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, Varian
 }
 
 const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(({ theme, opacity, border, roundness, text, className, ...props }, ref) => (
-    <div className={cn(badge({ theme, opacity, border, roundness }), className)} ref={ref} {...props}>
+    <div className={cn(badge({theme, opacity, border, roundness}), className)} ref={ref} {...props}>
         <p>{text}</p>
     </div>
 ));
