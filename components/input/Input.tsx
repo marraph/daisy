@@ -2,11 +2,9 @@ import React, {forwardRef} from "react";
 import { cn } from "../../utils/cn";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    label:  string;
-    placeholder?: string;
+    label?:  string;
+    placeholder: string;
 }
-
-
 
 const Input = forwardRef<HTMLInputElement, InputProps>(({ label, placeholder, className, ...props }, ref) => (
     <div className={cn("group flex flex-col", className)}>
