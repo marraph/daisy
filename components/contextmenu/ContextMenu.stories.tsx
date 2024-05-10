@@ -1,5 +1,5 @@
 import React from 'react';
-import {ContextMenu, ContextMenuIcon, ContextMenuItem, ContextMenuSeperator, ContextMenuShortcut} from './ContextMenu';
+import {ContextMenu, ContextMenuIcon, ContextMenuItem, ContextMenuSeperator} from './ContextMenu';
 import {Meta, StoryObj} from "@storybook/react";
 import {Archive} from "lucide-react";
 
@@ -24,9 +24,7 @@ export const Default: Story = {
                     <ContextMenuIcon icon={<Archive size={22}/>} />
                 </ContextMenuItem>
                 <ContextMenuSeperator />
-                <ContextMenuItem title="Item 2">
-                    <ContextMenuShortcut shortcut={"⌘K"} />
-                </ContextMenuItem>
+                <ContextMenuItem title="Item 2" shortcut={"⌘K"} />
                 <ContextMenuItem title="Item 3" />
             </ContextMenu>
         );
