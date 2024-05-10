@@ -28,7 +28,7 @@ ContextMenuIcon.displayName = "ContextMenuIcon";
 
 
 const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(({ title, shortcut, className, ...props }, ref) => (
-    <div className={cn("group cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex justify-between items-center", className)} ref={ref} {...props}>
+    <div className={cn("group cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex justify-normal items-center", className)} ref={ref} {...props}>
         {props.children}
         {title}
         {shortcut &&
