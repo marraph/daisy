@@ -26,7 +26,7 @@ DialogDescription.displayName = "DialogDescription";
 
 
 const Dialog = React.forwardRef<HTMLDialogElement, React.DialogHTMLAttributes<HTMLDialogElement>>(({ className, ...props }, ref) => (
-    <dialog className={cn("group rounded-lg font-semibold p-5 bg-black backdrop backdrop-opacity-20 backdrop-brightness-0" , className)} ref={ref} {...props}>
+    <dialog className={cn("group rounded-lg p-5 bg-black backdrop backdrop-opacity-20 backdrop-brightness-0" , className)} ref={ref} {...props}>
         {props.children}
     </dialog>
 

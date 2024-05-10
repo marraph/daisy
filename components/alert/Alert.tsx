@@ -2,7 +2,7 @@ import {cva, VariantProps} from "class-variance-authority";
 import {cn} from "../../utils/cn";
 import React, {ReactNode} from "react";
 
-const alert = cva("group w-full rounded-lg font-medium py-2 px-2 bg-black text-gray text-base flex flex-row items-start shadow-2xl", {
+const alert = cva("group w-full rounded-lg font-normal py-2 px-2 bg-black text-gray text-base flex flex-row items-start shadow-2xl", {
     variants: {
         theme: {
             dark: ["bg-black"],
@@ -48,7 +48,7 @@ AlertTitle.displayName = "AlertTitle";
 
 
 const AlertDescription = React.forwardRef<HTMLDivElement, AlertDescriptionProps>(({ description, className, ...props }, ref) => (
-    <div className={cn("font-normal float-left", className)} ref={ref} {...props}>
+    <div className={cn("float-left", className)} ref={ref} {...props}>
         {description}
     </div>
 ));

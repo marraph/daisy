@@ -46,7 +46,7 @@ const AppointmentDescription = React.forwardRef<HTMLDivElement, AppointmentDescr
 AppointmentDescription.displayName = "AppointmentDescription";
 
 const Appointment =  React.forwardRef<HTMLDivElement, AppointmentProps>(({ theme, width, height, className, ...props }, ref) => (
-    <div className={cn(appointment({ theme }), className, "bg-opacity-10 rounded-lg")} ref={ref} {...props} style={{width: `${width}px`, height: `${height}px`}}>
+    <div className={cn(appointment({ theme }), className, "bg-opacity-10 rounded-lg font-normal")} ref={ref} {...props} style={{width: `${width}px`, height: `${height}px`}}>
         <div className={cn(appointment({theme}), "h-full w-3 mr-4 rounded-tl-lg rounded-bl-lg")}></div>
         <div className={cn("flex flex-col py-2", className)}>
             {props.children}

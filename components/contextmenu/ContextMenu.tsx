@@ -28,11 +28,13 @@ ContextMenuIcon.displayName = "ContextMenuIcon";
 
 
 const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(({ title, shortcut, className, ...props }, ref) => (
-    <div className={cn("group cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex justify-normal items-center", className)} ref={ref} {...props}>
-        {props.children}
-        {title}
+    <div className={cn("group cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex flex-row justify-between items-center", className)} ref={ref} {...props}>
+        <div className={"flex flex-row items-center space-x-2"}>
+            {props.children}
+            {title}
+        </div>
         {shortcut &&
-        <span className={"hidden group-hover:block text-sm text-gray"}>
+        <span className={"hidden group-hover:block text-sm text-gray "}>
             {shortcut}
         </span>
         }
@@ -42,7 +44,7 @@ ContextMenuItem.displayName = "ContextMenuItem";
 
 
 const ContextMenu = React.forwardRef<HTMLDivElement, React.AreaHTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-    <div className={cn("w-full rounded-lg font-semibold py-2 px-2 bg-black text-gray border border-white border-opacity-20" , className)} ref={ref} {...props}>
+    <div className={cn("w-full rounded-lg font-normal py-2 px-2 bg-black text-gray border border-white border-opacity-20" , className)} ref={ref} {...props}>
         {props.children}
     </div>
 ));

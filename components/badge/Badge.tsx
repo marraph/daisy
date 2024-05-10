@@ -2,7 +2,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
 import { cn } from "../../utils/cn";
 
-const badge = cva("group w-full flex items-center font-medium py-2 px-4", {
+const badge = cva("group w-full flex items-center font-semibold py-2 px-4", {
     variants: {
         theme: {
             dark: ["bg-black", "text-gray"],
