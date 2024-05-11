@@ -14,16 +14,16 @@ export const SwitchButton: React.FC<SwitchButtonProps> = ({ firstTitle, secondTi
     };
 
     return (
-        <div className={cn("flex items-center rounded-lg font-semibold cursor-pointer text-small text-gray bg-dark p-0.5 border border-white border-opacity-20 text-base", className)} {...props}>
+        <div className={cn("flex items-center rounded-lg font-semibold cursor-pointer text-gray bg-dark p-0.5 border border-white border-opacity-20 text-base", className)} {...props}>
             <div className={selectedValue ?
-                "bg-black text-white mr-1 rounded-lg px-2 py-0.5" :
-                "bg-dark text-gray mr-1 rounded-lg px-2 py-0.5 hover:text-white"}
+                "bg-black text-white mr-1 rounded-lg px-3 py-1.5" :
+                "bg-dark text-gray mr-1 rounded-lg px-3 py-1.5 hover:text-white"}
                  onClick={() => handleClick(true)}>
                 {firstTitle}
             </div>
             <div className={selectedValue ?
-                "bg-dark text-gray rounded-lg px-2 py-0.5 hover:text-white" :
-                "bg-black text-white rounded-lg px-2 py-0.5"}
+                "bg-dark text-gray rounded-lg px-3 py-1.5 hover:text-white" :
+                "bg-black text-white rounded-lg px-3 py-1.5"}
                  onClick={() => handleClick(false)}>
                 {secondTitle}
             </div>
