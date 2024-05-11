@@ -1,3 +1,5 @@
+"use client";
+
 import React, {HTMLAttributes, useState} from "react";
 import {cn} from "../../utils/cn";
 
