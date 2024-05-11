@@ -24,6 +24,12 @@ const DialogDescription = React.forwardRef<HTMLDivElement, DialogDescriptionProp
 ));
 DialogDescription.displayName = "DialogDescription";
 
+const DialogContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
+    <div className={cn("text-base text-gray font-normal m-2", className)} ref={ref} {...props}>
+    </div>
+));
+DialogContent.displayName = "DialogContent";
+
 
 const Dialog = React.forwardRef<HTMLDialogElement, React.DialogHTMLAttributes<HTMLDialogElement>>(({ className, ...props }, ref) => (
     <dialog className={cn("group rounded-lg p-5 bg-black backdrop backdrop-opacity-20 backdrop-brightness-0" , className)} ref={ref} {...props}>
@@ -37,4 +43,4 @@ function showDialog(dialog: HTMLDialogElement) {
     dialog.showModal();
 }
 
-export { Dialog, DialogTitle, DialogDescription, showDialog };
+export { Dialog, DialogTitle, DialogDescription, DialogContent, showDialog };
