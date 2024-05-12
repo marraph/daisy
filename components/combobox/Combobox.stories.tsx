@@ -20,7 +20,7 @@ export const Default: Story = {
     render: () => {
         return (
             <Combobox buttonTitle={"Select an option"}>
-                <ComboboxItem title={"Option 1"}>
+                <ComboboxItem title={"Option 1w fwgwgmiwgwgiwg"}>
                     <ComboboxIcon icon={<Aperture size={22}/>} />
                 </ComboboxItem>
                 <ComboboxItem title={"Option 2"} />
