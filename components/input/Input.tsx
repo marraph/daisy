@@ -8,7 +8,7 @@ const input = cva("w-full rounded-lg font-normal text-base py-2 px-4 text-gray f
     variants: {
         border: {
             default: ["bg-black", "border", "border-white", "border-opacity-20", "outline-none", "focus:ring-2", "focus:ring-placeholder"],
-            none: ["focus-visible:ring-0", "border-0", "bg-opacity", "focus-visible:outline-none"],
+            none: ["focus-visible:ring-0", "border-0", "bg-black", "focus-visible:outline-none"],
         },
     },
     defaultVariants: {

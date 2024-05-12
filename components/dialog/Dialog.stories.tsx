@@ -1,6 +1,8 @@
 import React from 'react';
-import {Dialog, DialogTitle, DialogDescription, showDialog} from './Dialog';
+import {Dialog, DialogTitle, DialogDescription, showDialog, DialogContent} from './Dialog';
 import {Meta, StoryObj} from "@storybook/react";
+import { Button } from '../button/Button';
+import { Input } from '../input/Input';
 
 const meta: Meta<typeof Dialog> = {
     title: "Components/Dialog",
@@ -27,9 +29,13 @@ export const Default = () => {
     return (
         <div>
             <button className={"bg-black text-white p-2 text-base rounded-lg border border-white border-opacity-20"} onClick={handleShowDialog}>Dialog</button>
-            <Dialog ref={dialogRef}>
-                <DialogTitle title="Titel bnla bla" />
-                <DialogDescription description="Beswmow iwwni gnowwnm wgm gowgwngnwgw mw om mwogmowg wfw" />
+            <Dialog className={"fixed"} ref={dialogRef}>
+                <DialogContent>
+                    <DialogTitle title="Titel bnla bla" />
+                    <DialogDescription description="Beswmow iwwni gnowwnm wgm gowgwngnwgw mw om mwogmowg wfw" />
+                    <Button text={"Button"}></Button>
+                    <Input placeholder={"placeholder"}></Input>
+                </DialogContent>
             </Dialog>
         </div>
     );
