@@ -13,10 +13,8 @@ const NavigationItem: React.FC<NavigationItemProps> = ({ title, icon, ...props }
 
     return (
         <div className={selected ?
-            "text-sm rounded-lg font-normal cursor-pointer flex items-center " +
-            "bg-selected text-white border border-white border-opacity-20" :
-            "bg-black text-gray text-md rounded-lg font-medium cursor-pointer " +
-            "flex items-center hover:bg-selected hover:text-white"}
+            "text-sm rounded-lg font-normal cursor-pointer flex items-center bg-selected text-white border border-white border-opacity-20" :
+            "bg-black text-gray text-sm rounded-lg font-normal cursor-pointer flex items-center hover:bg-selected hover:text-white border-0"}
             style={{width: 240}} onClick={() => setSelected(true)}
             {...props}>
             <div className={cn("m-2 ml-4 mr-2")}>
