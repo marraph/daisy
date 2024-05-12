@@ -16,7 +16,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ label, placeholder, cl
             </p>
         )}
         <div className={cn("relative", className)}>
-            <input placeholder={placeholder}
+            <input placeholder={placeholder} spellCheck={false}
                    className={cn("w-full bg-black rounded-lg font-normal border border-white border-opacity-20 outline-none text-base py-2 px-4 " +
                        "text-gray focus:text-white focus:ring-2 focus:ring-placeholder placeholder-placeholder", className)}
                    ref={ref} {...props}>
