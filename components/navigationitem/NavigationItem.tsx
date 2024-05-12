@@ -13,7 +13,7 @@ const NavigationItem: React.FC<NavigationItemProps> = ({ title, icon, ...props }
 
     return (
         <div className={selected ?
-            "text-md rounded-lg font-medium cursor-pointer flex items-center " +
+            "text-sm rounded-lg font-normal cursor-pointer flex items-center " +
             "bg-selected text-white border border-white border-opacity-20" :
             "bg-black text-gray text-md rounded-lg font-medium cursor-pointer " +
             "flex items-center hover:bg-selected hover:text-white"}
