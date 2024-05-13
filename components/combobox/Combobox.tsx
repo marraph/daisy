@@ -49,7 +49,7 @@ const Combobox: React.FC<ComboboxProps> = ({buttonTitle, className, ...props}) =
 
     return (
         <div className={cn("relative", className)}>
-            <div className={cn("group/combo text-gray whitespace-nowrap rounded-lg font-normal text-sm py-2 px-4 flex items-center bg-black hover:text-white border border-white border-opacity-20 overflow-hidden",
+            <div className={cn("group/combo cursor-pointer text-gray whitespace-nowrap rounded-lg font-normal text-sm py-2 px-4 flex items-center bg-black hover:text-white border border-white border-opacity-20 overflow-hidden",
                 className)} {...props} onClick={handleButtonClick}>
                 <span>{!selectedValue ? buttonTitle : selectedValue}</span>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
