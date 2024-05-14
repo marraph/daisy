@@ -56,7 +56,7 @@ const Combobox: React.FC<ComboboxProps> = ({buttonTitle, className, ...props}) =
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
             </div>
             {isOpen && (
-                <div className={cn("absolute top-full w-min flex flex-col rounded-lg py-2 px-2 bg-black border border-white border-opacity-20 text-gray whitespace-nowrap", className)}>
+                <div className={cn("absolute top-full w-min flex flex-col text-gray whitespace-nowrap", className)}>
                     {React.Children.map(props.children, (child) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
                             return React.cloneElement(child, {
