@@ -1,9 +1,9 @@
 "use client";
 
-import React, {ReactNode, useState} from "react";
+import React, {MouseEventHandler, ReactNode, useEffect, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
 import {ChevronsUpDown} from "lucide-react";
-import {cva} from "class-variance-authority";
+import {useOutsideClick} from "../../utils/clickOutside";
 
 interface ComboboxItemProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
@@ -39,9 +39,9 @@ const Combobox: React.FC<ComboboxProps> = ({buttonTitle, className, ...props}) =
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(null);
 
-    const handleButtonClick = () => {
-        setIsOpen(!isOpen);
-    };
+    const menuRef = useOutsideClick(() => {
+        setIsOpen(false);
+    });
 
     const handleItemClick = (item: string) => {
         setSelectedValue(item);
@@ -49,9 +49,9 @@ const Combobox: React.FC<ComboboxProps> = ({buttonTitle, className, ...props}) =
     };
 
     return (
-        <div className={cn("relative", className)}>
+        <div className={cn("relative", className)} ref={menuRef}>
             <div className={cn("group/combo cursor-pointer text-gray whitespace-nowrap rounded-lg font-normal text-sm py-2 px-4 flex items-center bg-black hover:text-white border border-white border-opacity-20 overflow-hidden",
-                className)} {...props} onClick={handleButtonClick}>
+                className)} {...props} onClick={() => {setIsOpen(!isOpen)}}>
                 <span>{!selectedValue ? buttonTitle : selectedValue}</span>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
             </div>
