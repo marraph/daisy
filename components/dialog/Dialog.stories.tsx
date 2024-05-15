@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dialog, DialogTitle, DialogDescription, showDialog, DialogContent, DialogSeperator} from './Dialog';
+import {Dialog, DialogSeperator} from './Dialog';
 import {Meta, StoryObj} from "@storybook/react";
 import { Button } from '../button/Button';
 import { Input } from '../input/Input';
@@ -20,30 +20,16 @@ type Story = StoryObj<typeof Dialog>;
 export const Default = () => {
     let dialogRef = React.useRef<HTMLDialogElement>(null);
 
-    const handleShowDialog = () => {
-        if (dialogRef.current) {
-            showDialog(dialogRef.current);
-        }
-    };
-
     return (
-        <div>
-            <button className={"bg-black text-white p-2 text-base rounded-lg border border-white border-opacity-20"} onClick={handleShowDialog}>Dialog</button>
+        <>
+            <button className={"bg-black text-white p-2 text-base rounded-lg border border-white border-opacity-20"} onClick={dialogRef.current?.showModal}>Dialog</button>
             <Dialog className={"fixed"} ref={dialogRef}>
-                <DialogContent>
-                    <DialogTitle title="Titel bnla bla" />
-                    <DialogDescription description="Beswmow iwwni gnowwnm wgm gowgwngnwgw mw om mwogmowg wfw" />
-                    <Button text={"Button"}></Button>
-                    <Input placeholder={"placeholder"}></Input>
-                </DialogContent>
+                <Button text={"Button"}></Button>
+                <Input placeholder={"placeholder"}></Input>
                 <DialogSeperator />
-                <DialogContent>
-                    <DialogTitle title="Titel bnla bla" />
-                    <DialogDescription description="Beswmow iwwni gnowwnm wgm gowgwngnwgw mw om mwogmowg wfw" />
-                    <Button text={"Button"}></Button>
-                    <Input placeholder={"placeholder"}></Input>
-                </DialogContent>
+                <Button text={"Button"}></Button>
+                <Input placeholder={"placeholder"}></Input>
             </Dialog>
-        </div>
+        </>
     );
 };
