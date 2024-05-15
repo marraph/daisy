@@ -94,16 +94,14 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
             </div>
             {isOpen && (
                 <div className={cn("absolute top-full w-min flex flex-col text-gray whitespace-nowrap", className)}>
-                    <div className={cn("bg-black rounded-lg border border-white border-opacity-20 mt-1 p-2", className)}>
-                        {React.Children.map(props.children, (child) => {
-                            if (React.isValidElement<ComboboxItemProps>(child)) {
-                                return React.cloneElement(child, {
-                                    onClick: () => handleItemClick(child.props.title),
-                                });
-                            }
-                            return child;
-                        })}
-                    </div>
+                    {React.Children.map(props.children, (child) => {
+                        if (React.isValidElement<ComboboxItemProps>(child)) {
+                            return React.cloneElement(child, {
+                                onClick: () => handleItemClick(child.props.title),
+                            });
+                        }
+                        return child;
+                    })}
                 </div>
             )}
         </div>
