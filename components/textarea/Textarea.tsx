@@ -3,7 +3,7 @@
 import React from "react";
 import {cn} from "../../utils/cn";
 
-interface TextareaProps extends React.HTMLAttributes<HTMLTextAreaElement> {
+interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     placeholder: string;
 }
 

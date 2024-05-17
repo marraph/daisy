@@ -95,6 +95,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
             </div>
             {isOpen && (
                 <div className={cn("absolute top-full w-min flex flex-col text-gray whitespace-nowrap", className)}>
+                    {props.children}
                     {React.Children.map(props.children, (child) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
                             return React.cloneElement(child, {

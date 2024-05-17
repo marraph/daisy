@@ -1,6 +1,6 @@
 {
   "name": "@marraph/daisy",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "Daisy is a component library for the marraph organisation ",
   "scripts": {
     "dev": "next dev",
