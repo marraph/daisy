@@ -46,6 +46,7 @@ const comboboxItem = cva("bg-black text-gray text-sm cursor-pointer rounded-lg h
 interface ComboboxItemProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof comboboxItem> {
     title: string;
     isSelected?: boolean;
+    onClick?: () => void;
 }
 
 interface ComboboxIconProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -64,8 +65,8 @@ const ComboboxIcon = React.forwardRef<HTMLDivElement, ComboboxIconProps>(({ icon
 ComboboxIcon.displayName = "ComboboxIcon";
 
 
-const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ theme, size, title, isSelected, className, ...props }, ref) => (
-    <div className={cn(comboboxItem({theme, size}), className, isSelected ? "bg-white" : "bg-black")} ref={ref} {...props}>
+const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ theme, size, title, isSelected, onClick, className, ...props }, ref) => (
+    <div className={cn(comboboxItem({theme, size}), className, isSelected ? "bg-white" : "bg-black")} ref={ref} {...props} onClick={onClick}>
         {props.children}
         <span className={cn("ml-1", className)}>{title}</span>
     </div>
@@ -88,16 +89,19 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
 
     return (
         <div className={cn("relative", className)} ref={menuRef}>
-            <div className={cn(combobox({theme, size}), className)} onClick={() => {setIsOpen(!isOpen)}}>
+            <div className={cn(combobox({theme, size}), className)} {...props} onClick={() => {setIsOpen(!isOpen)}}>
                 <span>{!selectedValue ? buttonTitle : selectedValue}</span>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
             </div>
             {isOpen && (
-                <div className={cn("absolute top-full w-min flex flex-col text-gray whitespace-nowrap", className)} {...props}>
+                <div className={cn("absolute top-full w-min flex flex-col text-gray whitespace-nowrap", className)}>
                     {React.Children.map(props.children, (child) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
                             return React.cloneElement(child, {
-                                onClick: () => handleItemClick(child.props.title),
+                                onClick: () => {
+                                    child.props.onClick && child.props.onClick();
+                                    handleItemClick(child.props.title);
+                                },
                             });
                         }
                         return child;
