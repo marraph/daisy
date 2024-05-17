@@ -88,12 +88,12 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
 
     return (
         <div className={cn("relative", className)} ref={menuRef}>
-            <div className={cn(combobox({theme, size}), className)} {...props} onClick={() => {setIsOpen(!isOpen)}}>
+            <div className={cn(combobox({theme, size}), className)} onClick={() => {setIsOpen(!isOpen)}}>
                 <span>{!selectedValue ? buttonTitle : selectedValue}</span>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
             </div>
             {isOpen && (
-                <div className={cn("absolute top-full w-min flex flex-col text-gray whitespace-nowrap", className)}>
+                <div className={cn("absolute top-full w-min flex flex-col text-gray whitespace-nowrap", className)} {...props}>
                     {React.Children.map(props.children, (child) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
                             return React.cloneElement(child, {
