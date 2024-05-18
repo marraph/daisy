@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, ButtonIcon} from './Button';
+import {Button} from './Button';
 import {Meta, StoryObj} from "@storybook/react";
 import {Wallet} from "lucide-react";
 
@@ -20,7 +20,7 @@ export const Default: Story = {
   render: () => {
     return (
         <Button theme={"dark"} text={"Button"}>
-          <ButtonIcon icon={<Wallet size={20}/>} />
+          <Wallet size={20} className={"mr-3"}/>
         </Button>
     );
   },
