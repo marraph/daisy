@@ -17,6 +17,6 @@ type Story = StoryObj<typeof Breadcrump>
 
 export const Default: Story = {
     render: () => {
-        return <Breadcrump pastText={"Home"} nowText={"About"}/>
+        return <Breadcrump pastText={"Home"} nowText={"About"} className={"h-8"}/>
     },
 };
