@@ -4,7 +4,7 @@ import React, {forwardRef} from "react";
 import { cn } from "../../utils/cn";
 import {cva, VariantProps} from "class-variance-authority";
 
-const input = cva("w-full rounded-lg font-normal text-base py-2 px-4 text-gray focus:text-white placeholder-placeholder", {
+const input = cva("w-max rounded-lg font-normal text-base py-2 px-4 text-gray focus:text-white placeholder-placeholder", {
     variants: {
         border: {
             default: ["bg-black", "border", "border-white", "border-opacity-20", "outline-none", "focus:ring-2", "focus:ring-placeholder"],
@@ -22,7 +22,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, Varian
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(({ border, label, placeholder, className, ...props }, ref) => (
-    <div className={cn("group flex flex-col", className)}>
+    <div className={cn("flex flex-col", className)}>
         {label && (
             <p className={cn("text-white text-base font-normal m-1", className)}>
                 {label}
