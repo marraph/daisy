@@ -20,8 +20,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   text: string;
 }
 
-const Button = React.forwardRef<HTMLDivElement, ButtonProps>(({ theme, text, className, ...props }) => (
-    <button className={cn(button({ theme }), className)} {...props}>
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ theme, text, className, ...props }, ref) => (
+    <button className={cn(button({ theme }), className)} ref={ref} {...props}>
       {props.children}
       {text}
     </button>
