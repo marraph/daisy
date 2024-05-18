@@ -4,7 +4,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
 import {cn} from "../../utils/cn";
 
-const appointment = cva("relative flex w-60 h-20 text-white ", {
+const appointment = cva("relative flex w-full h-20 text-white ", {
     variants: {
         theme: {
             blue: ["bg-calBlue", "text-calBlue"],

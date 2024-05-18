@@ -4,7 +4,8 @@ import {cva, VariantProps} from "class-variance-authority";
 import {cn} from "../../utils/cn";
 import React, {ReactNode} from "react";
 
-const alert = cva("group w-full rounded-lg font-normal py-2 px-2 bg-black text-gray text-base flex flex-row items-start shadow-2xl", {
+const alert = cva("w-max rounded-lg font-normal p-2 bg-black " +
+    "text-gray text-base flex flex-row items-start shadow-2xl", {
     variants: {
         theme: {
             dark: ["bg-black"],

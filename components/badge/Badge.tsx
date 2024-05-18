@@ -4,7 +4,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
 import { cn } from "../../utils/cn";
 
-const badge = cva("group w-full flex items-center font-semibold py-2 px-4", {
+const badge = cva("w-max flex items-center font-semibold space-x-2", {
     variants: {
         theme: {
             dark: ["bg-black", "text-gray"],
@@ -14,31 +14,20 @@ const badge = cva("group w-full flex items-center font-semibold py-2 px-4", {
             error: ["bg-error", "text-error"],
             ghost: ["bg-opacity-100", "text-white", "text-opacity-20"],
         },
-        opacity: {
-            light: "bg-opacity-20",
-            medium: "bg-opacity-40",
-            base: "bg-opacity-60",
-            hard: "bg-opacity-80",
-            full: "bg-opacity-100",
-        },
         border: {
             white: ["border-2", "border-white", "border-opacity-20"],
             none: [""],
         },
-        roundness: {
-            full: "rounded-full",
-            ultra: "rounded-2xl",
-            super: "rounded-xl",
-            large: "rounded-lg",
-            medium: "rounded-md",
-            small: "rounded-sm",
-        }
+        size: {
+            small: ["text-xs", "px-1", "py-1"],
+            medium: ["text-sm", "px-2", "py-1"],
+            large: ["text-base", "px-3", "py-2"],
+        },
     },
     defaultVariants: {
         theme: "dark",
-        opacity: "medium",
         border: "none",
-        roundness: "medium",
+        size: "medium",
     },
 });
 
@@ -46,8 +35,9 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, Varian
     text: string;
 }
 
-const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(({ theme, opacity, border, roundness, text, className, ...props }, ref) => (
-    <div className={cn(badge({theme, opacity, border, roundness}), className)} ref={ref} {...props}>
+const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(({ theme, border, size, text, className, ...props }, ref) => (
+    <div className={cn(badge({theme, border, size}), className)} ref={ref} {...props}>
+        {props.children}
         <p>{text}</p>
     </div>
 ));

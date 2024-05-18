@@ -17,7 +17,7 @@ const avatar = cva("relative inline-block object-cover object-center", {
     },
 });
 
-export interface AvatarProps extends React.HTMLAttributes<HTMLImageElement>, VariantProps<typeof avatar> {
+export interface AvatarProps extends React.ImgHTMLAttributes<HTMLImageElement>, VariantProps<typeof avatar> {
     img_url: string;
     height: number;
     width: number;
