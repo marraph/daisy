@@ -13,10 +13,7 @@ interface ContextMenuIconProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const ContextMenuSeperator = React.forwardRef<HTMLHRElement, React.HTMLAttributes<HTMLHRElement>>(({ className, ...props }, ref) => (
-    <div className={cn("rounded-full w-full")} {...props}>
-        <hr className={cn("flex-grow text-white text-opacity-20 my-1 rounded-lg")} ref={ref} {...props}>
-        </hr>
-    </div>
+    <hr className={cn("flex-grow text-white text-opacity-20")} ref={ref} {...props} />
 ));
 ContextMenuSeperator.displayName = "ContextMenuSeperator";
 
@@ -46,7 +43,7 @@ ContextMenuItem.displayName = "ContextMenuItem";
 
 
 const ContextMenu = React.forwardRef<HTMLDivElement, React.AreaHTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-    <div className={cn("w-full rounded-lg font-normal py-2 px-2 bg-black text-gray border border-white border-opacity-20" , className)} ref={ref} {...props}>
+    <div className={cn("w-full rounded-lg font-normal py-2 bg-black text-gray border border-white border-opacity-20" , className)} ref={ref} {...props}>
         {props.children}
     </div>
 ));

@@ -10,9 +10,15 @@ const button = cva("w-max rounded-lg font-semibold text-sm py-2 px-4 flex items-
       white: ["bg-white", "text-dark", "hover:text-black", "hover:bg-selectwhite"],
       outline: ["bg-transparent", "text-white", "hover:bg-white", "hover:text-dark", "border-2", "border-white"],
     },
+    size: {
+      small: ["text-xs", "py-1", "px-2"],
+      medium: ["text-sm", "py-2", "px-3"],
+      large: ["text-base", "py-3", "px-4"],
+    },
   },
   defaultVariants: {
     theme: "dark",
+    size: "medium",
   },
 });
 
