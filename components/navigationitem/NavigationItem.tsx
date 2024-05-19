@@ -14,8 +14,8 @@ const NavigationItem: React.FC<NavigationItemProps> = ({ title, icon, selected, 
         <div className={selected ?
             "text-sm rounded-lg font-normal cursor-pointer flex items-center " +
             "bg-selected text-white border border-white border-opacity-20" :
-            "bg-black text-gray text-md rounded-lg font-medium cursor-pointer " +
-            "flex items-center hover:bg-selected hover:text-white"}
+            "bg-black text-gray text-sm rounded-lg font-normal cursor-pointer " +
+            "flex items-center hover:bg-selected hover:text-white border border-opacity-0"}
             style={{width: 240}}
             {...props}>
             <div className={cn("m-2 ml-4 mr-2")}>
