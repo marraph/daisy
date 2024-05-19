@@ -3,17 +3,57 @@
 import React, {ReactNode, useState} from "react";
 import { cn } from "../../utils/cn";
 import {ChevronsUpDown} from "lucide-react";
+import {useOutsideClick} from "../../utils/clickOutside";
+import {cva, VariantProps} from "class-variance-authority";
 
-interface ComboboxItemProps extends React.HTMLAttributes<HTMLDivElement> {
+const combobox = cva("group/combo cursor-pointer text-gray whitespace-nowrap rounded-lg font-normal text-sm flex items-center " +
+    "bg-black hover:text-white border border-white border-opacity-20 overflow-hidden", {
+    variants: {
+        theme: {
+            dark: ["bg-black"],
+            light: ["bg-dark"],
+        },
+        size: {
+            small: ["text-xs", "py-1", "px-2"],
+            medium: ["text-sm", "py-2", "px-4"],
+            large: ["text-base", "py-3", "px-6"],
+        },
+    },
+    defaultVariants: {
+        theme: "dark",
+        size: "medium",
+    },
+});
+
+const comboboxItem = cva("bg-black text-gray text-sm cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex items-center", {
+    variants: {
+        theme: {
+            dark: ["bg-black"],
+            light: ["bg-dark"],
+        },
+        size: {
+            small: ["text-xs", "p-1"],
+            medium: ["text-sm", "p-2"],
+            large: ["text-base", "p-3"],
+        },
+    },
+    defaultVariants: {
+        theme: "dark",
+        size: "medium",
+    },
+});
+
+interface ComboboxItemProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof comboboxItem> {
     title: string;
     isSelected?: boolean;
+    onClick?: () => void;
 }
 
 interface ComboboxIconProps extends React.HTMLAttributes<HTMLDivElement> {
     icon: ReactNode;
 }
 
-interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement> {
+interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement>, VariantProps<typeof combobox> {
     buttonTitle: string;
 }
 
@@ -25,8 +65,8 @@ const ComboboxIcon = React.forwardRef<HTMLDivElement, ComboboxIconProps>(({ icon
 ComboboxIcon.displayName = "ComboboxIcon";
 
 
-const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ title, isSelected, className, ...props }, ref) => (
-    <div className={cn("bg-black text-gray cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex items-center", className, isSelected ? "bg-white" : "bg-black")} ref={ref} {...props}>
+const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ theme, size, title, isSelected, onClick, className, ...props }, ref) => (
+    <div className={cn(comboboxItem({theme, size}), className, isSelected ? "bg-white" : "bg-black")} ref={ref} {...props} onClick={onClick}>
         {props.children}
         <span className={cn("ml-1", className)}>{title}</span>
     </div>
@@ -34,13 +74,13 @@ const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ titl
 ComboboxItem.displayName = "ComboboxItem";
 
 
-const Combobox: React.FC<ComboboxProps> = ({buttonTitle, className, ...props}) => {
+const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, buttonTitle, className, ...props}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(null);
 
-    const handleButtonClick = () => {
-        setIsOpen(!isOpen);
-    };
+    const menuRef = useOutsideClick(() => {
+        setIsOpen(false);
+    });
 
     const handleItemClick = (item: string) => {
         setSelectedValue(item);
@@ -48,18 +88,20 @@ const Combobox: React.FC<ComboboxProps> = ({buttonTitle, className, ...props}) =
     };
 
     return (
-        <div className={cn("relative inline-block", className)}>
-            <div className={cn("group text-gray whitespace-nowrap w-full rounded-lg font-normal text-base py-2 px-4 flex items-center bg-black hover:text-white border border-white border-opacity-20",
-                className)} {...props} onClick={handleButtonClick}>
+        <div className={cn("relative", className)} ref={menuRef}>
+            <div className={cn(combobox({theme, size}), className)} {...props} onClick={() => {setIsOpen(!isOpen)}}>
                 <span>{!selectedValue ? buttonTitle : selectedValue}</span>
-                <ChevronsUpDown className={cn("group-hover:text-white ml-6 text-gray", className)} size={15}/>
+                <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
             </div>
             {isOpen && (
-                <div className={cn("absolute top-full flex flex-col w-full rounded-lg py-2 px-2 bg-black text-gray whitespace-nowrap", className)}>
+                <div className={cn("absolute top-full w-min flex flex-col text-gray whitespace-nowrap", className)}>
                     {React.Children.map(props.children, (child) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
                             return React.cloneElement(child, {
-                                onClick: () => handleItemClick(child.props.title),
+                                onClick: () => {
+                                    child.props.onClick && child.props.onClick();
+                                    handleItemClick(child.props.title);
+                                },
                             });
                         }
                         return child;
@@ -68,6 +110,7 @@ const Combobox: React.FC<ComboboxProps> = ({buttonTitle, className, ...props}) =
             )}
         </div>
     );
-};
+});
+Combobox.displayName = "Combobox";
 
 export { Combobox, ComboboxItem, ComboboxIcon };
