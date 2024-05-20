@@ -19,16 +19,15 @@ const avatar = cva("relative inline-block object-cover object-center", {
 
 export interface AvatarProps extends React.ImgHTMLAttributes<HTMLImageElement>, VariantProps<typeof avatar> {
     img_url: string;
-    height: number;
-    width: number;
+    size: number;
 }
 
-const Avatar =  React.forwardRef<HTMLImageElement, AvatarProps>(({ shape, img_url, width, height, className, ...props }, ref) => (
+const Avatar =  React.forwardRef<HTMLImageElement, AvatarProps>(({ shape, img_url, size, className, ...props }, ref) => (
         <Image className={cn(avatar({ shape }), className)} ref={ref}  {...props}
             src={img_url}
             alt={"Avatar"}
-            width={width}
-            height={height}
+            width={size}
+            height={size}
         />
 ));
 Avatar.displayName = "Avatar";
