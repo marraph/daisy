@@ -1,5 +1,6 @@
 import { SwitchButton } from './SwitchButton';
 import {Meta, StoryObj} from "@storybook/react";
+import React from "react";
 
 const meta: Meta<typeof SwitchButton> = {
     title: "Components/SwitchButton",
@@ -12,11 +13,12 @@ const meta: Meta<typeof SwitchButton> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof SwitchButton>
 
 export const Default: Story = {
-    args: {
-        firstTitle: "ButtonOne",
-        secondTitle:"ButtonTwo",
+    render: () => {
+        return (
+            <SwitchButton firstTitle={"Past"} secondTitle={"Now"} onClick={() => console.log("click")}/>
+        );
     },
 };

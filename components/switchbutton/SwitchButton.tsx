@@ -12,15 +12,15 @@ export const SwitchButton: React.FC<SwitchButtonProps> = ({ firstTitle, secondTi
     const [selectedValue, setSelectedValue] = useState(true);
 
     return (
-        <div className={cn("flex items-center rounded-lg font-semibold cursor-pointer text-gray bg-dark p-0.5 border border-white border-opacity-20 text-sm", className)}
+        <div className={cn("flex items-center rounded-lg font-normal cursor-pointer text-gray bg-dark p-0.5 border border-white border-opacity-20 text-sm", className)}
              {...props}>
-            <div className={selectedValue ? "bg-black text-white mr-1 rounded-lg px-2 py-0.5" : "bg-dark text-gray mr-1 rounded-lg px-2 py-0.5 hover:text-white"}
-                 onClick={() => setSelectedValue(!selectedValue)}>
-                 {firstTitle}
-            </div>
-            <div className={selectedValue ? "bg-dark text-gray rounded-lg px-2 py-0.5 hover:text-white" : "bg-black text-white rounded-lg px-2 py-0.5"}
-                 onClick={() => setSelectedValue(!selectedValue)}>
-                 {secondTitle}
+            <div onClick={() => setSelectedValue(!selectedValue)}>
+                <div className={selectedValue ? "bg-black text-white mr-1 rounded-lg px-2 py-0.5" : "bg-dark text-gray mr-1 rounded-lg px-2 py-0.5 hover:text-white"}>
+                    {firstTitle}
+                </div>
+                <div className={selectedValue ? "bg-dark text-gray rounded-lg px-2 py-0.5 hover:text-white" : "bg-black text-white rounded-lg px-2 py-0.5"}>
+                    {secondTitle}
+                </div>
             </div>
         </div>
     );
