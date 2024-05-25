@@ -15,12 +15,12 @@ export default meta;
 
 type Story = StoryObj<typeof Combobox>
 
-const items = ["Option 1", "Option 2", "Option 3"];
+const items = ["Option 1", "Option 2 rinrihnire", "Option 3"];
 
 export const Default: Story = {
     render: () => {
         return (
-            <Combobox  size={"medium"} buttonTitle={"Select an option"}>
+            <Combobox  size={"medium"} buttonTitle={"Select"}>
                 {items.map((item, index) => (
                     <ComboboxItem key={index} title={item} size={"medium"}/>
                 ))}

@@ -94,7 +94,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
             </div>
             {isOpen && (
-                <div className={cn("absolute top-full w-full bg-black border border-white border-opacity-20 flex flex-col text-gray whitespace-nowrap rounded-lg p-1 space-y-1", className)}>
+                <div className={cn("absolute top-full min-w-full bg-black border border-white border-opacity-20 flex flex-col text-gray whitespace-nowrap rounded-lg p-1 space-y-1", className)}>
                     {React.Children.map(props.children, (child) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
                             return React.cloneElement(child, {
