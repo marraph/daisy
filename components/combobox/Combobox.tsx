@@ -7,7 +7,7 @@ import {useOutsideClick} from "../../utils/clickOutside";
 import {cva, VariantProps} from "class-variance-authority";
 
 const combobox = cva("group/combo cursor-pointer text-gray whitespace-nowrap rounded-lg font-normal text-sm flex items-center " +
-    "bg-black hover:text-white border border-white border-opacity-20 overflow-hidden", {
+    "hover:text-white border border-white border-opacity-20 overflow-hidden", {
     variants: {
         theme: {
             dark: ["bg-black"],
@@ -25,7 +25,7 @@ const combobox = cva("group/combo cursor-pointer text-gray whitespace-nowrap rou
     },
 });
 
-const comboboxItem = cva("bg-black text-gray text-sm cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex items-center", {
+const comboboxItem = cva("text-gray text-sm cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex items-center", {
     variants: {
         theme: {
             dark: ["bg-black"],
@@ -66,7 +66,7 @@ ComboboxIcon.displayName = "ComboboxIcon";
 
 
 const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ theme, size, title, isSelected, onClick, className, ...props }, ref) => (
-    <div className={cn(comboboxItem({theme, size}), className, isSelected ? "bg-white" : "bg-black")} ref={ref} {...props} onClick={onClick}>
+    <div className={cn(comboboxItem({theme, size}), className, isSelected ? "bg-dark text-white" : "bg-black")} ref={ref} {...props} onClick={onClick}>
         {props.children}
         <span className={cn("ml-1", className)}>{title}</span>
     </div>
@@ -94,7 +94,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
             </div>
             {isOpen && (
-                <div className={cn("absolute top-full w-min flex flex-col text-gray whitespace-nowrap", className)}>
+                <div className={cn("absolute top-full w-full bg-black border border-white border-opacity-20 flex flex-col text-gray whitespace-nowrap rounded-lg p-1 space-y-1", className)}>
                     {React.Children.map(props.children, (child) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
                             return React.cloneElement(child, {
@@ -102,6 +102,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
                                     child.props.onClick && child.props.onClick();
                                     handleItemClick(child.props.title);
                                 },
+                                isSelected: selectedValue === child.props.title,
                             });
                         }
                         return child;

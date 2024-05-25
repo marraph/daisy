@@ -4,6 +4,7 @@ const config = {
     "../components/**/*.mdx",
     "../components/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
+
   addons: [
     "@storybook/addon-onboarding",
     "@storybook/addon-links",
@@ -12,11 +13,18 @@ const config = {
     "@storybook/addon-interactions",
     "@storybook/addon-mdx-gfm"
   ],
+
   framework: {
     name: "@storybook/nextjs",
     options: {},
   },
+
   docs: {},
+
   staticDirs: ["..\\public"],
+
+  typescript: {
+    reactDocgen: "react-docgen-typescript"
+  }
 };
 export default config;
