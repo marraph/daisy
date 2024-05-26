@@ -2,16 +2,17 @@
 
 import React, {ReactNode, useState} from "react";
 import { cn } from "../../utils/cn";
-import {Button, ButtonIcon} from "../button/Button";
+import {Button} from "../button/Button";
 import {Calendar} from "../calendar/Calendar";
 import {format} from "date-fns";
+import {CalendarDays} from "lucide-react";
 
 interface DatePickerProps extends React.HTMLAttributes<HTMLButtonElement> {
     text: string;
-    icon: ReactNode;
+    iconSize: number;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ text, icon, className, ...props }) => {
+const DatePicker: React.FC<DatePickerProps> = ({ text, iconSize, className, ...props }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(undefined);
 
@@ -27,7 +28,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ text, icon, className, ...props
     return (
         <div className={cn("relative inline-block", className)}>
             <Button text={!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))} onClick={handleButtonClick}>
-                <ButtonIcon icon={icon} />
+                <CalendarDays size={iconSize}/>
             </Button>
             {isOpen && (
                 <div className={cn("absolute top-full left-0", className)}>
