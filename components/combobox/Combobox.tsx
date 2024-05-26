@@ -1,8 +1,8 @@
 "use client";
 
-import React, {ReactNode, useState} from "react";
+import React, {ReactNode, useImperativeHandle, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
-import {ChevronsUpDown} from "lucide-react";
+import {Check, ChevronsUpDown} from "lucide-react";
 import {useOutsideClick} from "../../utils/clickOutside";
 import {cva, VariantProps} from "class-variance-authority";
 
@@ -57,24 +57,19 @@ interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement>, Vari
     buttonTitle: string;
 }
 
-const ComboboxIcon = React.forwardRef<HTMLDivElement, ComboboxIconProps>(({ icon, className, ...props }, ref) => (
-    <div className={cn("mr-2", className)} ref={ref} {...props}>
-        {icon}
-    </div>
-));
-ComboboxIcon.displayName = "ComboboxIcon";
-
 
 const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ theme, size, title, isSelected, onClick, className, ...props }, ref) => (
     <div className={cn(comboboxItem({theme, size}), className, isSelected ? "bg-dark text-white" : "bg-black")} ref={ref} {...props} onClick={onClick}>
-        {props.children}
-        <span className={cn("ml-1", className)}>{title}</span>
+        {isSelected && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
+        <span>{title}</span>
     </div>
 ));
 ComboboxItem.displayName = "ComboboxItem";
 
+export type ComboboxRef = HTMLDivElement & { reset: () => void };
 
-const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, buttonTitle, className, ...props}) => {
+
+const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, buttonTitle, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(null);
 
@@ -86,6 +81,13 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
         setSelectedValue(item);
         setIsOpen(false);
     };
+
+    const comboRef = useRef<HTMLDivElement>(null);
+
+    useImperativeHandle(ref, () => ({
+        reset: () => setSelectedValue(null),
+        ...comboRef.current,
+    }));
 
     return (
         <div className={cn("relative", className)} ref={menuRef}>
@@ -114,4 +116,4 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
 });
 Combobox.displayName = "Combobox";
 
-export { Combobox, ComboboxItem, ComboboxIcon };
+export { Combobox, ComboboxItem };
