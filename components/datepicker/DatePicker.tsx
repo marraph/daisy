@@ -7,7 +7,7 @@ import {Calendar} from "../calendar/Calendar";
 import {format} from "date-fns";
 import {CalendarDays} from "lucide-react";
 
-interface DatePickerProps extends React.HTMLAttributes<HTMLButtonElement> {
+interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
     text: string;
     iconSize: number;
 }
@@ -26,9 +26,9 @@ const DatePicker: React.FC<DatePickerProps> = ({ text, iconSize, className, ...p
     };
 
     return (
-        <div className={cn("relative inline-block", className)}>
+        <div className={cn("relative inline-block", className)} {...props}>
             <Button text={!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))} onClick={handleButtonClick}>
-                <CalendarDays size={iconSize}/>
+                <CalendarDays size={iconSize} className={"mr-1"}/>
             </Button>
             {isOpen && (
                 <div className={cn("absolute top-full left-0", className)}>
