@@ -14,7 +14,7 @@ export const SwitchButton: React.FC<SwitchButtonProps> = ({ firstTitle, secondTi
     return (
         <div className={cn("flex items-center rounded-lg font-normal cursor-pointer text-gray bg-dark border border-white border-opacity-20 text-sm", className)}
              {...props}>
-            <div className={"flex flex-row"} onClick={() => setSelectedValue(!selectedValue)}>
+            <div className={"flex flex-row w-max h-max"} onClick={() => {setSelectedValue(!selectedValue); console.log("click");}}>
                 <div className={selectedValue ? "bg-black text-white mr-1 rounded-lg px-2 py-0.5" : "bg-dark text-gray mr-1 rounded-lg px-2 py-0.5 hover:text-white"}>
                     {firstTitle}
                 </div>
