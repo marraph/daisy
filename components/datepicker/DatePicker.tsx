@@ -32,7 +32,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ text, iconSize, className, ...p
     return (
         <div className={cn("relative inline-block", className)}>
             <div className={"flex flex-row space-x-1 items-center bg-black rounded-lg border border-white border-opacity-20 text-gray text-xs pl-2 py-0.5 pr-0.5 cursor-pointer"} {...props}>
-                <div onClick={handleButtonClick} className={"flex flex-row space-x-1"}>
+                <div onClick={handleButtonClick} className={"flex flex-row items-center space-x-1"}>
                     <CalendarDays size={iconSize} className={"mr-1"}/>
                     <span>{!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))}</span>
                 </div>
