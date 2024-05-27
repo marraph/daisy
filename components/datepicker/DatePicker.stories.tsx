@@ -18,7 +18,7 @@ type Story = StoryObj<typeof DatePicker>;
 export const Default: Story = {
     render: () => {
         return (
-            <DatePicker text={"Select a date"} iconSize={16}/>
+            <DatePicker text={"Select a date"} iconSize={12} className={"h-8"}/>
         );
     },
 };

@@ -36,7 +36,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ text, iconSize, className, ...p
                     <CalendarDays size={iconSize} className={"mr-1"}/>
                     <span>{!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))}</span>
                 </div>
-                <CloseButton text={""} onClick={handleCloseClick}/>
+                <CloseButton iconSize={12} onClick={handleCloseClick}/>
             </div>
             {isOpen && (
                 <div className={cn("absolute top-full left-0", className)}>
