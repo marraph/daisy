@@ -14,7 +14,7 @@ interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export type DatepickerRef = HTMLDivElement & { reset: () => void };
 
-const DatePicker: React.FC<DatePickerProps> = ({ text, iconSize, className, ...props }, ref) => {
+const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({text, iconSize, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(undefined);
 
@@ -54,7 +54,8 @@ const DatePicker: React.FC<DatePickerProps> = ({ text, iconSize, className, ...p
             )}
         </div>
     );
-}
+})
+DatePicker.displayName = "DatePicker";
 
 
 export {DatePicker};
