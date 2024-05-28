@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useState} from "react";
+import React, {useImperativeHandle, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
 import {Calendar} from "../calendar/Calendar";
 import {format} from "date-fns";
@@ -12,7 +12,9 @@ interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
     iconSize: number;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ text, iconSize, className, ...props }) => {
+export type DatepickerRef = HTMLDivElement & { reset: () => void };
+
+const DatePicker: React.FC<DatePickerProps> = ({ text, iconSize, className, ...props }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(undefined);
 
@@ -28,6 +30,13 @@ const DatePicker: React.FC<DatePickerProps> = ({ text, iconSize, className, ...p
         setSelectedValue(day);
         setIsOpen(false);
     };
+
+    const datepickerRef = useRef<HTMLDivElement>(null);
+
+    useImperativeHandle(ref, () => ({
+        reset: () => setSelectedValue(null),
+        ...datepickerRef.current,
+    }));
 
     return (
         <div className={cn("relative inline-block", className)}>
