@@ -12,6 +12,7 @@ interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
     shortcut?: string;
     isSelected?: boolean;
+    onClick?: () => void;
 }
 
 interface ContextMenuIconProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -61,6 +62,7 @@ const ContextMenu = React.forwardRef<HTMLDivElement, ContextMenuProps>(({ checkm
                 if (React.isValidElement<ContextMenuItemProps>(child)) {
                     return React.cloneElement(child, {
                         onClick: () => {
+                            child.props.onClick && child.props.onClick();
                             setSelectedValue(child.props.title);
                         },
                         isSelected: checkmarkOn && selectedValue === child.props.title,
