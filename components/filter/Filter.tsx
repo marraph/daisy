@@ -1,8 +1,11 @@
-import React, {useState} from "react";
-import {Bookmark, Check, ChevronRight, ListFilter, Star} from "lucide-react";
+import React, {useImperativeHandle, useRef, useState} from "react";
+import {Check, ChevronRight, ListFilter} from "lucide-react";
 import {CloseButton} from "../closebutton/CloseButton";
+import {useOutsideClick} from "../../utils/clickOutside";
 
-interface FilterProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface FilterProps extends React.HTMLAttributes<HTMLDivElement> {
+    onFilterChange?: (filters: { [key: string]: string | null }) => void;
+}
 
 interface FilterItemProps extends React.HTMLAttributes<HTMLDivElement> {
     onClick?: () => void;
@@ -15,6 +18,11 @@ interface FilterItemProps extends React.HTMLAttributes<HTMLDivElement> {
     onItemSelect?: (item: string) => void;
     selectedItem?: string | null;
 }
+
+export type FilterRef = HTMLDivElement & {
+    getSelectedItems: () => { [key: string]: string | null },
+    reset: () => void
+};
 
 
 const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({ title, icon, data, isOpen, onOpen, onClose, onItemSelect, selectedItem, className, ...props }, ref) => {
@@ -72,14 +80,21 @@ const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({ title, i
 FilterItem.displayName = "FilterItem";
 
 
-const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ className, ...props }, ref) => {
+const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, className, ...props }, ref) => {
     const [filterList, setFilterList] = useState<{ [key: string]: string | null }>({});
     const [showFilter, setShowFilter] = useState(false);
     const [openItem, setOpenItem] = useState<string | null>(null);
 
+    const menuRef = useOutsideClick(() => {
+        closeMenus();
+    });
+
     const deleteFilter = () => {
         setFilterList({});
         closeMenus();
+        if (onFilterChange) {
+            onFilterChange({});
+        }
     }
 
     const closeMenus = () => {
@@ -88,14 +103,18 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ className, ...pr
     }
 
     const handleItemSelect = (item: string, title: string) => {
-        setFilterList((prevList) => ({
-            ...prevList,
-            [title]: prevList[title] === item ? null : item,
-        }));
+        const newFilterList = {
+            ...filterList,
+            [title]: filterList[title] === item ? null : item,
+        };
+        setFilterList(newFilterList);
+        if (onFilterChange) {
+            onFilterChange(newFilterList);
+        }
     }
 
     return (
-        <div className={"relative space-y-1 pb-8"} ref={ref} {...props}>
+        <div className={"relative space-y-1 pb-8"} ref={menuRef} {...props}>
             <button className={Object.values(filterList).filter(Boolean).length <= 0 ?
                 "group w-max h-8 flex flex-row items-center space-x-2 bg-black rounded-lg border border-white border-opacity-20 text-sm font-normal text-gray " +
                 "hover:text-white hover:bg-dark py-2 px-4" :
@@ -103,7 +122,7 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ className, ...pr
                 "hover:text-white hover:bg-dark py-2 pl-4 pr-1"
             }
                     onClick={() => {
-                        setShowFilter(!showFilter);
+                        closeMenus(); setShowFilter(!showFilter);
                     }}>
                 <ListFilter size={20} className={"mr-2"}/>
                 <span className={"flex flex-row"}>

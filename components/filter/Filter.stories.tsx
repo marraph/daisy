@@ -1,5 +1,5 @@
-import React from 'react';
-import {Filter, FilterItem} from './Filter';
+import React, {useRef, useState} from 'react';
+import {Filter, FilterItem, FilterRef} from './Filter';
 import {Meta, StoryObj} from "@storybook/react";
 import {ShieldHalf} from "lucide-react";
 
@@ -21,11 +21,25 @@ const project = ["project 1", "project 2", "project 3"];
 
 export const Default: Story = {
     render: () => {
+        const filterRef = useRef<FilterRef>(null);
+        const [selectedFilters, setSelectedFilters] = useState<{ [key: string]: string | null }>({});
+
+        const handleFilterChange = (filters: { [key: string]: string | null }) => {
+            setSelectedFilters(filters);
+        }
+
         return (
-            <Filter>
-                <FilterItem title={"Team"} data={team} icon={<ShieldHalf size={16}/>}/>
-                <FilterItem title={"Project"} data={project}/>
-            </Filter>
-        );
+            <>
+                <Filter ref={filterRef} onFilterChange={handleFilterChange}>
+                    <FilterItem title={"Team"} data={team} icon={<ShieldHalf size={16}/>}/>
+                    <FilterItem title={"Project"} data={project}/>
+                </Filter>
+                <div className={"text-white"}>
+                    <h2>Selected Filters:</h2>
+                    <pre>{JSON.stringify(selectedFilters, null, 2)}</pre>
+                </div>
+            </>
+
+    );
     },
 };
