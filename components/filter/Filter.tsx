@@ -136,7 +136,7 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, 
                     }}/>}
             </button>
                 {showFilter &&
-                    <div className={"bg-black rounded-lg border border-white border-opacity-20 py-2"}>
+                    <div className={"absolute left-0 mt-2 z-50 bg-black rounded-lg border border-white border-opacity-20 py-2"}>
                         {React.Children.map(props.children, (child) => {
                             if (React.isValidElement<FilterItemProps>(child)) {
                                 return React.cloneElement(child, {
