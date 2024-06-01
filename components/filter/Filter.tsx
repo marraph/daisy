@@ -1,22 +1,23 @@
 import React, {useState} from "react";
-import {ListFilter} from "lucide-react";
+import {Bookmark, Check, ChevronRight, ListFilter, Star} from "lucide-react";
 import {CloseButton} from "../closebutton/CloseButton";
 
-interface FilterProps extends React.HTMLAttributes<HTMLDivElement> {
-
-}
+interface FilterProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 interface FilterItemProps extends React.HTMLAttributes<HTMLDivElement> {
     onClick?: () => void;
     data?: string[];
     title: string;
+    icon?: React.ReactNode;
     isOpen?: boolean;
     onOpen?: () => void;
     onClose?: () => void;
+    onItemSelect?: (item: string) => void;
+    selectedItem?: string | null;
 }
 
 
-const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({ title, data, isOpen, onOpen, onClose, className, ...props }, ref) => {
+const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({ title, icon, data, isOpen, onOpen, onClose, onItemSelect, selectedItem, className, ...props }, ref) => {
     const toggleOpen = () => {
         if (isOpen) {
             onClose();
@@ -25,16 +26,40 @@ const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({ title, d
         }
     };
 
+    const handleItemClick = (item: string) => {
+        if (onItemSelect) {
+            onItemSelect(item);
+        }
+    };
+
+    const deleteFilter = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (onItemSelect) {
+            onItemSelect(null);
+        }
+    }
+
     return (
         <div className={"relative"}>
-            <div className={"cursor-pointer text-gray text-sm hover:text-white hover:bg-dark mx-2 my-1 rounded-lg "}
+            <div className={`cursor-pointer text-gray text-sm hover:text-white hover:bg-dark mx-2 my-1 py-1 rounded-lg flex flex-row items-center justify-between 
+            ${isOpen ? 'bg-dark text-white' : 'hover:bg-dark hover:text-white'}`}
                  onClick={() => toggleOpen()}>
-                <span className={"px-2 py-1"}>{title}</span>
+                <div className={"flex flex-row items-center px-2 py-1 space-x-2"}>
+                    {icon && icon}
+                    <span>{title}</span>
+                </div>
+                {isOpen && <ChevronRight size={16} /> }
+                {!isOpen && selectedItem &&
+                    <CloseButton iconSize={12} className={"mr-1 hover:bg-black"} onClick={(e) => deleteFilter(e)}/>
+                }
             </div>
             {isOpen &&
                 <div className={"absolute left-full top-0 ml-2 py-2 space-y-1 w-max bg-black rounded-lg border border-white border-opacity-20"}>
                     {data.map((title) => (
-                        <div key={title} className={"mx-2 my-1 text-gray text-sm rounded-lg cursor-pointer hover:text-white hover:bg-dark"}>
+                        <div key={title} className={`flex flex-row items-center mx-2 my-1 text-gray text-sm rounded-lg cursor-pointer hover:text-white hover:bg-dark
+                        ${selectedItem === title ? 'bg-dark text-white' : 'hover:bg-dark hover:text-white'}`}
+                        onClick={() => handleItemClick(title)}>
+                            {selectedItem === title && <Check size={16} className="ml-2" />}
                             <span className={"px-2 py-1"}>{title}</span>
                         </div>
                     ))}
@@ -48,12 +73,12 @@ FilterItem.displayName = "FilterItem";
 
 
 const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ className, ...props }, ref) => {
-    const [filterList, setFilterList] = useState<string[]>([]);
+    const [filterList, setFilterList] = useState<{ [key: string]: string | null }>({});
     const [showFilter, setShowFilter] = useState(false);
     const [openItem, setOpenItem] = useState<string | null>(null);
 
     const deleteFilter = () => {
-        setFilterList([]);
+        setFilterList({});
         closeMenus();
     }
 
@@ -62,20 +87,30 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ className, ...pr
         setOpenItem(null);
     }
 
+    const handleItemSelect = (item: string, title: string) => {
+        setFilterList((prevList) => ({
+            ...prevList,
+            [title]: prevList[title] === item ? null : item,
+        }));
+    }
+
     return (
-        <div className={"relative space-y-2 pb-8"} ref={ref} {...props}>
-            <button className={filterList.length <= 0 ?
-                "group w-min h-8 flex flex-row items-center space-x-2 bg-black rounded-lg border border-white border-opacity-20 text-sm font-normal text-gray " +
+        <div className={"relative space-y-1 pb-8"} ref={ref} {...props}>
+            <button className={Object.values(filterList).filter(Boolean).length <= 0 ?
+                "group w-max h-8 flex flex-row items-center space-x-2 bg-black rounded-lg border border-white border-opacity-20 text-sm font-normal text-gray " +
                 "hover:text-white hover:bg-dark py-2 px-4" :
-                "group w-min h-8 flex flex-row items-center space-x-2 bg-black rounded-lg border border-white border-opacity-20 text-sm font-normal text-gray " +
+                "group w-max h-8 flex flex-row items-center space-x-2 bg-black rounded-lg border border-white border-opacity-20 text-sm font-normal text-gray " +
                 "hover:text-white hover:bg-dark py-2 pl-4 pr-1"
             }
                     onClick={() => {
                         setShowFilter(!showFilter);
                     }}>
                 <ListFilter size={20} className={"mr-2"}/>
-                {filterList.length <= 0 ? "Filter" : `${filterList.length} Filter`}
-                {filterList.length > 0 &&
+                <span className={"flex flex-row"}>
+                    {Object.values(filterList).filter(Boolean).length <= 0 ? "Filter" :
+                        `${Object.values(filterList).filter(Boolean).length} Filter`}
+                </span>
+                {Object.values(filterList).filter(Boolean).length > 0 &&
                     <CloseButton className={"bg-black group-hover:bg-dark"} onClick={(e) => {
                         e.stopPropagation();
                         deleteFilter();
@@ -89,13 +124,14 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ className, ...pr
                                     isOpen: openItem === child.props.title,
                                     onOpen: () => setOpenItem(child.props.title),
                                     onClose: () => setOpenItem(null),
+                                    onItemSelect: (item: string) => handleItemSelect(item, child.props.title),
+                                    selectedItem: filterList[child.props.title],
                                 });
                             }
                             return child;
                         })}
                     </div>
                 }
-
         </div>
     )
 

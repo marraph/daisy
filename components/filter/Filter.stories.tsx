@@ -1,6 +1,7 @@
 import React from 'react';
 import {Filter, FilterItem} from './Filter';
 import {Meta, StoryObj} from "@storybook/react";
+import {ShieldHalf} from "lucide-react";
 
 const meta: Meta<typeof Filter> = {
     title: "Components/Filter",
@@ -22,7 +23,7 @@ export const Default: Story = {
     render: () => {
         return (
             <Filter>
-                <FilterItem title={"Team"} data={team}/>
+                <FilterItem title={"Team"} data={team} icon={<ShieldHalf size={16}/>}/>
                 <FilterItem title={"Project"} data={project}/>
             </Filter>
         );
