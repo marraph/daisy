@@ -114,7 +114,7 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, 
     }
 
     return (
-        <div className={"relative space-y-1 pb-8"} ref={menuRef} {...props}>
+        <div className={"relative space-y-1"} ref={menuRef} {...props}>
             <button className={Object.values(filterList).filter(Boolean).length <= 0 ?
                 "group w-max h-8 flex flex-row items-center space-x-2 bg-black rounded-lg border border-white border-opacity-20 text-sm font-normal text-gray " +
                 "hover:text-white hover:bg-dark py-2 px-4" :
