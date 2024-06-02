@@ -117,22 +117,22 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, 
         <div className={"relative space-y-1"} ref={menuRef} {...props}>
             <button className={Object.values(filterList).filter(Boolean).length <= 0 ?
                 "group w-max h-8 flex flex-row items-center space-x-2 bg-black rounded-lg border border-white border-opacity-20 text-sm font-normal text-gray " +
-                "hover:text-white hover:bg-dark py-2 px-4" :
+                "hover:text-white hover:bg-dark px-4" :
                 "group w-max h-8 flex flex-row items-center space-x-2 bg-black rounded-lg border border-white border-opacity-20 text-sm font-normal text-gray " +
-                "hover:text-white hover:bg-dark py-2 pl-4 pr-1"
+                "hover:text-white hover:bg-dark pl-4 pr-1"
             }
                     onClick={() => {
                         closeMenus(); setShowFilter(!showFilter);
                     }}>
-                <ListFilter size={20} className={"mr-2"}/>
-                <span className={"flex flex-row pr-1"}>
+                <ListFilter size={20} className={"mr-2 my-2"}/>
+                <span className={"flex flex-row py-2"}>
                     {Object.values(filterList).filter(Boolean).length <= 0 ? "Filter" :
                         `${Object.values(filterList).filter(Boolean).length} Filter`}
                 </span>
                 {Object.values(filterList).filter(Boolean).length > 0 &&
-                    <div className={"flex flex-row space-x-1"}>
-                        <div className={"border-l-2 border-white border-opacity-20"}></div>
-                        <CloseButton className={"bg-black group-hover:bg-dark w-full h-full"} onClick={(e) => {
+                    <div className={"flex flex-row space-x-1 pl-1"}>
+                        <div className={"border-l border-white border-opacity-20 my-1"}></div>
+                        <CloseButton className={"bg-black group-hover:bg-dark w-full h-full my-2"} onClick={(e) => {
                             e.stopPropagation();
                             deleteFilter();
                         }}/>
