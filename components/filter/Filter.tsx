@@ -125,15 +125,19 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, 
                         closeMenus(); setShowFilter(!showFilter);
                     }}>
                 <ListFilter size={20} className={"mr-2"}/>
-                <span className={"flex flex-row"}>
+                <span className={"flex flex-row pr-1"}>
                     {Object.values(filterList).filter(Boolean).length <= 0 ? "Filter" :
                         `${Object.values(filterList).filter(Boolean).length} Filter`}
                 </span>
                 {Object.values(filterList).filter(Boolean).length > 0 &&
-                    <CloseButton className={"bg-black group-hover:bg-dark"} onClick={(e) => {
-                        e.stopPropagation();
-                        deleteFilter();
-                    }}/>}
+                    <div className={"flex flex-row space-x-1"}>
+                        <div className={"border-l-2 border-white border-opacity-20"}></div>
+                        <CloseButton className={"bg-black group-hover:bg-dark w-full h-full"} onClick={(e) => {
+                            e.stopPropagation();
+                            deleteFilter();
+                        }}/>
+                    </div>
+                    }
             </button>
                 {showFilter &&
                     <div className={"absolute left-0 mt-2 z-50 bg-black rounded-lg border border-white border-opacity-20 py-2"}>
