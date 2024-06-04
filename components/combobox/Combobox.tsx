@@ -46,28 +46,31 @@ const comboboxItem = cva("text-gray text-sm cursor-pointer rounded-lg hover:bg-s
 interface ComboboxItemProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof comboboxItem> {
     title: string;
     isSelected?: boolean;
+    hasPreValue?: boolean;
     onClick?: () => void;
 }
 
 interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement>, VariantProps<typeof combobox> {
     buttonTitle: string;
+    preSelectedValue?: string;
 }
 
+type ComboboxRef = HTMLDivElement & { reset: () => void };
 
-const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ theme, size, title, isSelected, onClick, className, ...props }, ref) => (
-    <div className={cn(comboboxItem({theme, size}), className, isSelected ? "bg-dark text-white" : "bg-black")} ref={ref} {...props} onClick={onClick}>
-        {isSelected && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
+
+const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ theme, size, title, isSelected, hasPreValue, onClick, className, ...props }, ref) => (
+    <div className={cn(comboboxItem({theme, size}), className, (isSelected || hasPreValue) ? "bg-dark text-white" : "bg-black")} ref={ref} {...props} onClick={onClick}>
+        {(isSelected || hasPreValue) && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
         <span>{title}</span>
     </div>
 ));
 ComboboxItem.displayName = "ComboboxItem";
 
-export type ComboboxRef = HTMLDivElement & { reset: () => void };
 
 
-const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, buttonTitle, className, ...props}, ref) => {
+const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState<null | string>(null);
+    const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
 
     const menuRef = useOutsideClick(() => {
         setIsOpen(false);
@@ -88,7 +91,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
     return (
         <div className={cn("relative", className)} ref={menuRef}>
             <div className={cn(combobox({theme, size}), className)} {...props} onClick={() => {setIsOpen(!isOpen)}}>
-                <span>{!selectedValue ? buttonTitle : selectedValue}</span>
+                <span>{selectedValue ? selectedValue : buttonTitle}</span>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
             </div>
             {isOpen && (
@@ -101,6 +104,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
                                     handleItemClick(child.props.title);
                                 },
                                 isSelected: selectedValue === child.props.title,
+                                hasPreValue: preSelectedValue === child.props.title && selectedValue === null,
                             });
                         }
                         return child;
@@ -112,4 +116,4 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
 });
 Combobox.displayName = "Combobox";
 
-export { Combobox, ComboboxItem };
+export { Combobox, ComboboxItem, ComboboxRef };
