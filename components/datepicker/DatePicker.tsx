@@ -6,15 +6,29 @@ import {Calendar} from "../calendar/Calendar";
 import {format} from "date-fns";
 import {CalendarDays} from "lucide-react";
 import {CloseButton} from "../closebutton/CloseButton";
+import {cva, VariantProps} from "class-variance-authority";
 
-interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement> {
+const datepicker = cva("flex flex-row items-center bg-black rounded-lg border border-white border-opacity-20 text-gray cursor-pointer", {
+    variants: {
+        size: {
+            small: ["text-xs", "py-1", "px-2", "space-x-1"],
+            medium: ["text-sm", "py-2", "px-3", "space-x-2"],
+            large: ["text-base", "py-3", "px-4", "space-x-3"],
+        },
+    },
+    defaultVariants: {
+        size: "medium",
+    },
+});
+
+interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof datepicker> {
     text: string;
     iconSize: number;
 }
 
 export type DatepickerRef = HTMLDivElement & { reset: () => void };
 
-const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({text, iconSize, className, ...props}, ref) => {
+const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({text, iconSize, size, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(undefined);
 
@@ -40,7 +54,7 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({text, ico
 
     return (
         <div className={cn("relative inline-block", className)}>
-            <div className={"flex flex-row space-x-1 items-center bg-black rounded-lg border border-white border-opacity-20 text-gray text-xs pl-2 py-0.5 pr-0.5 cursor-pointer"} {...props}>
+            <div className={cn(datepicker({size}), className)} {...props}>
                 <div onClick={handleButtonClick} className={"flex flex-row items-center space-x-1"}>
                     <CalendarDays size={iconSize} className={"mr-1"}/>
                     <span>{!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))}</span>
