@@ -2,6 +2,7 @@ import React, {useImperativeHandle, useRef, useState} from "react";
 import {Check, ChevronRight, ListFilter} from "lucide-react";
 import {CloseButton} from "../closebutton/CloseButton";
 import {useOutsideClick} from "../../utils/clickOutside";
+import {cn} from "../../utils/cn";
 
 interface FilterProps extends React.HTMLAttributes<HTMLDivElement> {
     onFilterChange?: (filters: { [key: string]: string | null }) => void;
@@ -115,32 +116,32 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, 
 
     return (
         <div className={"relative space-y-1"} ref={menuRef} {...props}>
-            <button className={Object.values(filterList).filter(Boolean).length <= 0 ?
-                "group w-max h-8 flex flex-row items-center space-x-2 bg-black rounded-lg border border-white border-opacity-20 text-sm font-normal text-gray " +
-                "hover:text-white hover:bg-dark px-4" :
-                "group w-max h-8 flex flex-row items-center space-x-2 bg-black rounded-lg border border-white border-opacity-20 text-sm font-normal text-gray " +
-                "hover:text-white hover:bg-dark pl-4 pr-1"
-            }
-                    onClick={() => {
-                        closeMenus(); setShowFilter(!showFilter);
-                    }}>
-                <ListFilter size={20} className={"mr-2 my-2"}/>
-                <span className={"flex flex-row py-2"}>
-                    {Object.values(filterList).filter(Boolean).length <= 0 ? "Filter" :
-                        `${Object.values(filterList).filter(Boolean).length} Filter`}
-                </span>
+            <div className={"flex flex-row"}>
+                <button className={
+                    `w-max h-8 flex flex-row items-center space-x-2 bg-black rounded-lg text-sm font-normal text-gray border border-white border-opacity-20
+                    ${Object.values(filterList).filter(Boolean).length <= 0 ?  
+                    "hover:text-white hover:bg-dark px-4 rounded-lg" : 
+                    "hover:text-white hover:bg-dark pl-4 pr-4 rounded-l-lg rounded-r-none border-r-0"}`
+                }
+                        onClick={() => {
+                            closeMenus();
+                            setShowFilter(!showFilter);
+                        }}>
+                    <ListFilter size={20} className={"mr-2 my-2"}/>
+                    <span className={"flex flex-row py-2"}>
+                        {Object.values(filterList).filter(Boolean).length <= 0 ? "Filter" :
+                            `${Object.values(filterList).filter(Boolean).length} Filter`}
+                    </span>
+                </button>
                 {Object.values(filterList).filter(Boolean).length > 0 &&
-                    <div className={"flex flex-row space-x-1 pl-1"}>
-                        <div className={"border-l border-white border-opacity-20 my-1"}></div>
-                        <CloseButton className={"bg-black group-hover:bg-dark w-full h-full my-2"} onClick={(e) => {
-                            e.stopPropagation();
-                            deleteFilter();
-                        }}/>
+                    <div className={"group flex flex-row h-8 rounded-r-lg bg-black items-center border border-white border-opacity-20 hover:bg-dark hover:text-white"}
+                         onClick={(e) => {e.stopPropagation(); deleteFilter();}}>
+                        <CloseButton className={"group-hover:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"}/>
                     </div>
-                    }
-            </button>
+                }
+            </div>
                 {showFilter &&
-                    <div className={"absolute left-0 mt-2 z-50 bg-black rounded-lg border border-white border-opacity-20 py-2"}>
+                    <div className={"absolute left-0 mt-2 z-50 bg-black rounded-lg border border-white border-opacity-20"}>
                         {React.Children.map(props.children, (child) => {
                             if (React.isValidElement<FilterItemProps>(child)) {
                                 return React.cloneElement(child, {
