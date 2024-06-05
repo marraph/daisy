@@ -66,33 +66,25 @@ const AlertContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
 ));
 AlertContent.displayName = "AlertContent";
 
-export interface AlertHandle {
-    resetAlert: () => void;
-}
-
-const Alert = React.forwardRef<AlertHandle, AlertProps>(({ duration, theme, className, ...props }, ref) => {
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(({ duration, theme, className, ...props }, ref) => {
     const [visible, setVisible] = useState(true);
-    const [key, setKey] = useState(0);
 
     useEffect(() => {
         const timeout = setTimeout(() => setVisible(false), duration);
         return () => clearTimeout(timeout);
-    }, [duration, key]);
+    }, [duration]);
 
-    const resetAlert = useCallback(() => {
-        setVisible(true);
-        setKey(prevKey => prevKey + 1);
-    }, []);
-
-    useImperativeHandle(ref, () => ({
-        resetAlert
-    }));
+    useEffect(() => {
+        if (!visible) {
+            const timeout = setTimeout(() => setVisible(true), 2000);
+            return () => clearTimeout(timeout);
+        }
+    }, [visible]);
 
     return (
-        <div key={key}
-             className={(alert({ theme }), className, `transition-all duration-500 ease-in-out" ${visible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`)}
+        <div className={cn(alert({ theme }), className, `transition-all duration-500 ease-in-out" ${visible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`)}
              {...props}>
-                {props.children}
+            {props.children}
         </div>
     );
 });

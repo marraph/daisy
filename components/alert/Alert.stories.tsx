@@ -19,7 +19,7 @@ type Story = StoryObj<typeof Alert>
 export const Default: Story = {
     render: () => {
         return (
-            <Alert theme={"dark"} >
+            <Alert duration={3000} theme={"dark"} >
                 <AlertIcon icon={<Rocket size={30} className={"text-white"} />} />
                 <AlertContent>
                     <AlertTitle title="Alert" />
