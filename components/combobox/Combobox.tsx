@@ -1,6 +1,6 @@
 "use client";
 
-import React, {ReactNode, useImperativeHandle, useRef, useState} from "react";
+import React, {ReactNode, useEffect, useImperativeHandle, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
 import {Check, ChevronsUpDown} from "lucide-react";
 import {useOutsideClick} from "../../utils/clickOutside";

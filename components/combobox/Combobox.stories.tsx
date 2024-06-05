@@ -1,7 +1,6 @@
 import React, {useRef} from 'react';
 import {Combobox, ComboboxItem, ComboboxRef} from './Combobox';
 import {Meta, StoryObj} from "@storybook/react";
-import {Button} from "../button/Button";
 
 const meta: Meta<typeof Combobox> = {
     title: "Components/Combobox",
@@ -23,19 +22,12 @@ export const Default: Story = {
 
         const comboboxRef = useRef<ComboboxRef>(null);
 
-        const handleReset = () => {
-            comboboxRef.current?.reset();
-        };
-
         return (
-            <>
-                <Combobox size={"medium"} buttonTitle={"Select"} ref={comboboxRef} >
-                    {items.map((item, index) => (
-                        <ComboboxItem key={index} title={item} size={"medium"}/>
-                    ))}
-                </Combobox>
-                <Button text={"Reset"} onClick={() => handleReset()}></Button>
-            </>
+            <Combobox size={"medium"} buttonTitle={"Select"} ref={comboboxRef} >
+                {items.map((item, index) => (
+                    <ComboboxItem key={index} title={item} size={"medium"}/>
+                ))}
+            </Combobox>
         );
     },
 };

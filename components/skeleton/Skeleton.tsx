@@ -23,7 +23,7 @@ SkeletonColumn.displayName = "SkeletonColumn";
 
 
 const Skeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-    <div className={cn("w-full flex flex-row items-center", className)} ref={ref} {...props}>
+    <div className={cn("w-full flex flex-row items-center animate-pulse", className)} ref={ref} {...props}>
         {props.children}
     </div>
 ));
