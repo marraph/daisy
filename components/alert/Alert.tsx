@@ -2,7 +2,7 @@
 
 import {cva, VariantProps} from "class-variance-authority";
 import {cn} from "../../utils/cn";
-import React, {ReactNode, useEffect, useState} from "react";
+import React, {ReactNode, useCallback, useEffect, useImperativeHandle, useState} from "react";
 
 const alert = cva("w-max rounded-lg font-normal p-2 bg-black text-gray text-base flex flex-row items-start shadow-2xl z-50 opacity-100", {
     variants: {
@@ -66,20 +66,33 @@ const AlertContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
 ));
 AlertContent.displayName = "AlertContent";
 
+export interface AlertHandle {
+    resetAlert: () => void;
+}
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(({ duration, theme, className, ...props }, ref) => {
+const Alert = React.forwardRef<AlertHandle, AlertProps>(({ duration, theme, className, ...props }, ref) => {
     const [visible, setVisible] = useState(true);
+    const [key, setKey] = useState(0);
 
     useEffect(() => {
         const timeout = setTimeout(() => setVisible(false), duration);
         return () => clearTimeout(timeout);
-    }, [duration]);
+    }, [duration, key]);
+
+    const resetAlert = useCallback(() => {
+        setVisible(true);
+        setKey(prevKey => prevKey + 1);
+    }, []);
+
+    useImperativeHandle(ref, () => ({
+        resetAlert
+    }));
 
     return (
-        <div className={cn(alert({ theme }), className, "transition-all duration-500 ease-in-out",
-            visible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0")}
-            ref={ref} {...props}>
-            {props.children}
+        <div key={key}
+             className={(alert({ theme }), className, `transition-all duration-500 ease-in-out" ${visible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`)}
+             {...props}>
+                {props.children}
         </div>
     );
 });
