@@ -26,7 +26,10 @@ interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantP
     iconSize: number;
 }
 
-export type DatepickerRef = HTMLDivElement & { reset: () => void };
+export type DatepickerRef = HTMLDivElement & {
+    reset: () => void
+    getSelectedValue: () => Date | null
+};
 
 const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({text, iconSize, size, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);

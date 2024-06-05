@@ -55,7 +55,10 @@ interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement>, Vari
     preSelectedValue?: string;
 }
 
-type ComboboxRef = HTMLDivElement & { reset: () => void };
+type ComboboxRef = HTMLDivElement & {
+    reset: () => void
+    getSelectedValue: () => string | null
+};
 
 
 const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ theme, size, title, isSelected, hasPreValue, onClick, className, ...props }, ref) => (
