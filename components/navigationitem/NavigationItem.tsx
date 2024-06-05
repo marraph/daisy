@@ -26,17 +26,22 @@ const NavigationItem: React.FC<NavigationItemProps> = ({ title, icon, selected, 
     );
 };
 
-const NavigationContext = createContext({
+interface NavigationContextProps {
+    selectedItem: string;
+    setSelectedItem: (item: string) => void;
+}
+
+const NavigationContext = createContext<NavigationContextProps>({
     selectedItem: 'Dashboard',
-    setSelectedItem: (item) => {},
+    setSelectedItem: () => {}
 });
 
-const NavigationProvider = ({ children }) => {
-    const [selectedItem, setSelectedItem] = useState('Dashboard');
+const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const [selectedItem, setSelectedItem] = useState<string>('Dashboard');
 
     return (
         <NavigationContext.Provider value={{ selectedItem, setSelectedItem }}>
-            {children}
+            {children}s
         </NavigationContext.Provider>
     );
 };
