@@ -1,6 +1,6 @@
 "use client";
 
-import React, {ReactNode} from "react";
+import React, {createContext, ReactNode, useContext, useState} from "react";
 import {cn} from "../../utils/cn";
 
 interface NavigationItemProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -26,4 +26,21 @@ const NavigationItem: React.FC<NavigationItemProps> = ({ title, icon, selected, 
     );
 };
 
-export { NavigationItem };
+const NavigationContext = createContext({
+    selectedItem: 'Dashboard',
+    setSelectedItem: (item) => {},
+});
+
+const NavigationProvider = ({ children }) => {
+    const [selectedItem, setSelectedItem] = useState('Dashboard');
+
+    return (
+        <NavigationContext.Provider value={{ selectedItem, setSelectedItem }}>
+            {children}
+        </NavigationContext.Provider>
+    );
+};
+
+const useNavigation = () => useContext(NavigationContext);
+
+export { NavigationItem, NavigationProvider, useNavigation };
