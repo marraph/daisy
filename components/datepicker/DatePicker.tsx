@@ -49,6 +49,7 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({text, ico
 
     useImperativeHandle(ref, () => ({
         reset: () => setSelectedValue(null),
+        getSelectedValue: () => selectedValue,
         ...datepickerRef.current,
     }));
 

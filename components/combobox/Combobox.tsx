@@ -85,6 +85,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({theme, size, 
 
     useImperativeHandle(ref, () => ({
         reset: () => setSelectedValue(null),
+        getSelectedValue: () => selectedValue,
         ...comboRef.current,
     }));
 
