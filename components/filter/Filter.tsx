@@ -5,7 +5,7 @@ import {useOutsideClick} from "../../utils/clickOutside";
 
 interface FilterProps extends React.HTMLAttributes<HTMLDivElement> {
     onFilterChange?: (filters: { [key: string]: string | null }) => void;
-    onClose?: () => void;
+    onResetTeamSelected?: () => void;
 }
 
 interface FilterItemProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -81,7 +81,7 @@ const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({ title, i
 FilterItem.displayName = "FilterItem";
 
 
-const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, onClose, className, ...props }, ref) => {
+const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, onResetTeamSelected, className, ...props }, ref) => {
     const [filterList, setFilterList] = useState<{ [key: string]: string | null }>({});
     const [showFilter, setShowFilter] = useState(false);
     const [openItem, setOpenItem] = useState<string | null>(null);
@@ -95,6 +95,9 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, 
         closeMenus();
         if (onFilterChange) {
             onFilterChange({});
+        }
+        if (onResetTeamSelected) {
+            onResetTeamSelected();
         }
     }
 
@@ -135,7 +138,7 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, 
                 </button>
                 {Object.values(filterList).filter(Boolean).length > 0 &&
                     <div className={"group flex flex-row h-8 rounded-r-lg bg-black items-center border border-white border-opacity-20 hover:bg-dark hover:text-white"}
-                         onClick={(e) => {e.stopPropagation(); deleteFilter();}}>
+                         onClick={(e) => {e.stopPropagation(); deleteFilter()}}>
                         <CloseButton className={"group-hover:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"}/>
                     </div>
                 }
