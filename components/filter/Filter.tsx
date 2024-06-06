@@ -2,10 +2,10 @@ import React, {useImperativeHandle, useRef, useState} from "react";
 import {Check, ChevronRight, ListFilter} from "lucide-react";
 import {CloseButton} from "../closebutton/CloseButton";
 import {useOutsideClick} from "../../utils/clickOutside";
-import {cn} from "../../utils/cn";
 
 interface FilterProps extends React.HTMLAttributes<HTMLDivElement> {
     onFilterChange?: (filters: { [key: string]: string | null }) => void;
+    onClose?: () => void;
 }
 
 interface FilterItemProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -21,8 +21,8 @@ interface FilterItemProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export type FilterRef = HTMLDivElement & {
-    getSelectedItems: () => { [key: string]: string | null },
-    reset: () => void
+    getSelectedItems: () => { [key: string]: string | null };
+    reset: () => void;
 };
 
 
@@ -62,7 +62,7 @@ const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({ title, i
                     <CloseButton iconSize={12} className={"mr-1 hover:bg-black"} onClick={(e) => deleteFilter(e)}/>
                 }
             </div>
-            {isOpen &&
+            {isOpen && data.length > 0 &&
                 <div className={"absolute left-full top-0 ml-2 py-2 space-y-1 w-max bg-black rounded-lg border border-white border-opacity-20"}>
                     {data.map((title) => (
                         <div key={title} className={`flex flex-row items-center mx-2 my-1 text-gray text-sm rounded-lg cursor-pointer hover:text-white hover:bg-dark
@@ -81,7 +81,7 @@ const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({ title, i
 FilterItem.displayName = "FilterItem";
 
 
-const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, className, ...props }, ref) => {
+const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, onClose, className, ...props }, ref) => {
     const [filterList, setFilterList] = useState<{ [key: string]: string | null }>({});
     const [showFilter, setShowFilter] = useState(false);
     const [openItem, setOpenItem] = useState<string | null>(null);
