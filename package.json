@@ -1,6 +1,6 @@
 {
   "name": "@marraph/daisy",
-  "version": "0.0.81",
+  "version": "0.0.82",
   "description": "Daisy is a component library for the marraph organisation",
   "scripts": {
     "dev": "next dev",
@@ -16,6 +16,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "framer-motion": "^11.2.10",
     "lucide-react": "^0.377.0",
     "next": "14.2.3",
     "prop-types": "^15.8.1",

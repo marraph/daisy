@@ -6,6 +6,7 @@ import {Check, ChevronsUpDown, Delete} from "lucide-react";
 import {useOutsideClick} from "../../utils/clickOutside";
 import {cva, VariantProps} from "class-variance-authority";
 import {Seperator} from "../seperator/Seperator";
+import { motion } from "framer-motion"
 
 const combobox = cva("group/combo cursor-pointer text-gray whitespace-nowrap rounded-lg font-normal flex items-center " +
     "hover:text-white border border-white border-opacity-20 overflow-hidden bg-black", {
@@ -74,7 +75,11 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
     });
 
     const handleItemClick = (item: string) => {
-        setSelectedValue(item);
+        if (selectedValue) {
+            setSelectedValue(null);
+        } else {
+            setSelectedValue(item);
+        }
         setIsOpen(false);
     };
 
@@ -93,16 +98,12 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
             </div>
             {isOpen && (
-                <div className={cn("absolute top-full min-w-full bg-black border border-white border-opacity-20 flex flex-col text-gray whitespace-nowrap rounded-lg py-1 space-y-1", className)}>
-                    {selectedValue &&
-                        <>
-                            <ComboboxItem title={"Clear"} onClick={() => {setSelectedValue(null); setIsOpen(false);}}
-                                          size={size} className={"text-placeholder hover:bg-dark py-1"}>
-                                <Delete size={16}/>
-                            </ComboboxItem>
-                            <Seperator className={"py-0 my-0"}/>
-                        </>
-                    }
+                <motion.div
+                    className={cn("absolute top-full min-w-full bg-black border border-white border-opacity-20 flex flex-col text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}
+                    initial={{ maxHeight: 0 }}
+                    animate={{ maxHeight: isOpen ? '300px' : 0  }}
+                    transition={{ duration: 0.3 }}>
+
                     {React.Children.map(props.children, (child) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
                             return React.cloneElement(child, {
@@ -116,7 +117,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
                         }
                         return child;
                     })}
-                </div>
+                </motion.div>
             )}
         </div>
     );

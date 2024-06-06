@@ -1,7 +1,10 @@
-import React, {useImperativeHandle, useRef, useState} from "react";
+"use client";
+
+import React, {cloneElement, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {Check, ChevronRight, ListFilter} from "lucide-react";
 import {CloseButton} from "../closebutton/CloseButton";
 import {useOutsideClick} from "../../utils/clickOutside";
+import { motion } from "framer-motion";
 
 interface FilterProps extends React.HTMLAttributes<HTMLDivElement> {
     onFilterChange?: (filters: { [key: string]: string | null }) => void;
@@ -27,6 +30,8 @@ export type FilterRef = HTMLDivElement & {
 
 
 const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({ title, icon, data, isOpen, onOpen, onClose, onItemSelect, selectedItem, className, ...props }, ref) => {
+    const [isHovered, setIsHovered] = useState(false);
+
     const toggleOpen = () => {
         if (isOpen) {
             onClose();
@@ -41,38 +46,34 @@ const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({ title, i
         }
     };
 
-    const deleteFilter = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        if (onItemSelect) {
-            onItemSelect(null);
-        }
-    }
-
     return (
         <div className={"relative"}>
-            <div className={`cursor-pointer text-gray text-sm hover:text-white hover:bg-dark mx-2 my-1 py-1 rounded-lg flex flex-row items-center justify-between 
-            ${isOpen ? 'bg-dark text-white' : 'hover:bg-dark hover:text-white'}`}
-                 onClick={() => toggleOpen()}>
+            <div className={`cursor-pointer text-gray text-sm hover:text-white hover:bg-dark m-1 py-1 rounded-lg flex flex-row items-center justify-between 
+            ${isOpen || isHovered ? 'bg-dark text-white' : 'hover:bg-dark hover:text-white'}`}
+                 onClick={toggleOpen}
+                 onMouseEnter={toggleOpen}>
+
                 <div className={"flex flex-row items-center px-2 py-1 space-x-2"}>
                     {icon && icon}
                     <span>{title}</span>
                 </div>
-                {isOpen && <ChevronRight size={16} /> }
-                {!isOpen && selectedItem &&
-                    <CloseButton iconSize={12} className={"mr-1 hover:bg-black"} onClick={(e) => deleteFilter(e)}/>
-                }
+                <ChevronRight size={16} className={`${isOpen || isHovered ? 'visible' : 'invisible'}`} />
             </div>
-            {isOpen && data.length > 0 &&
-                <div className={"absolute left-full top-0 ml-2 py-2 space-y-1 w-max bg-black rounded-lg border border-white border-opacity-20"}>
+            {(isOpen || isHovered) && data.length > 0 &&
+                <motion.div className={"absolute left-full top-0 ml-2 pb-1 space-y-1 w-full bg-black rounded-lg border border-white border-opacity-20 whitespace-nowrap overflow-hidden"}
+                            initial={{ width: 0}}
+                            animate={{ width: isOpen || isHovered ? '100%' : 0}}
+                            transition={{ duration: 0.2 }}>
+
                     {data.map((title) => (
-                        <div key={title} className={`flex flex-row items-center mx-2 my-1 text-gray text-sm rounded-lg cursor-pointer hover:text-white hover:bg-dark
+                        <div key={title} className={`flex flex-row items-center m-1 text-gray text-sm rounded-lg cursor-pointer hover:text-white hover:bg-dark
                         ${selectedItem === title ? 'bg-dark text-white' : 'hover:bg-dark hover:text-white'}`}
                         onClick={() => handleItemClick(title)}>
                             {selectedItem === title && <Check size={16} className="ml-2" />}
                             <span className={"px-2 py-1"}>{title}</span>
                         </div>
                     ))}
-                </div>
+                </motion.div>
             }
         </div>
 
@@ -85,6 +86,16 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, 
     const [filterList, setFilterList] = useState<{ [key: string]: string | null }>({});
     const [showFilter, setShowFilter] = useState(false);
     const [openItem, setOpenItem] = useState<string | null>(null);
+
+    const [height, setHeight] = useState(0);
+    const motionRef = useRef(null);
+
+    useEffect(() => {
+        if (motionRef.current) {
+            setHeight(motionRef.current.scrollHeight + 10);
+        }
+    }, [showFilter, props.children]);
+
 
     const menuRef = useOutsideClick(() => {
         closeMenus();
@@ -144,7 +155,10 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, 
                 }
             </div>
                 {showFilter &&
-                    <div className={"absolute left-0 mt-2 z-50 bg-black rounded-lg border border-white border-opacity-20"}>
+                    <motion.div className={"absolute left-0 mt-2 z-50 bg-black rounded-lg border border-white border-opacity-20 whitespace-nowrap"} ref={motionRef}
+                                initial={{ maxHeight: 0, overflow: 'hidden'}}
+                                animate={{ maxHeight: showFilter ? height : 0, transitionEnd: { overflow: 'visible' }}}
+                                transition={{ duration: 0.3}}>
                         {React.Children.map(props.children, (child) => {
                             if (React.isValidElement<FilterItemProps>(child)) {
                                 return React.cloneElement(child, {
@@ -157,11 +171,10 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({ onFilterChange, 
                             }
                             return child;
                         })}
-                    </div>
+                    </motion.div>
                 }
         </div>
     )
-
 });
 Filter.displayName = "Filter";
 

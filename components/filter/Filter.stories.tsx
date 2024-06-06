@@ -37,7 +37,7 @@ export const Default: Story = {
           data={team}
           icon={<ShieldHalf size={16} />}
         />
-        <FilterItem title={"Project"} data={project} />
+        <FilterItem title={"Project"} data={project} icon={<ShieldHalf size={16} />}/>
       </Filter>
     );
   },
