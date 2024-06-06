@@ -41,7 +41,7 @@ const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     return (
         <NavigationContext.Provider value={{ selectedItem, setSelectedItem }}>
-            {children}s
+            {children}
         </NavigationContext.Provider>
     );
 };
