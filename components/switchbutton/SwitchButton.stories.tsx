@@ -18,7 +18,7 @@ type Story = StoryObj<typeof SwitchButton>
 export const Default: Story = {
     render: () => {
         return (
-            <SwitchButton firstTitle={"Past"} secondTitle={"Now"} className={"h-8"}/>
+            <SwitchButton firstTitle={"Table"} secondTitle={"Card"} className={"h-8"}/>
         );
     },
 };

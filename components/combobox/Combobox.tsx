@@ -92,7 +92,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
     }));
 
     return (
-        <div className={cn("relative", className)} ref={menuRef}>
+        <div className={cn("relative space-y-1", className)} ref={menuRef}>
             <div className={cn(combobox({size}), className)} {...props} onClick={() => {setIsOpen(!isOpen)}}>
                 <span>{selectedValue ? selectedValue : buttonTitle}</span>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>

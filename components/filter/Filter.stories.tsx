@@ -17,7 +17,7 @@ export default meta;
 type Story = StoryObj<typeof Filter>;
 
 const team = ["team 1", "team 2", "team 3"];
-const project = ["project 1", "project 2", "project 3"];
+const project = ["project 1", "project 2", "project 3", "project marius uowgigwg w wg"];
 
 export const Default: Story = {
   render: () => {

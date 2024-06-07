@@ -6,6 +6,8 @@ import {Calendar} from "../calendar/Calendar";
 import {format} from "date-fns";
 import {CalendarDays, Delete} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
+import {useOutsideClick} from "../../utils/clickOutside";
+import { motion } from "framer-motion";
 
 const datepicker = cva("flex flex-row items-center bg-black rounded-lg border border-white border-opacity-20 text-gray cursor-pointer", {
     variants: {
@@ -34,6 +36,11 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({text, ico
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(undefined);
 
+    const datepickerRef = useRef<HTMLDivElement>(null);
+    const menuRef = useOutsideClick(() => {
+        setIsOpen(false);
+    });
+
     const handleButtonClick = () => {
         setIsOpen(!isOpen);
     };
@@ -47,7 +54,6 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({text, ico
         setIsOpen(false);
     };
 
-    const datepickerRef = useRef<HTMLDivElement>(null);
 
     useImperativeHandle(ref, () => ({
         reset: () => setSelectedValue(null),
@@ -67,9 +73,12 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({text, ico
                 }
             </div>
             {isOpen && (
-                <div className={cn("absolute top-full left-0", className)}>
+                <motion.div className={cn("absolute top-full left-0 overflow-hidden", className)} ref={menuRef}
+                            initial={{maxHeight: 0}}
+                            animate={{maxHeight: isOpen ? '360px' : 0}}
+                            transition={{duration: 0.3}}>
                     <Calendar onDayClick={handleDayClick}/>
-                </div>
+                </motion.div>
             )}
         </div>
     );
