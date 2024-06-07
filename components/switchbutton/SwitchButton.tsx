@@ -33,7 +33,7 @@ export const SwitchButton: React.FC<SwitchButtonProps> = ({ firstTitle, secondTi
                 {firstTitle}
             </div>
             <div
-                className={selectedValue ? "bg-dark text-gray rounded-lg px-2 py-0.5 hover:text-white" : "bg-dark text-gray mr-1 rounded-lg px-2 py-0.5 hover:text-white"}>
+                className={selectedValue ? "bg-dark text-gray rounded-lg px-2 py-0.5 hover:text-white" : "bg-dark text-gray ml-1 rounded-lg px-2 py-0.5 hover:text-white"}>
                 {secondTitle}
             </div>
         </div>

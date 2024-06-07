@@ -25,6 +25,7 @@ const datepicker = cva("flex flex-row items-center bg-black rounded-lg border bo
 interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof datepicker> {
     text: string;
     iconSize: number;
+    preSelectedValue?: Date | null | undefined;
 }
 
 export type DatepickerRef = HTMLDivElement & {
@@ -32,9 +33,9 @@ export type DatepickerRef = HTMLDivElement & {
     getSelectedValue: () => Date | null
 };
 
-const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({text, iconSize, size, className, ...props}, ref) => {
+const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({preSelectedValue, text, iconSize, size, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState<Date | undefined>(undefined);
+    const [selectedValue, setSelectedValue] = useState<Date | undefined>(preSelectedValue ? preSelectedValue : undefined);
 
     const datepickerRef = useRef<HTMLDivElement>(null);
     const menuRef = useOutsideClick(() => {
@@ -53,7 +54,6 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({text, ico
         setSelectedValue(day);
         setIsOpen(false);
     };
-
 
     useImperativeHandle(ref, () => ({
         reset: () => setSelectedValue(null),

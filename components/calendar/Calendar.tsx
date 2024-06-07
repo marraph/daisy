@@ -35,7 +35,7 @@ const Calendar: React.FC<CalendarProps> = ({ className, classNames, ...props }) 
                 day_range_end: "day-range-end",
                 day_selected:
                     "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-                day_today: "bg-gray text-black rounded-lg hover:text-black hover:bg-white",
+                day_today: "bg-dark text-white rounded-lg hover:text-black hover:bg-white",
                 day_outside:
                     "day-outside opacity-50 aria-selected:bg-accent/50 aria-selected:opacity-30",
                 day_disabled: "text-muted-foreground opacity-50",

@@ -20,7 +20,7 @@ export const Default: Story = {
     render: () => {
         return (
             <div className={"flex flex-row"}>
-            <DatePicker text={"Select a date"} iconSize={16} size={"small"}/>
+            <DatePicker preSelectedValue={new Date()} text={"Select a date"} iconSize={16} size={"small"}/>
             <Combobox buttonTitle={"wwwwww"} size={"small"}/>
             </div>
 

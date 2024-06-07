@@ -44,7 +44,7 @@ interface ComboboxItemProps extends React.HTMLAttributes<HTMLDivElement>, Varian
 
 interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement>, VariantProps<typeof combobox> {
     buttonTitle: string;
-    preSelectedValue?: string;
+    preSelectedValue?: string | null | undefined;
 }
 
 type ComboboxRef = HTMLDivElement & {
