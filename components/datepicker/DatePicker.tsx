@@ -62,7 +62,7 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({text, ico
     }));
 
     return (
-        <div className={cn("relative inline-block", className)}>
+        <div className={cn("relative inline-block space-y-1", className)}>
             <div className={cn(datepicker({size}), className)} {...props}>
                 <div onClick={handleButtonClick} className={"flex flex-row items-center space-x-1"}>
                     <CalendarDays size={iconSize} className={"mr-1"}/>
