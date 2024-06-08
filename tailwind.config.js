@@ -27,6 +27,8 @@ module.exports = {
       "calPurple": "#A151D2",
       "calPink": "#D251C5",
       "calYellow": "#DDDF4D",
+
+      "transparent-yellow": "rgba(255, 255, 0, 0.2)",
     },
     extend: {
       backgroundImage: {
