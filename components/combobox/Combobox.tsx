@@ -54,8 +54,8 @@ type ComboboxRef = HTMLDivElement & {
 
 
 const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ size, title, isSelected, hasPreValue, onClick, className, ...props }, ref) => (
-    <div className={cn(comboboxItem({size}), className, (isSelected || hasPreValue) ? "bg-dark text-white" : "bg-black")} ref={ref} {...props} onClick={onClick}>
-        {(isSelected || hasPreValue) && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
+    <div className={cn(comboboxItem({size}), className, (isSelected) ? "bg-dark text-white" : "bg-black")} ref={ref} {...props} onClick={onClick}>
+        {(isSelected) && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
         <div className={"flex flex-row justify-between items-center w-full"}>
             <span>{title}</span>
             {props.children}
@@ -75,7 +75,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
     });
 
     const handleItemClick = (item: string) => {
-        if (selectedValue) {
+        if (selectedValue === item) {
             setSelectedValue(null);
         } else {
             setSelectedValue(item);
@@ -94,7 +94,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
     return (
         <div className={cn("relative space-y-1", className)} ref={menuRef}>
             <div className={cn(combobox({size}), className)} {...props} onClick={() => {setIsOpen(!isOpen)}}>
-                <span>{selectedValue ? selectedValue : buttonTitle}</span>
+                <span>{selectedValue ?? buttonTitle}</span>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
             </div>
             {isOpen && (
@@ -112,7 +112,6 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
                                     handleItemClick(child.props.title);
                                 },
                                 isSelected: selectedValue === child.props.title,
-                                hasPreValue: preSelectedValue === child.props.title && selectedValue === null,
                             });
                         }
                         return child;

@@ -23,7 +23,7 @@ export const Default: Story = {
         const comboboxRef = useRef<ComboboxRef>(null);
 
         return (
-            <Combobox size={"medium"} buttonTitle={"medium"} ref={comboboxRef} >
+            <Combobox size={"medium"} buttonTitle={"Title"} ref={comboboxRef} >
                 {items.map((item, index) => (
                     <ComboboxItem key={index} title={item} size={"medium"}/>
                 ))}
