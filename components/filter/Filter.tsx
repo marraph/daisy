@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useImperativeHandle, useRef, useState} from "react";
 import {Check, ChevronRight, ListFilter} from "lucide-react";
 import {CloseButton} from "../closebutton/CloseButton";
 import {useOutsideClick} from "../../utils/clickOutside";
@@ -128,6 +128,14 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({onFilterChange, o
             onFilterChange(newFilterList);
         }
     }
+
+    const filterRef = useRef<HTMLDivElement>(null);
+
+    useImperativeHandle(ref, () => ({
+        reset: () => setFilterList(null),
+        getSelectedItems: () => filterList,
+        ...filterRef.current,
+    }));
 
     return (
         <div className={"relative space-y-1"} ref={menuRef} {...props}>
