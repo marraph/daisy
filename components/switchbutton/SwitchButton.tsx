@@ -7,16 +7,22 @@ import { motion } from "framer-motion";
 interface SwitchButtonProps extends React.HTMLAttributes<HTMLDivElement> {
     firstTitle: string;
     secondTitle: string;
+    onClick?: () => void;
 }
 
-export const SwitchButton: React.FC<SwitchButtonProps> = ({ firstTitle, secondTitle, className, ...props }) => {
+export const SwitchButton: React.FC<SwitchButtonProps> = ({ firstTitle, secondTitle, onClick, className, ...props }) => {
     const [selectedValue, setSelectedValue] = useState(true);
+
+    const handleClick = () => {
+        setSelectedValue(!selectedValue);
+        if (onClick) onClick();
+    }
 
     return (
         <div
             className={cn("relative flex items-center rounded-lg font-normal cursor-pointer text-gray bg-dark border border-white border-opacity-20 text-sm w-max", className)}
             {...props}
-            onClick={() => setSelectedValue(!selectedValue)}
+            onClick={handleClick}
         >
                 <motion.div
                 className="absolute flex flex-row w-min h-full items-center px-0.5"
