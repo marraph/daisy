@@ -50,7 +50,7 @@ interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement>, Vari
 type ComboboxRef = HTMLDivElement & {
     reset: () => void;
     getSelectedValue: () => string | null;
-    setValue: (value: string) => void;
+    setValue: (value: string | null | undefined) => void;
 };
 
 
