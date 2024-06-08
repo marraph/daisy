@@ -48,8 +48,9 @@ interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement>, Vari
 }
 
 type ComboboxRef = HTMLDivElement & {
-    reset: () => void
-    getSelectedValue: () => string | null
+    reset: () => void;
+    getSelectedValue: () => string | null;
+    setValue: (value: string) => void;
 };
 
 
@@ -88,6 +89,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
     useImperativeHandle(ref, () => ({
         reset: () => setSelectedValue(null),
         getSelectedValue: () => selectedValue,
+        setValue: (value: string) => setSelectedValue(value),
         ...comboRef.current,
     }));
 
