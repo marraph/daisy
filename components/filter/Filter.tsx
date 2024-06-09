@@ -23,7 +23,7 @@ interface FilterItemProps extends React.HTMLAttributes<HTMLDivElement> {
     selectedItem?: string | null;
 }
 
-export type FilterRef = HTMLDivElement & {
+export type FilterRef =  {
     getSelectedItems: () => { [key: string]: string | null };
     reset: () => void;
 };
@@ -83,7 +83,7 @@ const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({title, ic
 FilterItem.displayName = "FilterItem";
 
 
-const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({onFilterChange, onResetTeamSelected, className, ...props}, ref) => {
+const Filter = React.forwardRef<FilterRef, FilterProps>(({onFilterChange, onResetTeamSelected, className, ...props}, ref) => {
     const [filterList, setFilterList] = useState<{ [key: string]: string | null }>({});
     const [showFilter, setShowFilter] = useState(false);
     const [openItem, setOpenItem] = useState<string | null>(null);
@@ -129,12 +129,9 @@ const Filter = React.forwardRef<HTMLDivElement, FilterProps>(({onFilterChange, o
         }
     }
 
-    const filterRef = useRef<HTMLDivElement>(null);
-
     useImperativeHandle(ref, () => ({
-        reset: () => setFilterList(null),
+        reset: () => setFilterList({}),
         getSelectedItems: () => filterList,
-        ...filterRef.current,
     }));
 
     return (
