@@ -28,7 +28,7 @@ export const SwitchButton: React.FC<SwitchButtonProps> = ({ firstTitle, secondTi
                 className="absolute flex flex-row w-min h-full items-center px-0.5"
                 initial={false}
                 animate={{x: selectedValue ? 0 : '98%'}}
-                transition={{type: 'spring', stiffness: 500, damping: 30, duration: 0.5}}
+                transition={{type: 'spring', stiffness: 500, damping: 30, duration: 0.2}}
                 >
                     <span className="bg-black text-white rounded-lg px-2 py-0.5">
                         {selectedValue ? firstTitle : secondTitle}
