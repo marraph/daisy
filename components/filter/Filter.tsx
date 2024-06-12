@@ -21,6 +21,7 @@ interface FilterItemProps extends React.HTMLAttributes<HTMLDivElement> {
     onClose?: () => void;
     onItemSelect?: (item: string) => void;
     selectedItem?: string | null;
+    maxItemsPerColumn?: number;
 }
 
 export type FilterRef =  {
@@ -29,7 +30,7 @@ export type FilterRef =  {
 };
 
 
-const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({title, icon, data, isOpen, onOpen, onClose, onItemSelect, selectedItem, className, ...props}, ref) => {
+const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({maxItemsPerColumn, title, icon, data, isOpen, onOpen, onClose, onItemSelect, selectedItem, className, ...props}, ref) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const toggleOpen = () => {
@@ -46,6 +47,10 @@ const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({title, ic
         }
     };
 
+    const itemCount = data.length;
+    const columnCount = Math.ceil(itemCount / maxItemsPerColumn);
+
+
     return (
         <div className={"relative"}>
             <div className={`cursor-pointer text-gray text-sm hover:text-white hover:bg-dark m-1 py-1 rounded-lg flex flex-row items-center justify-between 
@@ -61,11 +66,16 @@ const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({title, ic
             </div>
             {(isOpen || isHovered) && data.length > 0 &&
                 <motion.div
-                    className={"absolute left-full top-0 ml-2 pb-1 space-y-1 bg-black rounded-lg border border-white border-opacity-20 whitespace-nowrap overflow-hidden"}
+                    className={"absolute left-full top-0 ml-2 pb-1 space-y-1 bg-black flex flex-col rounded-lg border border-white border-opacity-20 whitespace-nowrap overflow-hidden"}
                     initial={{width: 0}}
                     animate={{width: isOpen || isHovered ? 'auto' : 0}}
-                    transition={{duration: 0.2}}>
-
+                    transition={{duration: 0.2}}
+                    style={{
+                        maxHeight: '300px',
+                        display: 'grid',
+                        gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
+                        gap: '0.1rem'
+                    }}>
                     {data.map((title) => (
                         <div key={title} className={`flex flex-row items-center m-1 text-gray text-sm rounded-lg cursor-pointer hover:text-white hover:bg-dark
                         ${selectedItem === title ? 'bg-dark text-white' : 'hover:bg-dark hover:text-white'}`}

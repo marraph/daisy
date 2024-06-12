@@ -15,7 +15,7 @@ export default meta;
 
 type Story = StoryObj<typeof Combobox>
 
-const items = ["Option 1", "Option 2 rinrihnire", "Option 3"];
+const items = ["Option 1", "Option 2 rinrihnire", "Option 3", "option 4", "option"];
 
 export const Default: Story = {
     render: () => {
@@ -23,7 +23,7 @@ export const Default: Story = {
         const comboboxRef = useRef<ComboboxRef>(null);
 
         return (
-            <Combobox size={"medium"} buttonTitle={"Title"} ref={comboboxRef} >
+            <Combobox size={"medium"} buttonTitle={"Title"} ref={comboboxRef} maxItemsPerColumn={5}>
                 {items.map((item, index) => (
                     <ComboboxItem key={index} title={item} size={"medium"}/>
                 ))}

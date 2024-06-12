@@ -17,7 +17,7 @@ export default meta;
 type Story = StoryObj<typeof Filter>;
 
 const team = ["team 1", "team 2", "team 3"];
-const project = ["project 1", "project 2", "project 3", "project marius uowgigwg w wg"];
+const project = ["project 1", "project 2", "project 3", "project marius uowgigwg w wg", "project", "project", "project"];
 
 export const Default: Story = {
   render: () => {
@@ -32,7 +32,7 @@ export const Default: Story = {
 
     return (
       <Filter ref={filterRef} onFilterChange={handleFilterChange}>
-        <FilterItem
+        <FilterItem maxItemsPerColumn={5}
           title={"Team"}
           data={team}
           icon={<ShieldHalf size={16} />}

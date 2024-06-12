@@ -45,6 +45,7 @@ interface ComboboxItemProps extends React.HTMLAttributes<HTMLDivElement>, Varian
 interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement>, VariantProps<typeof combobox> {
     buttonTitle: string;
     preSelectedValue?: string | null | undefined;
+    maxItemsPerColumn?: number;
 }
 
 type ComboboxRef = HTMLDivElement & {
@@ -67,7 +68,7 @@ ComboboxItem.displayName = "ComboboxItem";
 
 
 
-const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({maxItemsPerColumn, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
 
@@ -93,20 +94,29 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
         ...comboRef.current,
     }));
 
+    const itemCount = React.Children.count(props.children);
+    const columnCount = Math.ceil(itemCount / maxItemsPerColumn);
+
     return (
         <div className={cn("relative space-y-1", className)} ref={menuRef}>
-            <div className={cn(combobox({size}), className)} {...props} onClick={() => {setIsOpen(!isOpen)}}>
+            <div className={cn(combobox({ size }), className)} {...props} onClick={() => setIsOpen(!isOpen)}>
                 <span>{selectedValue ?? buttonTitle}</span>
-                <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
+                <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12} />
             </div>
             {isOpen && (
                 <motion.div
-                    className={cn("absolute top-full min-w-full bg-black border border-white border-opacity-20 flex flex-col text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}
+                    className={cn("absolute top-full min-w-max bg-black border border-white border-opacity-20 flex flex-col text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}
+                    style={{
+                        maxHeight: '300px',
+                        display: 'grid',
+                        gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
+                        gap: '0.1rem'
+                    }}
                     initial={{ maxHeight: 0 }}
-                    animate={{ maxHeight: isOpen ? '300px' : 0  }}
+                    animate={{ maxHeight: isOpen ? '300px' : 0 }}
                     transition={{ duration: 0.3 }}>
 
-                    {React.Children.map(props.children, (child) => {
+                    {React.Children.map(props.children, (child, index) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
                             return React.cloneElement(child, {
                                 onClick: () => {
@@ -114,6 +124,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
                                     handleItemClick(child.props.title);
                                 },
                                 isSelected: selectedValue === child.props.title,
+                                key: index
                             });
                         }
                         return child;
