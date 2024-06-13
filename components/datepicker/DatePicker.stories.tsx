@@ -19,7 +19,7 @@ type Story = StoryObj<typeof DatePicker>;
 export const Default: Story = {
     render: () => {
         return (
-            <DatePicker preSelectedValue={new Date()} text={"Select a date"} iconSize={16} size={"medium"}/>
+            <DatePicker preSelectedValue={new Date()} text={"Select a date"} iconSize={12} size={"medium"}/>
         );
     },
 };

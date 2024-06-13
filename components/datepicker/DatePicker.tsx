@@ -10,7 +10,7 @@ import {useOutsideClick} from "../../utils/clickOutside";
 import { motion } from "framer-motion";
 import {CloseButton} from "../closebutton/CloseButton";
 
-const datepicker = cva("flex flex-row items-center bg-black rounded-lg border border-white border-opacity-20 text-gray cursor-pointer", {
+const datepicker = cva("flex flex-row items-center bg-black rounded-lg border border-white border-opacity-20 text-gray cursor-pointer hover:text-white hover:bg-dark", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2", "space-x-2"],
@@ -64,8 +64,8 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({preSelect
             <div className={"flex flex-row items-center"}>
                 <div className={cn(datepicker({size}),
                     `${!selectedValue ?
-                        "hover:text-white hover:bg-dark px-4 rounded-lg" :
-                        "hover:text-white hover:bg-dark pl-4 pr-4 rounded-l-lg rounded-r-none border-r-0"}`
+                        "px-2 rounded-lg" :
+                        "px-2 rounded-l-lg rounded-r-none border-r-0"}`
                     , className)} onClick={handleButtonClick} {...props}>
                     <CalendarDays size={iconSize} className={"mr-1"}/>
                     <span>{!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))}</span>
