@@ -72,16 +72,16 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({preSelect
                 </div>
                 {selectedValue &&
                     <div
-                        className={"group flex flex-row rounded-r-lg bg-black items-center border border-white border-opacity-20 hover:bg-dark hover:text-white"}
+                        className={"group/delete flex flex-row rounded-r-lg bg-black items-center border border-white border-opacity-20 hover:bg-dark hover:text-white"}
                         onClick={(e) => {
                             e.stopPropagation();
                             setSelectedValue(undefined);
                         }}>
                         {size === "small" &&
-                            <CloseButton iconSize={16} className={"group-hover:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"}/>
+                            <CloseButton iconSize={16} className={"group-hover/delete:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"}/>
                         }
                         {size === "medium" &&
-                            <CloseButton iconSize={16} className={"m-1.5 group-hover:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"}/>
+                            <CloseButton iconSize={16} className={"m-1.5 group-hover/delete:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"}/>
                         }
                     </div>
                 }
