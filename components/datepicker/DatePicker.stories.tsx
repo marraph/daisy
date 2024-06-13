@@ -19,11 +19,7 @@ type Story = StoryObj<typeof DatePicker>;
 export const Default: Story = {
     render: () => {
         return (
-            <div className={"flex flex-row"}>
-            <DatePicker preSelectedValue={new Date()} text={"Select a date"} iconSize={16} size={"small"}/>
-            <Combobox buttonTitle={"wwwwww"} size={"small"}/>
-            </div>
-
+            <DatePicker preSelectedValue={new Date()} text={"Select a date"} iconSize={16} size={"medium"}/>
         );
     },
 };

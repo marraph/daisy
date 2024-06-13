@@ -8,13 +8,13 @@ import {CalendarDays, Delete} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {useOutsideClick} from "../../utils/clickOutside";
 import { motion } from "framer-motion";
+import {CloseButton} from "../closebutton/CloseButton";
 
 const datepicker = cva("flex flex-row items-center bg-black rounded-lg border border-white border-opacity-20 text-gray cursor-pointer", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2", "space-x-2"],
             medium: ["text-sm", "py-2", "px-3", "space-x-2"],
-            large: ["text-base", "py-3", "px-4", "space-x-3"],
         },
     },
     defaultVariants: {
@@ -47,10 +47,6 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({preSelect
         setIsOpen(!isOpen);
     };
 
-    const handleCloseClick = () => {
-        setSelectedValue(undefined);
-    };
-
     const handleDayClick = (day: Date | undefined) => {
         setSelectedValue(day);
         setIsOpen(false);
@@ -65,15 +61,32 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({preSelect
 
     return (
         <div className={cn("relative inline-block space-y-1", className)}>
-            <div className={cn(datepicker({size}), className)} {...props}>
-                <div onClick={handleButtonClick} className={"flex flex-row items-center space-x-1"}>
+            <div className={"flex flex-row items-center"}>
+                <div className={cn(datepicker({size}),
+                    `${!selectedValue ?
+                        "hover:text-white hover:bg-dark px-4 rounded-lg" :
+                        "hover:text-white hover:bg-dark pl-4 pr-4 rounded-l-lg rounded-r-none border-r-0"}`
+                    , className)} onClick={handleButtonClick} {...props}>
                     <CalendarDays size={iconSize} className={"mr-1"}/>
                     <span>{!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))}</span>
                 </div>
                 {selectedValue &&
-                    <Delete size={12} className={"hover:text-white"} onClick={handleCloseClick}/>
+                    <div
+                        className={"group flex flex-row rounded-r-lg bg-black items-center border border-white border-opacity-20 hover:bg-dark hover:text-white"}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedValue(undefined);
+                        }}>
+                        {size === "small" &&
+                            <CloseButton iconSize={16} className={"group-hover:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"}/>
+                        }
+                        {size === "medium" &&
+                            <CloseButton iconSize={16} className={"m-1.5 group-hover:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"}/>
+                        }
+                    </div>
                 }
             </div>
+
             {isOpen && (
                 <motion.div className={cn("absolute top-full left-0 overflow-hidden", className)} ref={menuRef}
                             initial={{maxHeight: 0}}

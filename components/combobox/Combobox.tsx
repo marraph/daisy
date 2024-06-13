@@ -95,18 +95,18 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
 
     return (
         <div className={cn("relative space-y-1", className)} ref={menuRef}>
-            <div className={cn(combobox({size}), className)} {...props} onClick={() => {setIsOpen(!isOpen)}}>
+            <div className={cn(combobox({ size }), className)} {...props} onClick={() => setIsOpen(!isOpen)}>
                 <span>{selectedValue ?? buttonTitle}</span>
-                <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
+                <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12} />
             </div>
             {isOpen && (
                 <motion.div
-                    className={cn("absolute top-full min-w-full bg-black border border-white border-opacity-20 flex flex-col text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}
+                    className={cn("absolute top-full min-w-max bg-black border border-white border-opacity-20 text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}
                     initial={{ maxHeight: 0 }}
-                    animate={{ maxHeight: isOpen ? '300px' : 0  }}
+                    animate={{ maxHeight: isOpen ? '300px' : 0 }}
                     transition={{ duration: 0.3 }}>
 
-                    {React.Children.map(props.children, (child) => {
+                    {React.Children.map(props.children, (child, index) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
                             return React.cloneElement(child, {
                                 onClick: () => {
@@ -114,6 +114,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
                                     handleItemClick(child.props.title);
                                 },
                                 isSelected: selectedValue === child.props.title,
+                                key: index
                             });
                         }
                         return child;
