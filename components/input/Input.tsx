@@ -1,6 +1,6 @@
 "use client";
 
-import React, {forwardRef} from "react";
+import React, {forwardRef, useImperativeHandle, useRef} from "react";
 import { cn } from "../../utils/cn";
 import {cva, VariantProps} from "class-variance-authority";
 
@@ -25,35 +25,55 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, Varian
     label?:  string;
     placeholder: string;
     icon?: React.ReactNode;
+    preSelectedValue?: string | null | undefined;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(({ icon, elementSize, border, label, placeholder, className, ...props }, ref) => (
-    <div className={cn("flex flex-col", className)}>
-        {label && (
-            <p className={cn("text-white font-normal m-1", elementSize === "medium" ? "text-base" : "text-xs", className)}>
-                {label}
-            </p>
-        )}
-        <div className={cn("relative flex flex-row items-center", className)}>
+type InputRef = HTMLInputElement & {
+    reset: () => void;
+    getValue: () => string | null;
+    setValue: (value: string | null | undefined) => void;
+};
 
-            {icon && elementSize === "medium" &&
-                <div className={"bg-black border border-white border-opacity-20 border-r-0 2.5 rounded-l-lg text-gray"}>
-                    {icon}
-                </div>
-            }
+const Input = forwardRef<InputRef, InputProps>(({ preSelectedValue, icon, elementSize, border, label, placeholder, className, ...props }, ref) => {
+    const [inputValue, setInputValue] = React.useState<string | null>(preSelectedValue || null);
 
-            {icon && elementSize === "small" &&
-                <div className={"bg-black border border-white border-opacity-20 border-r-0 p-1.5 rounded-l-lg text-gray"}>
-                    {icon}
-                </div>
-            }
+    const inputRef = useRef<HTMLInputElement>(null);
 
-            <input placeholder={placeholder} spellCheck={false} className={cn(input({ border, elementSize }),
-                icon && 'rounded-l-none border-l-0 pl-1', className)} ref={ref} {...props}>
-            </input>
+    useImperativeHandle(ref, () => ({
+        reset: () => setInputValue(null),
+        getValue: () => inputValue,
+        setValue: (value: string) => setInputValue(value),
+        ...inputRef.current,
+    }));
+
+    return (
+        <div className={cn("flex flex-col", className)}>
+            {label && (
+                <p className={cn("text-white font-normal m-1", elementSize === "medium" ? "text-base" : "text-xs", className)}>
+                    {label}
+                </p>
+            )}
+            <div className={cn("relative flex flex-row items-center", className)}>
+
+                {icon && elementSize === "medium" &&
+                    <div className={"bg-black border border-white border-opacity-20 border-r-0 p-2.5 rounded-l-lg text-gray"}>
+                        {icon}
+                    </div>
+                }
+
+                {icon && elementSize === "small" &&
+                    <div className={"bg-black border border-white border-opacity-20 border-r-0 p-1.5 rounded-l-lg text-gray"}>
+                        {icon}
+                    </div>
+                }
+
+                <input placeholder={placeholder} spellCheck={false} className={cn(input({ border, elementSize }),
+                    icon && 'rounded-l-none border-l-0 pl-1', className)} ref={ref} {...props}>
+                </input>
+            </div>
         </div>
-    </div>
-));
+    );
+});
 Input.displayName = "Input";
 
 export { Input };
