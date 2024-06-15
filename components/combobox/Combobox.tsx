@@ -45,6 +45,7 @@ interface ComboboxItemProps extends React.HTMLAttributes<HTMLDivElement>, Varian
 interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement>, VariantProps<typeof combobox> {
     buttonTitle: string;
     preSelectedValue?: string | null | undefined;
+    icon?: ReactNode;
 }
 
 type ComboboxRef = HTMLDivElement & {
@@ -67,7 +68,7 @@ ComboboxItem.displayName = "ComboboxItem";
 
 
 
-const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({icon, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
 
@@ -96,6 +97,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({size, buttonT
     return (
         <div className={cn("relative space-y-1", className)} ref={menuRef}>
             <div className={cn(combobox({ size }), className)} {...props} onClick={() => setIsOpen(!isOpen)}>
+                {icon}
                 <span>{selectedValue ?? buttonTitle}</span>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12} />
             </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, {useEffect, useImperativeHandle, useRef, useState} from "react";
-import {Check, ChevronRight, ListFilter} from "lucide-react";
+import {Check, ChevronRight, Filter, ListFilter} from "lucide-react";
 import {CloseButton} from "../closebutton/CloseButton";
 import {useOutsideClick} from "../../utils/clickOutside";
 import {motion} from "framer-motion";
@@ -83,7 +83,7 @@ const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({title, ic
 FilterItem.displayName = "FilterItem";
 
 
-const Filter = React.forwardRef<FilterRef, FilterProps>(({onFilterChange, onResetTeamSelected, className, ...props}, ref) => {
+const FilterButton = React.forwardRef<FilterRef, FilterProps>(({onFilterChange, onResetTeamSelected, className, ...props}, ref) => {
     const [filterList, setFilterList] = useState<{ [key: string]: string | null }>({});
     const [showFilter, setShowFilter] = useState(false);
     const [openItem, setOpenItem] = useState<string | null>(null);
@@ -147,7 +147,7 @@ const Filter = React.forwardRef<FilterRef, FilterProps>(({onFilterChange, onRese
                             closeMenus();
                             setShowFilter(!showFilter);
                         }}>
-                    <ListFilter size={20} className={"mr-2 my-2"}/>
+                    <Filter size={20} className={"mr-1 my-2"}/>
                     <span className={"flex flex-row py-2"}>
                         {Object.values(filterList).filter(Boolean).length <= 0 ? "Filter" :
                             `${Object.values(filterList).filter(Boolean).length} Filter`}
@@ -189,8 +189,8 @@ const Filter = React.forwardRef<FilterRef, FilterProps>(({onFilterChange, onRese
         </div>
     )
 });
-Filter.displayName = "Filter";
+FilterButton.displayName = "FilterButton";
 
 
-export {Filter, FilterItem};
+export {FilterButton, FilterItem};
 

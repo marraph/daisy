@@ -4,7 +4,7 @@ import React, {useImperativeHandle, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
 import {Calendar} from "../calendar/Calendar";
 import {format} from "date-fns";
-import {CalendarDays, Delete} from "lucide-react";
+import {CalendarDays} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {useOutsideClick} from "../../utils/clickOutside";
 import { motion } from "framer-motion";
@@ -39,13 +39,10 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({preSelect
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(preSelectedValue ? preSelectedValue : undefined);
 
     const datepickerRef = useRef<HTMLDivElement>(null);
+
     const menuRef = useOutsideClick(() => {
         setIsOpen(false);
     });
-
-    const handleButtonClick = () => {
-        setIsOpen(!isOpen);
-    };
 
     const handleDayClick = (day: Date | undefined) => {
         setSelectedValue(day);
@@ -65,8 +62,8 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({preSelect
                 <div className={cn(datepicker({size}),
                     `${!selectedValue ?
                         "px-2 rounded-lg" :
-                        "px-2 rounded-l-lg rounded-r-none border-r-0"}`
-                    , className)} onClick={handleButtonClick} {...props}>
+                        "px-2 rounded-l-lg rounded-r-none border-r-0"}`, className)}
+                     onClick={() => setIsOpen(!isOpen)} {...props}>
                     <CalendarDays size={iconSize} className={"mr-1"}/>
                     <span>{!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))}</span>
                 </div>

@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
-import { Filter, FilterItem, FilterRef } from "./Filter";
+import {FilterButton, FilterItem, FilterRef} from "./Filter";
 import { Meta, StoryObj } from "@storybook/react";
 import { ShieldHalf } from "lucide-react";
 
-const meta: Meta<typeof Filter> = {
+const meta: Meta<typeof FilterButton> = {
   title: "Components/Filter",
-  component: Filter,
+  component: FilterButton,
   parameters: {
     layout: "centered",
   },
@@ -14,7 +14,7 @@ const meta: Meta<typeof Filter> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Filter>;
+type Story = StoryObj<typeof FilterButton>;
 
 const team = []
 const project = ["project 1", "project 2", "project 3", "project marius uowgigwg w wg"];
@@ -31,14 +31,14 @@ export const Default: Story = {
     };
 
     return (
-      <Filter ref={filterRef} onFilterChange={handleFilterChange}>
+      <FilterButton ref={filterRef} onFilterChange={handleFilterChange}>
         <FilterItem
           title={"Team"}
           data={team}
           icon={<ShieldHalf size={16} />}
         />
         <FilterItem title={"Project"} data={project} icon={<ShieldHalf size={16} />}/>
-      </Filter>
+      </FilterButton>
     );
   },
 };
