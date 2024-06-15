@@ -4,11 +4,11 @@ import React, {forwardRef} from "react";
 import { cn } from "../../utils/cn";
 import {cva, VariantProps} from "class-variance-authority";
 
-const input = cva("w-max rounded-lg font-normal text-gray focus:text-white placeholder-placeholder", {
+const input = cva("group/input w-max rounded-lg font-normal text-gray bg-black focus:text-white placeholder-placeholder focus-visible:outline-none focus-visible:ring-0", {
     variants: {
         border: {
             default: ["bg-black", "border", "border-white", "border-opacity-20", "outline-none", "focus:ring-2", "focus:ring-placeholder"],
-            none: ["focus-visible:ring-0", "border-0", "bg-black", "focus-visible:outline-none"],
+            none: ["border-0",],
         },
         elementSize: {
             medium: ["text-base", "py-2", "px-4"],
@@ -37,19 +37,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ icon, elementSize, bor
         <div className={cn("relative flex flex-row items-center", className)}>
 
             {icon && elementSize === "medium" &&
-                <div className={"bg-black p-2.5 rounded-l-lg text-gray"}>
+                <div className={"bg-black border border-white border-opacity-20 border-r-0 2.5 rounded-l-lg text-gray"}>
                     {icon}
                 </div>
             }
 
             {icon && elementSize === "small" &&
-                <div className={"bg-black p-1.5 rounded-l-lg text-gray"}>
+                <div className={"bg-black border border-white border-opacity-20 border-r-0 p-1.5 rounded-l-lg text-gray"}>
                     {icon}
                 </div>
             }
 
             <input placeholder={placeholder} spellCheck={false} className={cn(input({ border, elementSize }),
-                icon && 'rounded-l-none pl-1', className)} ref={ref} {...props}>
+                icon && 'rounded-l-none border-l-0 pl-1', className)} ref={ref} {...props}>
             </input>
         </div>
     </div>

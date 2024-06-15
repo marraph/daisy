@@ -19,7 +19,8 @@ type Story = StoryObj<typeof Input>
 export const Default: Story = {
     render: () => {
         return (
-            <Input placeholder={"Small input"} label={"Label Title"} elementSize={"small"} border={"none"}/>
+            <Input placeholder={"Small input"} label={"Label Title"} elementSize={"small"} border={"none"}
+            icon={<Hourglass size={12}/>}/>
         );
     },
 };
