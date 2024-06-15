@@ -32,12 +32,12 @@ interface NavigationContextProps {
 }
 
 const NavigationContext = createContext<NavigationContextProps>({
-    selectedItem: 'Dashboard',
+    selectedItem: '',
     setSelectedItem: () => {}
 });
 
 const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [selectedItem, setSelectedItem] = useState<string>('Dashboard');
+    const [selectedItem, setSelectedItem] = useState<string>('');
 
     return (
         <NavigationContext.Provider value={{ selectedItem, setSelectedItem }}>

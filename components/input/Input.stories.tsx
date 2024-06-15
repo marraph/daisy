@@ -1,6 +1,7 @@
 import React from 'react';
 import {Meta, StoryObj} from "@storybook/react";
 import {Input} from "./Input";
+import {Hourglass} from "lucide-react";
 
 const meta: Meta<typeof Input> = {
     title: "Components/Input",
@@ -18,8 +19,7 @@ type Story = StoryObj<typeof Input>
 export const Default: Story = {
     render: () => {
         return (
-            <Input placeholder="Small input" label={"Label Title"} border={"none"}>
-            </Input>
+            <Input placeholder={"Small input"} label={"Label Title"} elementSize={"small"} border={"none"}/>
         );
     },
 };
