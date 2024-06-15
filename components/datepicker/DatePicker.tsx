@@ -4,7 +4,7 @@ import React, {useImperativeHandle, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
 import {Calendar} from "../calendar/Calendar";
 import {format} from "date-fns";
-import {CalendarDays} from "lucide-react";
+import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {useOutsideClick} from "../../utils/clickOutside";
 import { motion } from "framer-motion";
@@ -66,6 +66,7 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({preSelect
                      onClick={() => setIsOpen(!isOpen)} {...props}>
                     <CalendarDays size={iconSize} className={"mr-1"}/>
                     <span>{!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))}</span>
+                    <ChevronsUpDown size={iconSize}/>
                 </div>
                 {selectedValue &&
                     <div

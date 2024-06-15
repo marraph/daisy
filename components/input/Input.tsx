@@ -76,4 +76,4 @@ const Input = forwardRef<InputRef, InputProps>(({ preSelectedValue, icon, elemen
 });
 Input.displayName = "Input";
 
-export { Input };
+export { Input, InputRef };
