@@ -11,7 +11,7 @@ const input = cva("group/input w-max rounded-lg font-normal text-gray bg-black f
             none: ["border-0",],
         },
         elementSize: {
-            medium: ["text-base", "py-2", "px-4"],
+            medium: ["text-base", "py-1.5", "px-4"],
             small: ["text-xs", "py-1", "px-2"],
         },
     },
@@ -25,17 +25,17 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, Varian
     label?:  string;
     placeholder: string;
     icon?: React.ReactNode;
-    preSelectedValue?: string | null | undefined;
+    preSelectedValue?: string | number | null | undefined;
 }
 
 type InputRef = HTMLInputElement & {
     reset: () => void;
-    getValue: () => string | null;
-    setValue: (value: string | null | undefined) => void;
+    getValue: () => string | number | null;
+    setValue: (value: string | number | null | undefined) => void;
 };
 
 const Input = forwardRef<InputRef, InputProps>(({ preSelectedValue, icon, elementSize, border, label, placeholder, className, ...props }, ref) => {
-    const [inputValue, setInputValue] = React.useState<string | null>(preSelectedValue || null);
+    const [inputValue, setInputValue] = React.useState<string | number | null>(preSelectedValue || null);
 
     const inputRef = useRef<HTMLInputElement>(null);
 

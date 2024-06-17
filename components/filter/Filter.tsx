@@ -166,12 +166,7 @@ const FilterButton = React.forwardRef<FilterRef, FilterProps>(({onFilterChange, 
                 }
             </div>
             {showFilter &&
-                <motion.div
-                    className={"absolute left-0 mt-2 z-50 bg-black rounded-lg border border-white border-opacity-20 whitespace-nowrap"}
-                    ref={motionRef}
-                    initial={{maxHeight: 0, overflow: 'hidden'}}
-                    animate={{maxHeight: showFilter ? height : 0, transitionEnd: {overflow: 'visible'}}}
-                    transition={{duration: 0.3}}>
+                <div className={"absolute left-0 mt-2 z-50 bg-black rounded-lg border border-white border-opacity-20 whitespace-nowrap"} ref={motionRef}>
                     {React.Children.map(props.children, (child) => {
                         if (React.isValidElement<FilterItemProps>(child)) {
                             return React.cloneElement(child, {
@@ -184,7 +179,7 @@ const FilterButton = React.forwardRef<FilterRef, FilterProps>(({onFilterChange, 
                         }
                         return child;
                     })}
-                </motion.div>
+                </div>
             }
         </div>
     )

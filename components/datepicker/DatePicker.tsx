@@ -66,7 +66,7 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({preSelect
                      onClick={() => setIsOpen(!isOpen)} {...props}>
                     <CalendarDays size={iconSize} className={"mr-1"}/>
                     <span>{!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))}</span>
-                    <ChevronsUpDown size={iconSize}/>
+                    <ChevronsUpDown size={12}/>
                 </div>
                 {selectedValue &&
                     <div
@@ -86,12 +86,9 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({preSelect
             </div>
 
             {isOpen && (
-                <motion.div className={cn("absolute top-full left-0 overflow-hidden", className)} ref={menuRef}
-                            initial={{maxHeight: 0}}
-                            animate={{maxHeight: isOpen ? '360px' : 0}}
-                            transition={{duration: 0.3}}>
+                <div className={cn("absolute top-full left-0 overflow-hidden", className)} ref={menuRef}>
                     <Calendar onDayClick={handleDayClick}/>
-                </motion.div>
+                </div>
             )}
         </div>
     );
