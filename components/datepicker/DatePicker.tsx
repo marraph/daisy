@@ -14,7 +14,7 @@ const datepicker = cva("flex flex-row items-center bg-black rounded-lg border bo
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2", "space-x-2"],
-            medium: ["text-sm", "py-2", "px-3", "space-x-2"],
+            medium: ["text-sm", "py-1.5", "px-3", "space-x-2", "h-8"],
         },
     },
     defaultVariants: {
@@ -70,7 +70,7 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({preSelect
                 </div>
                 {selectedValue &&
                     <div
-                        className={"group/delete flex flex-row rounded-r-lg bg-black items-center border border-white border-opacity-20 hover:bg-dark hover:text-white"}
+                        className={"h-8 group/delete flex flex-row rounded-r-lg bg-black items-center border border-white border-opacity-20 hover:bg-dark hover:text-white"}
                         onClick={(e) => {
                             e.stopPropagation();
                             setSelectedValue(undefined);
@@ -79,7 +79,7 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(({preSelect
                             <CloseButton iconSize={16} className={"group-hover/delete:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"}/>
                         }
                         {size === "medium" &&
-                            <CloseButton iconSize={16} className={"m-1.5 group-hover/delete:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"}/>
+                            <CloseButton iconSize={16} className={"group-hover/delete:bg-dark group-hover/close:text-white bg-black w-full rounded-l-none"}/>
                         }
                     </div>
                 }

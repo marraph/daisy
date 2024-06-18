@@ -2,6 +2,7 @@ import React from 'react';
 import {Meta, StoryObj} from "@storybook/react";
 import {DatePicker} from "./DatePicker";
 import {Combobox} from "../combobox/Combobox";
+import {Button} from "../button/Button";
 
 const meta: Meta<typeof DatePicker> = {
     title: "Components/DatePicker",
@@ -19,7 +20,10 @@ type Story = StoryObj<typeof DatePicker>;
 export const Default: Story = {
     render: () => {
         return (
-            <DatePicker preSelectedValue={new Date()} text={"Select a date"} iconSize={12} size={"medium"}/>
+            <div className={"flex flex-row"}>
+                <DatePicker preSelectedValue={new Date()} text={"Select a date"} iconSize={12} size={"medium"}/>
+                <Button text={"button"} size={"medium"} className={"h-8"}></Button>
+            </div>
         );
     },
 };
