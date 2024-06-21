@@ -80,7 +80,7 @@ const SearchSelectItem = React.forwardRef<HTMLDivElement, SearchSelectItemProps>
 SearchSelectItem.displayName = "SearchSelectItem";
 
 
-const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(({icon, size, width,  buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const SearchSelect = React.forwardRef<SearchSelectRef, SearchSelectProps>(({icon, size, width,  buttonTitle, preSelectedValue, className, ...props}, ref) => {
     const inputRef = useRef<InputRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
@@ -103,7 +103,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(({icon,
         setIsOpen(false);
     };
 
-    const searchselectRef = useRef<HTMLDivElement>(null);
+    const searchselectRef = useRef<SearchSelectRef>(null);
 
     useImperativeHandle(ref, () => ({
         reset: () => {

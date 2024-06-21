@@ -8,6 +8,7 @@ interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 }
 
 type TextareaRef = HTMLTextAreaElement & {
+    reset: () => void;
     getValue: () => string | null;
     setValue: (value: string) => void;
 };
@@ -18,6 +19,7 @@ const Textarea = React.forwardRef<TextareaRef, TextareaProps>(({ placeholder, cl
     const textareaRef = useRef<TextareaRef>(null);
 
     useImperativeHandle(ref, () => ({
+        reset: () => setValue(null),
         getValue: () => value,
         setValue: (value) => setValue(value),
         ...textareaRef.current,

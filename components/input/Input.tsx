@@ -37,7 +37,7 @@ type InputRef = HTMLInputElement & {
 const Input = forwardRef<InputRef, InputProps>(({ preSelectedValue, icon, elementSize, border, label, placeholder, className, ...props }, ref) => {
     const [inputValue, setInputValue] = React.useState<string | number | null>(preSelectedValue || null);
 
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<InputRef>(null);
 
     useImperativeHandle(ref, () => ({
         reset: () => setInputValue(null),
@@ -67,8 +67,8 @@ const Input = forwardRef<InputRef, InputProps>(({ preSelectedValue, icon, elemen
                     </div>
                 }
 
-                <input placeholder={placeholder} spellCheck={false} className={cn(input({ border, elementSize }),
-                    icon && 'rounded-l-none border-l-0 pl-1', className)} ref={ref} {...props}>
+                <input className={cn(input({ border, elementSize }), icon && 'rounded-l-none border-l-0 pl-1', className)}
+                       placeholder={placeholder} spellCheck={false} ref={ref} {...props}>
                 </input>
             </div>
         </div>

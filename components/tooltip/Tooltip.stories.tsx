@@ -1,4 +1,4 @@
-import { Tooltip, TooltipTitle, TooltipDescription } from './Tooltip';
+import { Tooltip } from './Tooltip';
 import {Meta, StoryObj} from "@storybook/react";
 import React from "react";
 
@@ -18,10 +18,9 @@ type Story = StoryObj<typeof Tooltip>
 export const Default: Story = {
     render: () => {
         return (
-        <Tooltip theme={"dark"}>
-            <TooltipTitle title={"Title"}/>
-            <TooltipDescription description={"This is lorem ipsum balni wniwgigiw"} />
-        </Tooltip>
+        <div className={"size-40 bg-error"}>
+            <Tooltip message={"hello this is a tooltip"} delay={1000}/>
+        </div>
         );
     },
 };

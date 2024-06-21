@@ -47,7 +47,7 @@ interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement>, Vari
 
 type ComboboxRef = HTMLDivElement & {
     reset: () => void;
-    getSelectedValue: () => string | null;
+    getValue: () => string | null;
     setValue: (value: string | null | undefined) => void;
 };
 
@@ -65,7 +65,7 @@ ComboboxItem.displayName = "ComboboxItem";
 
 
 
-const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({icon, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const Combobox = React.forwardRef<ComboboxRef, ComboboxProps>(({icon, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
 
@@ -82,11 +82,11 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({icon, size, b
         setIsOpen(false);
     };
 
-    const comboRef = useRef<HTMLDivElement>(null);
+    const comboRef = useRef<ComboboxRef>(null);
 
     useImperativeHandle(ref, () => ({
         reset: () => setSelectedValue(null),
-        getSelectedValue: () => selectedValue,
+        getValue: () => selectedValue,
         setValue: (value: string) => setSelectedValue(value),
         ...comboRef.current,
     }));
