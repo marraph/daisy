@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {Meta, StoryObj} from "@storybook/react";
-import {Textarea} from "./Textarea";
+import {Textarea, TextareaRef} from "./Textarea";
 
 const meta: Meta<typeof Textarea> = {
     title: "Components/Textarea",
@@ -17,9 +17,14 @@ type Story = StoryObj<typeof Textarea>
 
 export const Default: Story = {
     render: () => {
+
+        const textRef = useRef<TextareaRef>(null);
+
         return (
-            <Textarea placeholder="Small input">
-            </Textarea>
+            <>
+                <Textarea placeholder={"Small input"} ref={textRef}></Textarea>
+                <p>{textRef.current?.getValue()}</p>
+            </>
         );
     },
 };

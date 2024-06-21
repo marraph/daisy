@@ -156,7 +156,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(({icon,
                 </Input>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12} />
             </div>
-            {isOpen && React.Children.count(props.children) > 0 &&
+            {isOpen && filteredChildren.length > 0 &&
                 <div className={cn("absolute top-full min-w-max bg-black border border-white border-opacity-20 text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}>
                     {filteredChildren.map((child, index) => {
                         if (React.isValidElement<SearchSelectItemProps>(child)) {
