@@ -1,12 +1,10 @@
 "use client";
 
-import React, {ReactNode, useEffect, useImperativeHandle, useRef, useState} from "react";
+import React, {ReactNode, useImperativeHandle, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
-import {Check, ChevronsUpDown, Delete} from "lucide-react";
+import {Check, ChevronsUpDown} from "lucide-react";
 import {useOutsideClick} from "../../utils/clickOutside";
 import {cva, VariantProps} from "class-variance-authority";
-import {Seperator} from "../seperator/Seperator";
-import { motion } from "framer-motion"
 
 const combobox = cva("group/combo cursor-pointer text-gray whitespace-nowrap rounded-lg font-normal flex items-center " +
     "hover:text-white border border-white border-opacity-20 overflow-hidden bg-black", {
@@ -38,7 +36,6 @@ const comboboxItem = cva("text-gray text-sm cursor-pointer rounded-lg hover:bg-s
 interface ComboboxItemProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof comboboxItem> {
     title: string;
     isSelected?: boolean;
-    hasPreValue?: boolean;
     onClick?: () => void;
 }
 
@@ -55,7 +52,7 @@ type ComboboxRef = HTMLDivElement & {
 };
 
 
-const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ size, title, isSelected, hasPreValue, onClick, className, ...props }, ref) => (
+const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ size, title, isSelected, onClick, className, ...props }, ref) => (
     <div className={cn(comboboxItem({size}), className, (isSelected) ? "bg-dark text-white" : "bg-black")} ref={ref} {...props} onClick={onClick}>
         {(isSelected) && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
         <div className={"flex flex-row justify-between items-center w-full"}>
@@ -101,7 +98,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({icon, size, b
                 <span>{selectedValue ?? buttonTitle}</span>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12} />
             </div>
-            {isOpen && (
+            {isOpen && React.Children.count(props.children) > 0 && (
                 <div className={cn("absolute top-full min-w-max bg-black border border-white border-opacity-20 text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}>
                     {React.Children.map(props.children, (child, index) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
