@@ -98,7 +98,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({icon, size, b
                 <span>{selectedValue ?? buttonTitle}</span>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12} />
             </div>
-            {isOpen && (
+            {isOpen && React.Children.count(props.children) > 0 && (
                 <div className={cn("absolute top-full min-w-max bg-black border border-white border-opacity-20 text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}>
                     {React.Children.map(props.children, (child, index) => {
                         if (React.isValidElement<ComboboxItemProps>(child)) {
