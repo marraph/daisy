@@ -2,21 +2,7 @@
 
 import {cva, VariantProps} from "class-variance-authority";
 import {cn} from "../../utils/cn";
-import React, {ReactNode, useCallback, useEffect, useImperativeHandle, useState} from "react";
-
-const alert = cva("w-max rounded-lg font-normal p-2 bg-black text-gray text-base flex flex-row items-start shadow-2xl z-50 opacity-100", {
-    variants: {
-        theme: {
-            dark: ["bg-black"],
-            success: ["bg-success", "bg-opacity-30"],
-            warning: ["bg-warning", "bg-opacity-30"],
-            error: ["bg-error", "bg-opacity-30"],
-        },
-    },
-    defaultVariants: {
-        theme: "dark",
-    },
-});
+import React, {ReactNode, useEffect, useImperativeHandle, useRef, useState} from "react";
 
 interface AlertIconProps extends React.HTMLAttributes<HTMLDivElement> {
     icon: ReactNode;
@@ -66,29 +52,71 @@ const AlertContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
 ));
 AlertContent.displayName = "AlertContent";
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(({ duration, theme, className, ...props }, ref) => {
-    const [visible, setVisible] = useState(true);
+type AlertRef = HTMLDivElement & {
+    show: () => void;
+    hide: () => void;
+};
+
+const Alert = React.forwardRef<AlertRef, AlertProps>(({ duration, theme, className, ...props }, ref) => {
+    const [visible, setVisible] = useState(false);
+    const [animate, setAnimate] = useState(false);
+    const alertRef = useRef(null);
 
     useEffect(() => {
-        const timeout = setTimeout(() => setVisible(false), duration);
-        return () => clearTimeout(timeout);
-    }, [duration]);
-
-    useEffect(() => {
-        if (!visible) {
-            const timeout = setTimeout(() => setVisible(true), 2000);
-            return () => clearTimeout(timeout);
+        let showTimeout: NodeJS.Timeout, hideTimeout: NodeJS.Timeout;
+        if (visible) {
+            setAnimate(true);
+            showTimeout = setTimeout(() => {
+                if (alertRef.current) {
+                    alertRef.current.classList.add('opacity-100', 'translate-y-0');
+                    alertRef.current.classList.remove('opacity-0', 'translate-y-full');
+                }
+            }, 10);
+            hideTimeout = setTimeout(() => {
+                if (alertRef.current) {
+                    alertRef.current.classList.remove('opacity-100', 'translate-y-0');
+                    alertRef.current.classList.add('opacity-0', 'translate-y-full');
+                }
+                hideTimeout = setTimeout(() => {
+                    setVisible(false);
+                    setAnimate(false);
+                }, 500);
+            }, duration);
         }
-    }, [visible]);
+        return () => {
+            clearTimeout(showTimeout);
+            clearTimeout(hideTimeout);
+        };
+    }, [visible, duration]);
+
+    useImperativeHandle(ref, () => ({
+        show: () =>  {
+            setVisible(true);
+            setAnimate(true);
+        },
+        hide: () => {
+            setVisible(false);
+            setVisible(false);
+        },
+        ...alertRef.current,
+    }));
 
     return (
-        <div className={cn(alert({ theme }), className, `transition-all duration-500 ease-in-out" ${visible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`)}
-             {...props}>
-            {props.children}
-        </div>
+        <>
+            {animate &&
+                <div ref={alertRef} className={`
+                    fixed bottom-4 right-4 z-50 border border-white border-opacity-20 bg-dark
+                    w-max rounded-lg font-normal p-2 text-gray text-base flex flex-row items-start 
+                    shadow-2xl transition-all duration-500 ease-in-out
+                    opacity-0 translate-y-full`}
+                     {...props}>
+                    {props.children}
+                </div>
+            }
+        </>
     );
 });
 Alert.displayName = "Alert";
 
 
-export { Alert, AlertContent, AlertIcon, AlertTitle, AlertDescription };
+export {Alert, AlertContent, AlertIcon, AlertTitle, AlertDescription, AlertRef};
