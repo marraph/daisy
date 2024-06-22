@@ -7,16 +7,16 @@ import {Check} from "lucide-react";
 interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
     shortcut?: string;
-    icon: ReactNode;
+    icon?: ReactNode;
     onClick?: () => void;
 }
 
 
 const ContextMenuItem = forwardRef<HTMLDivElement, ContextMenuItemProps>(({ title, icon, shortcut, className, ...props }, ref) => (
-    <div className={cn("bg-black group cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex flex-row justify-between items-center", className)} ref={ref} {...props}>
+    <div className={cn("bg-black group cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex flex-row justify-between items-center mx-1", className)} ref={ref} {...props}>
         <div className={"flex flex-row items-center space-x-2"}>
-            {icon}
-            {title}
+            <div>{icon}</div>
+            <span>{title}</span>
         </div>
         {shortcut &&
             <span className={"hidden group-hover:block text-sm text-gray "}>
