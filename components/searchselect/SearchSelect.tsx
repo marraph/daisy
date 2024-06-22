@@ -112,10 +112,10 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({icon, size
             inputRef.current?.setValue("");
         },
         getSelectedValue: () => selectedValue,
-        setValue: (value: string | null) => {
+        setValue: (value: string) => {
             setSelectedValue(value);
-            setSearchTerm(value || "");
-            if (inputRef.current) inputRef.current.setValue(value || "");
+            setSearchTerm(value);
+            if (inputRef.current) inputRef.current.setValue(value);
         },
         ...searchselectRef.current,
     }));
