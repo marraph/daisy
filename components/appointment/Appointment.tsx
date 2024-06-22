@@ -19,42 +19,25 @@ const appointment = cva("relative flex w-full h-20 text-white ", {
     },
 });
 
-interface AppointmentTitleProps extends React.HTMLAttributes<HTMLDivElement> {
-    title: string;
-}
-
-interface AppointmentDescriptionProps extends React.HTMLAttributes<HTMLDivElement> {
-    description: string;
-}
-
 interface AppointmentProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof appointment> {
+    title: string;
+    description?: string;
     width: number;
     height: number;
 }
 
-const AppointmentTitle = React.forwardRef<HTMLDivElement, AppointmentTitleProps>(({ title, className, ...props }, ref) => (
-    <div className={cn("text-lg font-semibold" , className)} ref={ref} {...props}>
-        {title}
-    </div>
-));
-AppointmentTitle.displayName = "AppointmentTitle";
 
-
-const AppointmentDescription = React.forwardRef<HTMLDivElement, AppointmentDescriptionProps>(({ description, className, ...props }, ref) => (
-    <div className={cn(className)} ref={ref} {...props}>
-        {description}
-    </div>
-));
-AppointmentDescription.displayName = "AppointmentDescription";
-
-const Appointment =  React.forwardRef<HTMLDivElement, AppointmentProps>(({ theme, width, height, className, ...props }, ref) => (
-    <div className={cn(appointment({ theme }), className, "bg-opacity-10 rounded-lg font-normal")} ref={ref} {...props} style={{width: `${width}px`, height: `${height}px`}}>
+const Appointment =  React.forwardRef<HTMLDivElement, AppointmentProps>(({ title, description, theme, width, height, className, ...props }, ref) => (
+    <div className={cn(appointment({ theme }), className, "bg-opacity-10 rounded-lg")} ref={ref} {...props} style={{width: `${width}px`, height: `${height}px`}}>
         <div className={cn(appointment({theme}), "h-full w-3 mr-4 rounded-tl-lg rounded-bl-lg")}></div>
         <div className={cn("flex flex-col py-2", className)}>
-            {props.children}
+            <span className={"text-lg font-semibold"}>{title}</span>
+            {description &&
+                <span className={"text-sm"}>{description}</span>
+            }
         </div>
     </div>
 ));
 Appointment.displayName = "Appointment";
 
-export { Appointment, AppointmentTitle, AppointmentDescription };
+export { Appointment };

@@ -104,13 +104,12 @@ const Alert = React.forwardRef<AlertRef, AlertProps>(({ duration, theme, classNa
     return (
         <>
             {animate &&
-                <div ref={alertRef} className={`
-                    fixed bottom-4 right-4 z-50 border border-white border-opacity-20 bg-dark
-                    w-max rounded-lg font-normal p-2 text-gray text-base flex flex-row items-start 
-                    shadow-2xl transition-all duration-500 ease-in-out
-                    opacity-0 translate-y-full`}
-                     {...props}>
-                    {props.children}
+                <div className={`
+                     fixed bottom-4 right-4 z-50 border border-white border-opacity-20 bg-dark
+                     w-max rounded-lg font-normal p-2 text-gray text-base flex flex-row items-start 
+                     shadow-2xl transition-all duration-500 ease-in-out opacity-0 translate-y-full`}
+                     ref={alertRef} {...props}>
+                     {props.children}
                 </div>
             }
         </>
