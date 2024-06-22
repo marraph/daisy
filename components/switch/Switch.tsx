@@ -1,6 +1,6 @@
 "use client";
 
-import React, {HTMLAttributes, useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, HTMLAttributes, useImperativeHandle, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {GitBranch} from "lucide-react";
 
@@ -9,7 +9,7 @@ type SwitchRef = HTMLLabelElement & {
     setValue: (value: boolean) => void;
 };
 
-const Switch = React.forwardRef<SwitchRef, React.LabelHTMLAttributes<HTMLLabelElement>>(({ className, ...props }, ref) => {
+const Switch = forwardRef<SwitchRef, React.LabelHTMLAttributes<HTMLLabelElement>>(({ className, ...props }, ref) => {
     const [isChecked, setIsChecked] = useState(false);
 
     const toggleSwitch = () => {

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Meta, StoryObj} from "@storybook/react";
 import {DatePicker} from "./DatePicker";
-import {Combobox} from "../combobox/Combobox";
 import {Button} from "../button/Button";
 
 const meta: Meta<typeof DatePicker> = {

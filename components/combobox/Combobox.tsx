@@ -1,6 +1,6 @@
 "use client";
 
-import React, {ReactNode, useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, ReactNode, useImperativeHandle, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
 import {Check, ChevronsUpDown} from "lucide-react";
 import {useOutsideClick} from "../../utils/clickOutside";
@@ -47,12 +47,12 @@ interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement>, Vari
 
 type ComboboxRef = HTMLDivElement & {
     reset: () => void;
-    getSelectedValue: () => string | null;
+    getValue: () => string | null;
     setValue: (value: string | null | undefined) => void;
 };
 
 
-const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ size, title, isSelected, onClick, className, ...props }, ref) => (
+const ComboboxItem = forwardRef<HTMLDivElement, ComboboxItemProps>(({ size, title, isSelected, onClick, className, ...props }, ref) => (
     <div className={cn(comboboxItem({size}), className, (isSelected) ? "bg-dark text-white" : "bg-black")} ref={ref} {...props} onClick={onClick}>
         {(isSelected) && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
         <div className={"flex flex-row justify-between items-center w-full"}>
@@ -65,7 +65,7 @@ ComboboxItem.displayName = "ComboboxItem";
 
 
 
-const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({icon, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({icon, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
 
@@ -82,11 +82,11 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(({icon, size, b
         setIsOpen(false);
     };
 
-    const comboRef = useRef<HTMLDivElement>(null);
+    const comboRef = useRef<ComboboxRef>(null);
 
     useImperativeHandle(ref, () => ({
         reset: () => setSelectedValue(null),
-        getSelectedValue: () => selectedValue,
+        getValue: () => selectedValue,
         setValue: (value: string) => setSelectedValue(value),
         ...comboRef.current,
     }));

@@ -1,7 +1,7 @@
 "use client";
 
 import { cva, VariantProps } from "class-variance-authority";
-import React from "react";
+import React, {forwardRef} from "react";
 import { cn } from "../../utils/cn";
 import Image from "next/image"
 
@@ -22,7 +22,7 @@ export interface AvatarProps extends React.ImgHTMLAttributes<HTMLImageElement>, 
     size: number;
 }
 
-const Avatar =  React.forwardRef<HTMLImageElement, AvatarProps>(({ shape, img_url, size, className, ...props }, ref) => (
+const Avatar = forwardRef<HTMLImageElement, AvatarProps>(({ shape, img_url, size, className, ...props }, ref) => (
         <Image className={cn(avatar({ shape }), className)} ref={ref}  {...props}
             src={img_url}
             alt={"Avatar"}

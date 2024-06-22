@@ -1,10 +1,11 @@
 "use client";
 
-import React, {useEffect, useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {Check, ChevronRight, Filter, ListFilter} from "lucide-react";
 import {CloseButton} from "../closebutton/CloseButton";
 import {useOutsideClick} from "../../utils/clickOutside";
 import {motion} from "framer-motion";
+import {ComboboxRef} from "../combobox/Combobox";
 
 interface FilterProps extends React.HTMLAttributes<HTMLDivElement> {
     onFilterChange?: (filters: { [key: string]: string | null }) => void;
@@ -23,27 +24,22 @@ interface FilterItemProps extends React.HTMLAttributes<HTMLDivElement> {
     selectedItem?: string | null;
 }
 
-export type FilterRef =  {
+type FilterRef = HTMLDivElement & {
     getSelectedItems: () => { [key: string]: string | null };
     reset: () => void;
 };
 
 
-const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({title, icon, data, isOpen, onOpen, onClose, onItemSelect, selectedItem, className, ...props}, ref) => {
+const FilterItem = forwardRef<FilterRef, FilterItemProps>(({title, icon, data, isOpen, onOpen, onClose, onItemSelect, selectedItem, className, ...props}, ref) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const toggleOpen = () => {
-        if (isOpen) {
-            onClose();
-        } else {
-            onOpen();
-        }
+        if (isOpen) onClose();
+        else onOpen();
     };
 
     const handleItemClick = (item: string) => {
-        if (onItemSelect) {
-            onItemSelect(item);
-        }
+        if (onItemSelect) onItemSelect(item);
     };
 
     return (
@@ -77,17 +73,15 @@ const FilterItem = React.forwardRef<HTMLDivElement, FilterItemProps>(({title, ic
                 </motion.div>
             }
         </div>
-
     );
 });
 FilterItem.displayName = "FilterItem";
 
 
-const FilterButton = React.forwardRef<FilterRef, FilterProps>(({onFilterChange, onResetTeamSelected, className, ...props}, ref) => {
+const FilterButton = forwardRef<FilterRef, FilterProps>(({onFilterChange, onResetTeamSelected, className, ...props}, ref) => {
     const [filterList, setFilterList] = useState<{ [key: string]: string | null }>({});
     const [showFilter, setShowFilter] = useState(false);
     const [openItem, setOpenItem] = useState<string | null>(null);
-
     const [height, setHeight] = useState(0);
     const motionRef = useRef(null);
 
@@ -129,9 +123,12 @@ const FilterButton = React.forwardRef<FilterRef, FilterProps>(({onFilterChange, 
         }
     }
 
+    const filterRef = useRef<FilterRef>(null);
+
     useImperativeHandle(ref, () => ({
         reset: () => setFilterList({}),
         getSelectedItems: () => filterList,
+        ...filterRef.current
     }));
 
     return (
@@ -187,5 +184,5 @@ const FilterButton = React.forwardRef<FilterRef, FilterProps>(({onFilterChange, 
 FilterButton.displayName = "FilterButton";
 
 
-export {FilterButton, FilterItem};
+export {FilterButton, FilterItem, FilterRef};
 

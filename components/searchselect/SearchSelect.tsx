@@ -1,6 +1,6 @@
 "use client";
 
-import React, {ReactNode, useEffect, useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, ReactNode, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {Check, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
@@ -55,7 +55,7 @@ type SearchSelectRef = HTMLInputElement & {
     setValue: (value: string | null | undefined) => void;
 };
 
-const SearchSelectItem = React.forwardRef<HTMLDivElement, SearchSelectItemProps>(({ highlight, size, title, isSelected, onClick, className, ...props }, ref) => {
+const SearchSelectItem = forwardRef<HTMLDivElement, SearchSelectItemProps>(({ highlight, size, title, isSelected, onClick, className, ...props }, ref) => {
     const parts = title.split(new RegExp(`(${highlight})`, 'gi'));
 
     return (
@@ -80,7 +80,7 @@ const SearchSelectItem = React.forwardRef<HTMLDivElement, SearchSelectItemProps>
 SearchSelectItem.displayName = "SearchSelectItem";
 
 
-const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(({icon, size, width,  buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({icon, size, width,  buttonTitle, preSelectedValue, className, ...props}, ref) => {
     const inputRef = useRef<InputRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
@@ -103,7 +103,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(({icon,
         setIsOpen(false);
     };
 
-    const searchselectRef = useRef<HTMLDivElement>(null);
+    const searchselectRef = useRef<SearchSelectRef>(null);
 
     useImperativeHandle(ref, () => ({
         reset: () => {
@@ -151,7 +151,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(({icon,
         <div className={cn("relative space-y-1", className)} ref={menuRef}>
             <div className={cn(searchselect({ size }), className)} {...props} onClick={() => setIsOpen(true)}>
                 {icon}
-                <Input placeholder={buttonTitle} value={searchTerm} border={"none"} className={`w-[${width}]`}
+                <Input placeholder={buttonTitle} value={searchTerm} border={"none"} width={width}
                        onChange={handleInputChange} ref={inputRef}>
                 </Input>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12} />
