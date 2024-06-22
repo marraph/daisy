@@ -1,7 +1,7 @@
 "use client";
 
 import { cva, VariantProps } from "class-variance-authority";
-import React from "react";
+import React, {forwardRef} from "react";
 import {cn} from "../../utils/cn";
 
 const appointment = cva("relative flex w-full h-20 text-white ", {
@@ -27,7 +27,7 @@ interface AppointmentProps extends React.HTMLAttributes<HTMLDivElement>, Variant
 }
 
 
-const Appointment =  React.forwardRef<HTMLDivElement, AppointmentProps>(({ title, description, theme, width, height, className, ...props }, ref) => (
+const Appointment = forwardRef<HTMLDivElement, AppointmentProps>(({ title, description, theme, width, height, className, ...props }, ref) => (
     <div className={cn(appointment({ theme }), className, "bg-opacity-10 rounded-lg")} ref={ref} {...props} style={{width: `${width}px`, height: `${height}px`}}>
         <div className={cn(appointment({theme}), "h-full w-3 mr-4 rounded-tl-lg rounded-bl-lg")}></div>
         <div className={cn("flex flex-col py-2", className)}>

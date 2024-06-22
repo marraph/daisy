@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useRef} from "react";
+import React, {forwardRef, useRef} from "react";
 import { cn } from "../../utils/cn";
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -12,7 +12,7 @@ type CheckboxRef = HTMLInputElement & {
     setValue: (value: boolean) => void;
 }
 
-const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>(({ text, className, ...props }, ref) => {
+const Checkbox = forwardRef<CheckboxRef, CheckboxProps>(({ text, className, ...props }, ref) => {
     const checkboxRef = useRef<CheckboxRef>(null);
 
     React.useImperativeHandle(ref, () => ({

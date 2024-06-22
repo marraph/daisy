@@ -20,7 +20,7 @@ type Story = StoryObj<typeof NavigationItem>
 export const Default: Story = {
     render: () => {
         return (
-            <NavigationItem title={"Calendar"} icon={<CalendarDays size={20} /> } />
+            <NavigationItem title={"Calendar"} icon={<CalendarDays size={20} />} selected={false}/>
         );
     },
 };

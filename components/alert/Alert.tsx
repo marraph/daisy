@@ -2,7 +2,7 @@
 
 import {cva, VariantProps} from "class-variance-authority";
 import {cn} from "../../utils/cn";
-import React, {ReactNode, useEffect, useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, ReactNode, useEffect, useImperativeHandle, useRef, useState} from "react";
 
 interface AlertIconProps extends React.HTMLAttributes<HTMLDivElement> {
     icon: ReactNode;
@@ -21,7 +21,7 @@ interface AlertProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<
 }
 
 
-const AlertIcon = React.forwardRef<HTMLDivElement, AlertIconProps>(({ icon, className, ...props }, ref) => (
+const AlertIcon = forwardRef<HTMLDivElement, AlertIconProps>(({ icon, className, ...props }, ref) => (
     <div className={cn("m-3", className)} ref={ref} {...props}>
         {icon}
     </div>
@@ -29,7 +29,7 @@ const AlertIcon = React.forwardRef<HTMLDivElement, AlertIconProps>(({ icon, clas
 AlertIcon.displayName = "AlertIcon";
 
 
-const AlertTitle = React.forwardRef<HTMLDivElement, AlertTitleProps>(({ title, className, ...props }, ref) => (
+const AlertTitle = forwardRef<HTMLDivElement, AlertTitleProps>(({ title, className, ...props }, ref) => (
         <div className={cn("text-white font-semibold", className)} ref={ref} {...props}>
             {title}
         </div>
@@ -37,7 +37,7 @@ const AlertTitle = React.forwardRef<HTMLDivElement, AlertTitleProps>(({ title, c
 AlertTitle.displayName = "AlertTitle";
 
 
-const AlertDescription = React.forwardRef<HTMLDivElement, AlertDescriptionProps>(({ description, className, ...props }, ref) => (
+const AlertDescription = forwardRef<HTMLDivElement, AlertDescriptionProps>(({ description, className, ...props }, ref) => (
     <div className={cn("float-left", className)} ref={ref} {...props}>
         {description}
     </div>
@@ -45,7 +45,7 @@ const AlertDescription = React.forwardRef<HTMLDivElement, AlertDescriptionProps>
 AlertDescription.displayName = "AlertDescription";
 
 
-const AlertContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
+const AlertContent = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
     <div className={cn("px-2 py-1 flex flex-col items-start align-center ", className)} ref={ref} {...props}>
         {props.children}
     </div>
@@ -57,7 +57,7 @@ type AlertRef = HTMLDivElement & {
     hide: () => void;
 };
 
-const Alert = React.forwardRef<AlertRef, AlertProps>(({ duration, theme, className, ...props }, ref) => {
+const Alert = forwardRef<AlertRef, AlertProps>(({ duration, theme, className, ...props }, ref) => {
     const [visible, setVisible] = useState(false);
     const [animate, setAnimate] = useState(false);
     const alertRef = useRef(null);

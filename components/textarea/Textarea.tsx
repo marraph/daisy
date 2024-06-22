@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, useImperativeHandle, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -13,7 +13,7 @@ type TextareaRef = HTMLTextAreaElement & {
     setValue: (value: string) => void;
 };
 
-const Textarea = React.forwardRef<TextareaRef, TextareaProps>(({ placeholder, className, ...props }, ref) => {
+const Textarea = forwardRef<TextareaRef, TextareaProps>(({ placeholder, className, ...props }, ref) => {
     const [value, setValue] = useState<string | null>(null);
 
     const textareaRef = useRef<TextareaRef>(null);

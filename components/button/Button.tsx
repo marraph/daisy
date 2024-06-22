@@ -1,5 +1,5 @@
 import { cva, VariantProps } from "class-variance-authority";
-import React from "react";
+import React, {forwardRef} from "react";
 import { cn } from "../../utils/cn";
 
 const button = cva("w-max rounded-lg font-medium text-sm py-2 px-4 flex items-center", {
@@ -24,7 +24,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   text: string;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ theme, text, className, ...props }, ref) => (
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ theme, text, className, ...props }, ref) => (
     <button className={cn(button({ theme }), className)} ref={ref} {...props}>
       {props.children}
       {text}

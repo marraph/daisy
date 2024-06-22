@@ -14,8 +14,4 @@ export default meta;
 
 type Story = StoryObj<typeof Seperator>
 
-export const Default: Story = {
-    args: {
-        border_color: "white",
-    },
-};
+export const Default: Story = {};

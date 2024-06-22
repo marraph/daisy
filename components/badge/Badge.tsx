@@ -1,7 +1,7 @@
 "use client";
 
 import { cva, VariantProps } from "class-variance-authority";
-import React from "react";
+import React, {forwardRef} from "react";
 import { cn } from "../../utils/cn";
 
 const badge = cva("w-max flex items-center font-semibold space-x-2", {
@@ -35,7 +35,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, Varian
     text: string;
 }
 
-const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(({ theme, border, size, text, className, ...props }, ref) => (
+const Badge = forwardRef<HTMLDivElement, BadgeProps>(({ theme, border, size, text, className, ...props }, ref) => (
     <div className={cn(badge({theme, border, size}), className)} ref={ref} {...props}>
         {props.children}
         <p>{text}</p>

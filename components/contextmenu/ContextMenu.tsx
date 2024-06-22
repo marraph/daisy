@@ -1,6 +1,6 @@
 "use client";
 
-import React, {ReactNode, useState} from "react";
+import React, {forwardRef, ReactNode, useState} from "react";
 import {cn} from "../../utils/cn";
 import {Check} from "lucide-react";
 
@@ -12,7 +12,7 @@ interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 
-const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(({ title, icon, shortcut, className, ...props }, ref) => (
+const ContextMenuItem = forwardRef<HTMLDivElement, ContextMenuItemProps>(({ title, icon, shortcut, className, ...props }, ref) => (
     <div className={cn("bg-black group cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex flex-row justify-between items-center", className)} ref={ref} {...props}>
         <div className={"flex flex-row items-center space-x-2"}>
             {icon}
@@ -28,11 +28,10 @@ const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>((
 ContextMenuItem.displayName = "ContextMenuItem";
 
 
-const ContextMenu = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
+const ContextMenu = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
     return (
-        <div
-            className={cn("w-full rounded-lg font-normal py-2 bg-black text-gray border border-white border-opacity-20", className)}
-            ref={ref} {...props}>
+        <div className={cn("w-full rounded-lg font-normal py-2 bg-black text-gray " +
+            "border border-white border-opacity-20", className)} ref={ref} {...props}>
             {React.Children.map(props.children, (child) => {
                 if (React.isValidElement<ContextMenuItemProps>(child)) {
                     return React.cloneElement(child, {
