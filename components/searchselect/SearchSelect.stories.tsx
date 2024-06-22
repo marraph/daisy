@@ -25,16 +25,12 @@ export const Default: Story = {
         const searchselectRef = useRef<SearchSelectRef>(null);
 
         return (
-            <div className={"flex flex-row"}>
-                <SearchSelect size={"small"} buttonTitle={"Title"} ref={searchselectRef} icon={<GitBranch size={12} className={"mr-2"}/>}>
-                    {items.map((item, index) => (
-                        <SearchSelectItem key={index} title={item} size={"small"}/>
-                    ))}
-                </SearchSelect>
-                <Combobox buttonTitle={"combo"} icon={<GitBranch size={12} className={"mr-2"}/>}>
-
-                </Combobox>
-            </div>
+            <SearchSelect size={"small"} buttonTitle={"Title"} ref={searchselectRef} width={100}
+                          icon={<GitBranch size={12}/>}>
+                {items.map((item, index) => (
+                    <SearchSelectItem key={index} title={item} size={"small"}/>
+                ))}
+            </SearchSelect>
         );
     },
 };
