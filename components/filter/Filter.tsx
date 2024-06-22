@@ -30,7 +30,7 @@ type FilterRef = HTMLDivElement & {
 };
 
 
-const FilterItem = forwardRef<FilterRef, FilterItemProps>(({title, icon, data, isOpen, onOpen, onClose, onItemSelect, selectedItem, className, ...props}, ref) => {
+const FilterItem = forwardRef<HTMLDivElement, FilterItemProps>(({title, icon, data, isOpen, onOpen, onClose, onItemSelect, selectedItem, className, ...props}, ref) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const toggleOpen = () => {
