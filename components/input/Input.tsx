@@ -68,7 +68,7 @@ const Input = forwardRef<InputRef, InputProps>(({ preSelectedValue, icon, elemen
                 }
 
                 <input className={cn(input({ border, elementSize }), icon && 'rounded-l-none border-l-0 pl-1', className)}
-                       placeholder={placeholder} spellCheck={false} ref={ref} {...props}>
+                       placeholder={placeholder} spellCheck={false} ref={inputRef} {...props}>
                 </input>
             </div>
         </div>
