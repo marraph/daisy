@@ -14,19 +14,24 @@ type TextareaRef = HTMLTextAreaElement & {
 };
 
 const Textarea = forwardRef<TextareaRef, TextareaProps>(({ placeholder, className, ...props }, ref) => {
-    const [value, setValue] = useState<string | null>(null);
+    const [textValue, setTextValue] = useState<string | null>(null);
 
-    const textareaRef = useRef<TextareaRef>(null);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     useImperativeHandle(ref, () => ({
-        reset: () => setValue(null),
-        getValue: () => value,
-        setValue: (value) => setValue(value),
+        reset: () => setTextValue(null),
+        getValue: () => textValue,
+        setValue: (value) => {
+            setTextValue(value);
+            if (textareaRef.current) {
+                textareaRef.current.value = value as string;
+            }
+        },
         ...textareaRef.current,
     }));
 
     return (
-        <textarea placeholder={placeholder}
+        <textarea placeholder={placeholder} value={textValue}
                   className={cn("bg-dark rounded-lg border-none text-gray focus:text-white focus:outline-none overflow-hidden resize-none", className)}
                   ref={textareaRef} {...props}>
         </textarea>
