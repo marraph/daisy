@@ -42,7 +42,7 @@ const Input = forwardRef<InputRef, InputProps>(({ preSelectedValue, icon, elemen
     useImperativeHandle(ref, () => ({
         reset: () => setInputValue(null),
         getValue: () => inputValue,
-        setValue: (value: string) => setInputValue(value),
+        setValue: (value) => setInputValue(value),
         ...inputRef.current,
     }));
 
