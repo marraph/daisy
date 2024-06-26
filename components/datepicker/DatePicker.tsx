@@ -66,7 +66,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({closeButto
                     <span>{!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))}</span>
                     <ChevronsUpDown size={12}/>
                 </div>
-                {selectedValue &&
+                {selectedValue && closeButton &&
                     <div
                         className={cn("h-8 group/delete flex flex-row rounded-r-lg bg-black items-center border border-white border-opacity-20 hover:bg-dark hover:text-white", className)}
                         onClick={(e) => {e.stopPropagation(); setSelectedValue(undefined);}}>

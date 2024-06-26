@@ -6,19 +6,11 @@ import { X } from "lucide-react";
 
 interface CloseButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   iconSize?: number;
-  onClose?: () => void;
 }
 
-const CloseButton = React.forwardRef<HTMLDivElement, CloseButtonProps>(({ onClose, iconSize, className, ...props }) => {
-
-    const handleClick = () => {
-        if (onClose) {
-            onClose();
-        }
-    };
-
+const CloseButton = React.forwardRef<HTMLDivElement, CloseButtonProps>(({ iconSize, className, ...props }) => {
       return (
-          <button className={cn("group/close bg-black hover:bg-dark rounded-lg", className)} {...props} onClick={handleClick}>
+          <button className={cn("group/close bg-black hover:bg-dark rounded-lg", className)} {...props} >
               <X size={iconSize ? iconSize : 16} className={"text-gray group-hover/close:text-white m-1"}/>
           </button>
       );
