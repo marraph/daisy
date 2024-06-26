@@ -25,7 +25,7 @@ interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantP
     text: string;
     iconSize: number;
     preSelectedValue?: Date | null | undefined;
-    onDaySelect?: (date: Date) => void;
+    onClose?: () => void;
 }
 
 type DatepickerRef = HTMLDivElement & {
@@ -34,7 +34,7 @@ type DatepickerRef = HTMLDivElement & {
     setValue: (value: Date | null | undefined) => void;
 };
 
-const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({onDaySelect, preSelectedValue, text, iconSize, size, className, ...props}, ref) => {
+const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({onClose, preSelectedValue, text, iconSize, size, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(preSelectedValue ? preSelectedValue : undefined);
 
@@ -70,10 +70,10 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({onDaySelec
                         className={"h-8 group/delete flex flex-row rounded-r-lg bg-black items-center border border-white border-opacity-20 hover:bg-dark hover:text-white"}
                         onClick={(e) => {e.stopPropagation(); setSelectedValue(undefined);}}>
                         {size === "small" &&
-                            <CloseButton iconSize={16} className={"group-hover/delete:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"}/>
+                            <CloseButton iconSize={16} className={"group-hover/delete:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"} onClick={onClose}/>
                         }
                         {size === "medium" &&
-                            <CloseButton iconSize={16} className={"group-hover/delete:bg-dark group-hover/close:text-white bg-black w-full rounded-l-none"}/>
+                            <CloseButton iconSize={16} className={"group-hover/delete:bg-dark group-hover/close:text-white bg-black w-full rounded-l-none"} onClick={onClose}/>
                         }
                     </div>
                 }
@@ -81,7 +81,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({onDaySelec
 
             {isOpen && (
                 <div className={cn("absolute top-full left-0 overflow-hidden", className)} ref={menuRef}>
-                    <Calendar onDayClick={handleDayClick} onSelect={onDaySelect}/>
+                    <Calendar onDayClick={handleDayClick} />
                 </div>
             )}
         </div>
