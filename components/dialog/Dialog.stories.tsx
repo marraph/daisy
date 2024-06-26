@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Dialog} from './Dialog';
+import {Dialog, DialogRef} from './Dialog';
 import {Meta, StoryObj} from "@storybook/react";
 import { Button } from '../button/Button';
 import { Input } from '../input/Input';
@@ -19,11 +19,11 @@ type Story = StoryObj<typeof Dialog>;
 
 export const Default = () => {
 
-    const dialogRef = useRef<HTMLDialogElement | null>(null);
+    const dialogRef = useRef<DialogRef>(null);
 
     return (
         <>
-            <button className={"bg-black text-white p-2 text-base rounded-lg border border-white border-opacity-20"} onClick={() => dialogRef?.current.showModal()}>Dialog</button>
+            <button className={"bg-black text-white p-2 text-base rounded-lg border border-white border-opacity-20"} onClick={() => dialogRef?.current.show()}>Dialog</button>
             <Dialog ref={dialogRef}>
                 <Button text={"Button"}></Button>
                 <Input placeholder={"placeholder"}></Input>

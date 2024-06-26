@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, {forwardRef} from "react";
 import { cn } from "../../utils/cn";
 import { X } from "lucide-react";
 
@@ -25,4 +25,4 @@ const CloseButton = React.forwardRef<HTMLDivElement, CloseButtonProps>(({ onClos
 });
 CloseButton.displayName = "CloseButton";
 
-export { CloseButton };
+export {CloseButton};

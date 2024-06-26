@@ -1,6 +1,7 @@
 import React from 'react';
-import {ContextMenu, ContextMenuItem, ContextMenuSeperator} from './ContextMenu';
+import {ContextMenu, ContextMenuItem} from './ContextMenu';
 import {Meta, StoryObj} from "@storybook/react";
+import {GitBranch} from "lucide-react";
 
 const meta: Meta<typeof ContextMenu> = {
     title: "Components/ContextMenu",
@@ -18,9 +19,8 @@ type Story = StoryObj<typeof ContextMenu>;
 export const Default: Story = {
     render: () => {
         return (
-            <ContextMenu checkmarkOn={true}>
-                <ContextMenuItem title="Item 1"/>
-                <ContextMenuSeperator />
+            <ContextMenu>
+                <ContextMenuItem title="Item 1" icon={<GitBranch size={14}/>}/>
                 <ContextMenuItem title="Item 2"/>
                 <ContextMenuItem title="Item 3" />
             </ContextMenu>
