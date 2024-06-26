@@ -26,6 +26,7 @@ interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantP
     iconSize: number;
     preSelectedValue?: Date | null | undefined;
     onClose?: () => void;
+    closeButton: boolean;
 }
 
 type DatepickerRef = HTMLDivElement & {
@@ -34,7 +35,7 @@ type DatepickerRef = HTMLDivElement & {
     setValue: (value: Date | null | undefined) => void;
 };
 
-const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({onClose, preSelectedValue, text, iconSize, size, className, ...props}, ref) => {
+const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({closeButton, onClose, preSelectedValue, text, iconSize, size, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(preSelectedValue ? preSelectedValue : undefined);
 
@@ -57,9 +58,9 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({onClose, p
     }));
 
     return (
-        <div className={cn("relative inline-block space-y-1", className)}>
+        <div className={cn("relative inline-block space-y-1", className)} ref={menuRef}>
             <div className={"flex flex-row items-center"}>
-                <div className={cn(datepicker({size}), `${!selectedValue ? "px-2 rounded-lg" : "px-2 rounded-l-lg rounded-r-none border-r-0"}`, className)}
+                <div className={cn(datepicker({size}), `${!selectedValue ? "px-2 rounded-lg" : "px-2 rounded-l-lg border-r-0"}`, `${closeButton ? "rounded-r-none" : "rounded-r-lg"}`,  className)}
                      onClick={() => setIsOpen(!isOpen)} {...props}>
                     <CalendarDays size={iconSize} className={"mr-1"}/>
                     <span>{!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))}</span>
@@ -67,12 +68,12 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({onClose, p
                 </div>
                 {selectedValue &&
                     <div
-                        className={"h-8 group/delete flex flex-row rounded-r-lg bg-black items-center border border-white border-opacity-20 hover:bg-dark hover:text-white"}
+                        className={cn("h-8 group/delete flex flex-row rounded-r-lg bg-black items-center border border-white border-opacity-20 hover:bg-dark hover:text-white", className)}
                         onClick={(e) => {e.stopPropagation(); setSelectedValue(undefined);}}>
-                        {size === "small" &&
+                        {size === "small" && closeButton &&
                             <CloseButton iconSize={16} className={"group-hover/delete:bg-dark group-hover/close:text-white bg-black w-full h-full rounded-l-none"} onClick={onClose}/>
                         }
-                        {size === "medium" &&
+                        {size === "medium" && closeButton &&
                             <CloseButton iconSize={16} className={"group-hover/delete:bg-dark group-hover/close:text-white bg-black w-full rounded-l-none"} onClick={onClose}/>
                         }
                     </div>
