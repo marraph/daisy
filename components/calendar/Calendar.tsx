@@ -4,25 +4,17 @@ import React, {useState} from "react";
 import { cn } from "../../utils/cn";
 import {DayPicker} from "react-day-picker";
 
-type CalendarProps = React.ComponentProps<typeof DayPicker> & {
-    onSelect?: (date: Date) => void;
-};
+type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
-const Calendar: React.FC<CalendarProps> = ({ onSelect, className, classNames, ...props }) => {
+const Calendar: React.FC<CalendarProps> = ({ className, classNames, ...props }) => {
     const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
 
-    const handleOnSelect = (day: Date) => {
-        setSelectedDay(day);
-        if (onSelect) {
-            onSelect(day);
-        }
-    };
 
     return (
         <DayPicker {...props}
             mode={"single"}
             selected={selectedDay}
-            onSelect={handleOnSelect}
+            onSelect={setSelectedDay}
             showOutsideDays={true}
             className={cn("p-3 text-white bg-black rounded-lg border border-white border-opacity-20", className)}
             classNames={{
