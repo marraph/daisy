@@ -11,7 +11,7 @@ const input = cva("group/input w-auto rounded-lg font-normal text-gray bg-black 
             none: ["border-0",],
         },
         elementSize: {
-            medium: ["text-base", "py-1.5", "px-4"],
+            medium: ["text-base", "py-1", "px-4"],
             small: ["text-xs", "py-1", "px-2"],
         },
     },
@@ -78,7 +78,6 @@ const Input = forwardRef<InputRef, InputProps>(({ preSelectedValue, icon, elemen
                        placeholder={placeholder} spellCheck={false} ref={inputRef} value={inputValue}
                        onChange={(e) => setInputValue(e.target.value)}
                        size={Math.max((inputValue as string).length, placeholder.length)}
-                       {...props}
                        {...props}>
                 </input>
             </div>

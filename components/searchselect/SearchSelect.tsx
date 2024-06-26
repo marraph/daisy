@@ -150,12 +150,12 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({icon, size
 
     return (
         <div className={cn("relative space-y-1", className)} ref={menuRef}>
-            <div className={cn(searchselect({ size }), className)} {...props} onClick={() => setIsOpen(true)}>
+            <div className={cn(searchselect({ size }), "h-8", className)} {...props} onClick={() => setIsOpen(true)}>
                 {icon}
                 <Input placeholder={buttonTitle} value={searchTerm} border={"none"}
                        onChange={handleInputChange}
                        size={Math.max((searchTerm as string).length/100*90, buttonTitle.length/100*90)}
-                       ref={inputRef}>
+                       ref={inputRef} >
                 </Input>
                 <ChevronsUpDown className={cn("group-hover/combo:text-white text-gray", className)} size={12} />
             </div>
