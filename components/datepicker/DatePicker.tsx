@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, useImperativeHandle, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
 import {Calendar} from "../calendar/Calendar";
 import {format} from "date-fns";
@@ -57,7 +57,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({onDaySelec
     }));
 
     return (
-        <div className={cn("relative inline-block space-y-1", className)}>
+        <div className={cn("relative inline-block space-y-1", className)} ref={menuRef}>
             <div className={"flex flex-row items-center"}>
                 <div className={cn(datepicker({size}), `${!selectedValue ? "px-2 rounded-lg" : "px-2 rounded-l-lg rounded-r-none border-r-0"}`, className)}
                      onClick={() => setIsOpen(!isOpen)} {...props}>

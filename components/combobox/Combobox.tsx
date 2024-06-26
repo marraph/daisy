@@ -1,6 +1,6 @@
 "use client";
 
-import React, {ReactNode, useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, ReactNode, useImperativeHandle, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
 import {Check, ChevronsUpDown} from "lucide-react";
 import {useOutsideClick} from "../../utils/clickOutside";
@@ -20,7 +20,7 @@ const combobox = cva("group/combo cursor-pointer text-gray whitespace-nowrap rou
     },
 });
 
-const comboboxItem = cva("text-gray text-sm cursor-pointer rounded-lg hover:bg-selected hover:text-white flex items-center mx-1 bg-black", {
+const comboboxItem = cva("text-gray text-sm cursor-pointer rounded-lg hover:bg-dark hover:text-white flex items-center mx-1 bg-black", {
     variants: {
         size: {
             small: ["text-xs", "p-2"],
@@ -52,7 +52,7 @@ type ComboboxRef = HTMLDivElement & {
 };
 
 
-const ComboboxItem = React.forwardRef<HTMLDivElement, ComboboxItemProps>(({ size, title, isSelected, onClick, className, ...props }, ref) => (
+const ComboboxItem = forwardRef<HTMLDivElement, ComboboxItemProps>(({ size, title, isSelected, onClick, className, ...props }, ref) => (
     <div className={cn(comboboxItem({size}), className, (isSelected) ? "bg-dark text-white" : "bg-black")} ref={ref} {...props} onClick={onClick}>
         {(isSelected) && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
         <div className={"flex flex-row justify-between items-center w-full"}>
@@ -65,7 +65,7 @@ ComboboxItem.displayName = "ComboboxItem";
 
 
 
-const Combobox = React.forwardRef<ComboboxRef, ComboboxProps>(({icon, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({icon, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
 

@@ -1,8 +1,9 @@
 "use client"
 
-import React, {useState} from "react";
+import React, {forwardRef, useImperativeHandle, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
 import { motion } from "framer-motion";
+import {SwitchRef} from "../switch/Switch";
 
 interface SwitchButtonProps extends React.HTMLAttributes<HTMLDivElement> {
     firstTitle: string;
@@ -10,13 +11,26 @@ interface SwitchButtonProps extends React.HTMLAttributes<HTMLDivElement> {
     onClick?: () => void;
 }
 
-export const SwitchButton: React.FC<SwitchButtonProps> = ({ firstTitle, secondTitle, onClick, className, ...props }) => {
+type SwitchButtonRef = HTMLDivElement & {
+    getValue: () => boolean;
+    setValue: (value: boolean) => void;
+}
+
+const SwitchButton = forwardRef<SwitchButtonRef, SwitchButtonProps>(({ firstTitle, secondTitle, onClick, className, ...props }, ref) => {
     const [selectedValue, setSelectedValue] = useState(true);
 
     const handleClick = () => {
         setSelectedValue(!selectedValue);
         if (onClick) onClick();
     }
+
+    const switchButtonRef = useRef<SwitchButtonRef>(null);
+
+    useImperativeHandle(ref, () => ({
+        getValue: () => selectedValue,
+        setValue: (value: boolean) => setSelectedValue(value),
+        ...switchButtonRef.current,
+    }));
 
     return (
         <div
@@ -44,5 +58,8 @@ export const SwitchButton: React.FC<SwitchButtonProps> = ({ firstTitle, secondTi
             </div>
         </div>
     );
-};
+});
+SwitchButton.displayName = "SwitchButton";
+
+export { SwitchButton, SwitchButtonRef }
 

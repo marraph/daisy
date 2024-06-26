@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {Check, ChevronRight, Filter, ListFilter} from "lucide-react";
 import {CloseButton} from "../closebutton/CloseButton";
 import {useOutsideClick} from "../../utils/clickOutside";
@@ -30,7 +30,7 @@ type FilterRef = HTMLDivElement & {
 };
 
 
-const FilterItem = React.forwardRef<FilterRef, FilterItemProps>(({title, icon, data, isOpen, onOpen, onClose, onItemSelect, selectedItem, className, ...props}, ref) => {
+const FilterItem = forwardRef<HTMLDivElement, FilterItemProps>(({title, icon, data, isOpen, onOpen, onClose, onItemSelect, selectedItem, className, ...props}, ref) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const toggleOpen = () => {
@@ -78,7 +78,7 @@ const FilterItem = React.forwardRef<FilterRef, FilterItemProps>(({title, icon, d
 FilterItem.displayName = "FilterItem";
 
 
-const FilterButton = React.forwardRef<FilterRef, FilterProps>(({onFilterChange, onResetTeamSelected, className, ...props}, ref) => {
+const FilterButton = forwardRef<FilterRef, FilterProps>(({onFilterChange, onResetTeamSelected, className, ...props}, ref) => {
     const [filterList, setFilterList] = useState<{ [key: string]: string | null }>({});
     const [showFilter, setShowFilter] = useState(false);
     const [openItem, setOpenItem] = useState<string | null>(null);

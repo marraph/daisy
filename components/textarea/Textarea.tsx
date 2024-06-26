@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, useImperativeHandle, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -13,20 +13,25 @@ type TextareaRef = HTMLTextAreaElement & {
     setValue: (value: string) => void;
 };
 
-const Textarea = React.forwardRef<TextareaRef, TextareaProps>(({ placeholder, className, ...props }, ref) => {
-    const [value, setValue] = useState<string | null>(null);
+const Textarea = forwardRef<TextareaRef, TextareaProps>(({ placeholder, className, ...props }, ref) => {
+    const [textValue, setTextValue] = useState<string | null>(null);
 
-    const textareaRef = useRef<TextareaRef>(null);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     useImperativeHandle(ref, () => ({
-        reset: () => setValue(null),
-        getValue: () => value,
-        setValue: (value) => setValue(value),
+        reset: () => setTextValue(null),
+        getValue: () => textValue,
+        setValue: (value) => {
+            setTextValue(value);
+            if (textareaRef.current) {
+                textareaRef.current.value = value as string;
+            }
+        },
         ...textareaRef.current,
     }));
 
     return (
-        <textarea placeholder={placeholder}
+        <textarea placeholder={placeholder} value={textValue}
                   className={cn("bg-dark rounded-lg border-none text-gray focus:text-white focus:outline-none overflow-hidden resize-none", className)}
                   ref={textareaRef} {...props}>
         </textarea>
