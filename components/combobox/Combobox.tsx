@@ -20,7 +20,7 @@ const combobox = cva("group/combo cursor-pointer text-gray whitespace-nowrap rou
     },
 });
 
-const comboboxItem = cva("text-gray text-sm cursor-pointer rounded-lg hover:bg-selected hover:text-white flex items-center mx-1 bg-black", {
+const comboboxItem = cva("text-gray text-sm cursor-pointer rounded-lg hover:bg-dark hover:text-white flex items-center mx-1 bg-black", {
     variants: {
         size: {
             small: ["text-xs", "p-2"],

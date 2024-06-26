@@ -13,7 +13,7 @@ interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement> {
 
 
 const ContextMenuItem = forwardRef<HTMLDivElement, ContextMenuItemProps>(({ title, icon, shortcut, className, ...props }, ref) => (
-    <div className={cn("bg-black group cursor-pointer rounded-lg hover:bg-selected hover:text-white p-2 flex flex-row justify-between items-center mx-1", className)} ref={ref} {...props}>
+    <div className={cn("bg-black group cursor-pointer rounded-lg hover:bg-dark hover:text-white p-2 flex flex-row justify-between items-center mx-1", className)} ref={ref} {...props}>
         <div className={"flex flex-row items-center space-x-2"}>
             <div>{icon}</div>
             <span>{title}</span>

@@ -13,8 +13,8 @@ const searchselect = cva("group/combo cursor-pointer text-gray whitespace-nowrap
     variants: {
         size: {
             small: ["text-xs", "px-2"],
-            medium: ["text-sm", "px-4"],
-            large: ["text-base", "px-6"],
+            medium: ["text-sm", "px-3"],
+            large: ["text-base", "px-4"],
         },
     },
     defaultVariants: {
@@ -22,7 +22,7 @@ const searchselect = cva("group/combo cursor-pointer text-gray whitespace-nowrap
     },
 });
 
-const searchselectItem = cva("text-gray text-sm cursor-pointer rounded-lg hover:bg-selected hover:text-white flex items-center mx-1 bg-black", {
+const searchselectItem = cva("text-gray text-sm cursor-pointer rounded-lg hover:bg-dark hover:text-white flex items-center mx-1 bg-black", {
     variants: {
         size: {
             small: ["text-xs", "p-2"],
@@ -45,7 +45,6 @@ interface SearchSelectItemProps extends React.HTMLAttributes<HTMLDivElement>, Va
 interface SearchSelectProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof searchselect> {
     buttonTitle?: string;
     preSelectedValue?: string | null | undefined;
-    width?: number;
     icon?: ReactNode;
 }
 
@@ -80,7 +79,7 @@ const SearchSelectItem = forwardRef<HTMLDivElement, SearchSelectItemProps>(({ hi
 SearchSelectItem.displayName = "SearchSelectItem";
 
 
-const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({icon, size, width,  buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({icon, size,  buttonTitle, preSelectedValue, className, ...props}, ref) => {
     const inputRef = useRef<InputRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
@@ -99,8 +98,8 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({icon, size
         } else {
             setSelectedValue(item);
             setSearchTerm(item);
+            setIsOpen(false);
         }
-        setIsOpen(false);
     };
 
     const searchselectRef = useRef<SearchSelectRef>(null);
@@ -142,6 +141,8 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({icon, size
                 setSelectedValue(singleChild.props.title);
                 setSearchTerm(singleChild.props.title);
                 inputRef.current?.setValue(singleChild.props.title);
+                inputRef.current?.blur();
+                setIsOpen(false);
             }
         }
         previousSearchTerm.current = searchTerm;
@@ -151,10 +152,12 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({icon, size
         <div className={cn("relative space-y-1", className)} ref={menuRef}>
             <div className={cn(searchselect({ size }), className)} {...props} onClick={() => setIsOpen(true)}>
                 {icon}
-                <Input placeholder={buttonTitle} value={searchTerm} border={"none"} style={{width: width}}
-                       onChange={handleInputChange} ref={inputRef}>
+                <Input placeholder={buttonTitle} value={searchTerm} border={"none"}
+                       onChange={handleInputChange}
+                       size={Math.max((searchTerm as string).length/100*90, buttonTitle.length/100*90)}
+                       ref={inputRef}>
                 </Input>
-                <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12} />
+                <ChevronsUpDown className={cn("group-hover/combo:text-white text-gray", className)} size={12} />
             </div>
             {isOpen && filteredChildren.length > 0 &&
                 <div className={cn("absolute top-full min-w-max bg-black border border-white border-opacity-20 text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}>

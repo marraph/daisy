@@ -2,7 +2,6 @@ import React, {useRef} from 'react';
 import {SearchSelect, SearchSelectItem, SearchSelectRef} from './SearchSelect';
 import {Meta, StoryObj} from "@storybook/react";
 import {GitBranch} from "lucide-react";
-import {Combobox} from "../combobox/Combobox";
 
 const meta: Meta<typeof SearchSelect> = {
     title: "Components/SearchSelect",
@@ -25,7 +24,7 @@ export const Default: Story = {
         const searchselectRef = useRef<SearchSelectRef>(null);
 
         return (
-            <SearchSelect size={"small"} buttonTitle={"Title"} ref={searchselectRef} width={100}
+            <SearchSelect size={"small"} buttonTitle={"Title"} ref={searchselectRef}
                           icon={<GitBranch size={12}/>}>
                 {items.map((item, index) => (
                     <SearchSelectItem key={index} title={item} size={"small"}/>

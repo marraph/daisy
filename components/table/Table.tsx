@@ -10,7 +10,7 @@ TableCell.displayName = "TableCell";
 
 
 const TableRow = forwardRef<HTMLTableRowElement, TableHTMLAttributes<HTMLTableRowElement>>(({ className, ...props }, ref) => (
-    <tr className={cn("bg-black border-t border-white border-opacity-20 hover:bg-selected hover:text-white cursor-pointer", className)} ref={ref} {...props}>
+    <tr className={cn("bg-black border-t border-white border-opacity-20 hover:bg-dark hover:text-white cursor-pointer", className)} ref={ref} {...props}>
         {props.children}
     </tr>
 ));
