@@ -7,7 +7,6 @@ import {format} from "date-fns";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {useOutsideClick} from "../../utils/clickOutside";
-import { motion } from "framer-motion";
 import {CloseButton} from "../closebutton/CloseButton";
 
 const datepicker = cva("flex flex-row items-center bg-black rounded-lg border border-white border-opacity-20 text-gray cursor-pointer hover:text-white hover:bg-dark", {
@@ -26,15 +25,16 @@ interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantP
     text: string;
     iconSize: number;
     preSelectedValue?: Date | null | undefined;
+    onDaySelect?: (date: Date) => void;
 }
 
-export type DatepickerRef = HTMLDivElement & {
+type DatepickerRef = HTMLDivElement & {
     reset: () => void;
     getSelectedValue: () => Date | null;
     setValue: (value: Date | null | undefined) => void;
 };
 
-const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({preSelectedValue, text, iconSize, size, className, ...props}, ref) => {
+const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({onDaySelect, preSelectedValue, text, iconSize, size, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(preSelectedValue ? preSelectedValue : undefined);
 
@@ -81,7 +81,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({preSelecte
 
             {isOpen && (
                 <div className={cn("absolute top-full left-0 overflow-hidden", className)} ref={menuRef}>
-                    <Calendar onDayClick={handleDayClick}/>
+                    <Calendar onDayClick={handleDayClick} onSelect={onDaySelect}/>
                 </div>
             )}
         </div>
@@ -90,4 +90,4 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({preSelecte
 DatePicker.displayName = "DatePicker";
 
 
-export {DatePicker};
+export {DatePicker, DatepickerRef};
