@@ -8,7 +8,9 @@ type DialogRef = HTMLDialogElement & {
     close: () => void;
 };
 
-const Dialog = forwardRef<HTMLDialogElement, React.DialogHTMLAttributes<HTMLDialogElement>>(({ className, ...props }, ref) => {
+interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElement> {}
+
+const Dialog = forwardRef<DialogRef, DialogProps>(({ className, ...props }, ref) => {
     const dialogRef = useRef<DialogRef>(null);
 
     useImperativeHandle(ref, () => ({
