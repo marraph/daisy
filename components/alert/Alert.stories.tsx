@@ -26,8 +26,7 @@ export const Default: Story = {
                 <Alert duration={3000} theme={"dark"} ref={alertRef} >
                     <AlertIcon icon={<Rocket size={30} className={"text-white"} />} />
                     <AlertContent>
-                        <AlertTitle title="Alert" />
-                        <AlertDescription description="This is an  lorem ipsum arma virumque." />
+                        <AlertTitle title="Thi is a cool alert" />
                     </AlertContent>
                 </Alert>
             </>

@@ -44,7 +44,8 @@ const Calendar: React.FC<CalendarProps> = ({ className, classNames, ...props }) 
                     "aria-selected:bg-accent aria-selected:text-accent-foreground",
                 day_hidden: "invisible",
                 ...classNames,
-        }} />
+            }}
+        />
     )
 };
 Calendar.displayName = "Calendar";
