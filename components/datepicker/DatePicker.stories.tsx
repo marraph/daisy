@@ -20,7 +20,7 @@ export const Default: Story = {
         const dRef = useRef<DatepickerRef>(null);
         return (
             <div className={"flex flex-row"}>
-                <DatePicker text={"Select a date"} iconSize={12} size={"medium"}
+                <DatePicker text={"Select a date"} iconSize={12} size={"medium"} dayFormat={"long"}
                             closeButton={true} ref={dRef}/>
             </div>
         );

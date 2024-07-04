@@ -28,6 +28,7 @@ interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement>, Var
     preSelectedRange?: DateRange | undefined;
     onClose?: () => void;
     closeButton: boolean;
+    dayFormat: "short" | "long";
 }
 
 type DateRangePickerRef = HTMLDivElement & {
@@ -36,7 +37,7 @@ type DateRangePickerRef = HTMLDivElement & {
     setValue: (range: DateRange) => void;
 };
 
-const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({closeButton, onClose, preSelectedRange, text, iconSize, size, className, ...props}, ref) => {
+const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({dayFormat, closeButton, onClose, preSelectedRange, text, iconSize, size, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const initialRange: DateRange = {
@@ -51,12 +52,19 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({c
         setIsOpen(false);
     });
 
-    const formatDate = (date: Date | undefined): string => {
-        if (!date) return "undefined";
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() is zero-based
-        const year = date.getFullYear();
-        return `${day}.${month}.${year}`;
+    const formatDate = (date: Date | undefined) => {
+        if (!date) return;
+
+        if (dayFormat === "long") {
+            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const dayOfWeek = daysOfWeek[date.getDay()];
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${dayOfWeek}, ${month}-${day}-${year}`;
+        }
+
+        if (dayFormat === "short") return format(date, "MM-dd-yyyy");
     };
 
     const daterangepickerRef = useRef<DateRangePickerRef>(null);

@@ -19,7 +19,8 @@ export const Default: Story = {
     render: () => {
         const dRef = useRef<DateRangePickerRef>(null);
         return (
-            <DateRangePicker text={"Select a range"} iconSize={12} size={"medium"} closeButton={true} ref={dRef}/>
+            <DateRangePicker text={"Select a range"} iconSize={12} size={"medium"} dayFormat={"short"}
+                             closeButton={true} ref={dRef}/>
         );
     },
 };

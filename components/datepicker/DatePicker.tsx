@@ -27,6 +27,7 @@ interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantP
     preSelectedValue?: Date | null | undefined;
     onClose?: () => void;
     closeButton: boolean;
+    dayFormat: "long" | "short";
 }
 
 type DatepickerRef = HTMLDivElement & {
@@ -35,9 +36,25 @@ type DatepickerRef = HTMLDivElement & {
     setValue: (value: Date | null | undefined) => void;
 };
 
-const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({closeButton, onClose, preSelectedValue, text, iconSize, size, className, ...props}, ref) => {
+const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({dayFormat, closeButton, onClose, preSelectedValue, text, iconSize, size, className, ...props}, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(preSelectedValue ? preSelectedValue : undefined);
+
+    const formatDate = () => {
+        if (!selectedValue) return;
+
+        if (dayFormat === "long") {
+            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const dayOfWeek = daysOfWeek[selectedValue.getDay()];
+            const month = (selectedValue.getMonth() + 1).toString().padStart(2, '0');
+            const day = selectedValue.getDate().toString().padStart(2, '0');
+            const year = selectedValue.getFullYear();
+            return `${dayOfWeek}, ${month}-${day}-${year}`;
+        }
+
+        if (dayFormat === "short") return format(selectedValue, "MM-dd-yyyy");
+    }
+
 
     const menuRef = useOutsideClick(() => {
         setIsOpen(false);
@@ -66,7 +83,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({closeButto
                     `${closeButton && !selectedValue && "rounded-r-lg"}`, className)}
                      onClick={() => setIsOpen(!isOpen)} {...props}>
                     <CalendarDays size={iconSize} className={"mr-1"}/>
-                    <span>{!selectedValue ? text : (format(selectedValue, "MM-dd-yyyy"))}</span>
+                    <span>{!selectedValue ? text : formatDate()}</span>
                     <ChevronsUpDown size={12}/>
                 </div>
                 {selectedValue && closeButton &&
