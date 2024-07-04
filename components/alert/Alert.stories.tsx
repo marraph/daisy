@@ -23,7 +23,7 @@ export const Default: Story = {
         return (
             <>
                 <div className={"w-20 h-20 bg-error"} onClick={() => alertRef.current?.show()}></div>
-                <Alert duration={3000} theme={"dark"} ref={alertRef} >
+                <Alert duration={3000} closeButton={true} ref={alertRef} >
                     <AlertIcon icon={<Rocket size={30} className={"text-white"} />} />
                     <AlertContent>
                         <AlertTitle title="Thi is a cool alert" />

@@ -3,6 +3,7 @@
 import {cva, VariantProps} from "class-variance-authority";
 import {cn} from "../../utils/cn";
 import React, {forwardRef, ReactNode, useEffect, useImperativeHandle, useRef, useState} from "react";
+import {CloseButton} from "../closebutton/CloseButton";
 
 interface AlertIconProps extends React.HTMLAttributes<HTMLDivElement> {
     icon: ReactNode;
@@ -16,7 +17,8 @@ interface AlertDescriptionProps extends React.HTMLAttributes<HTMLDivElement> {
     description: string;
 }
 
-interface AlertProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof alert> {
+interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
+    closeButton: boolean;
     duration: number;
 }
 
@@ -57,7 +59,7 @@ type AlertRef = HTMLDivElement & {
     hide: () => void;
 };
 
-const Alert = forwardRef<AlertRef, AlertProps>(({ duration, theme, className, ...props }, ref) => {
+const Alert = forwardRef<AlertRef, AlertProps>(({ duration, closeButton, className, ...props }, ref) => {
     const [visible, setVisible] = useState(false);
     const [animate, setAnimate] = useState(false);
     const alertRef = useRef(null);
@@ -109,7 +111,13 @@ const Alert = forwardRef<AlertRef, AlertProps>(({ duration, theme, className, ..
                      w-max rounded-lg font-normal p-2 text-gray text-base flex flex-row items-center
                      shadow-2xl transition-all duration-500 ease-in-out opacity-0 translate-y-full`}
                      ref={alertRef} {...props}>
-                     {props.children}
+                    <div className={"flex flex-row"}>
+                        <div className={" flex flex-row items-center"}>
+                            {props.children}
+                        </div>
+                        <CloseButton className={"justify-end top-0 h-max ml-8 bg-dark"} onClick={() => setVisible(false)}/>
+                    </div>
+
                 </div>
             }
         </>
