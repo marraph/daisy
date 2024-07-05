@@ -115,7 +115,9 @@ const Alert = forwardRef<AlertRef, AlertProps>(({ duration, closeButton, classNa
                         <div className={" flex flex-row items-center"}>
                             {props.children}
                         </div>
-                        <CloseButton className={"justify-end top-0 h-max ml-8 bg-dark"} onClick={() => setVisible(false)}/>
+                        {closeButton &&
+                            <CloseButton className={"justify-end top-0 h-max ml-8 bg-dark"} onClick={() => setVisible(false)}/>
+                        }
                     </div>
 
                 </div>
