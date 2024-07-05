@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Dialog, DialogRef} from './Dialog';
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogRef} from './Dialog';
 import {Meta, StoryObj} from "@storybook/react";
 import { Button } from '../button/Button';
 import { Input } from '../input/Input';
@@ -24,11 +24,13 @@ export const Default = () => {
     return (
         <>
             <button className={"bg-black text-white p-2 text-base rounded-lg border border-white border-opacity-20"} onClick={() => dialogRef?.current.show()}>Dialog</button>
-            <Dialog ref={dialogRef}>
-                <Button text={"Button"}></Button>
-                <Input placeholder={"placeholder"}></Input>
-                <Button text={"Button"}></Button>
-                <Input placeholder={"placeholder"}></Input>
+            <Dialog ref={dialogRef} width={600}>
+                <DialogHeader title={"Create Task Dialog"} dialogRef={dialogRef}/>
+                <DialogContent>
+                    <Button text={"Button"}></Button>
+                    <Input placeholder={"placeholder"}></Input>
+                </DialogContent>
+                <DialogFooter saveButtonTitle={"Save"} cancelButton={true} dialogRef={dialogRef}/>
             </Dialog>
         </>
     );
