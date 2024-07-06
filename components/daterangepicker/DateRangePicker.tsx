@@ -1,6 +1,6 @@
 "use client";
 
-import React, {forwardRef, useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
 import {Calendar} from "../calendar/Calendar";
 import {addDays, format} from "date-fns";
@@ -27,6 +27,7 @@ interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement>, Var
     iconSize: number;
     preSelectedRange?: DateRange | undefined;
     onClose?: () => void;
+    onRangeChange?: (range: DateRange | undefined) => void;
     closeButton: boolean;
     dayFormat: "short" | "long";
 }
@@ -37,7 +38,8 @@ type DateRangePickerRef = HTMLDivElement & {
     setValue: (range: DateRange) => void;
 };
 
-const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({dayFormat, closeButton, onClose, preSelectedRange, text, iconSize, size, className, ...props}, ref) => {
+const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({onRangeChange, dayFormat, closeButton, onClose, preSelectedRange, text, iconSize, size, className, ...props}, ref) => {
+    const daterangepickerRef = useRef<DateRangePickerRef>(null);
     const [isOpen, setIsOpen] = useState(false);
 
     const initialRange: DateRange = {
@@ -46,7 +48,6 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({d
     };
 
     const [range, setRange] = useState<DateRange | undefined>(preSelectedRange ? preSelectedRange : initialRange);
-
 
     const menuRef = useOutsideClick(() => {
         setIsOpen(false);
@@ -67,14 +68,18 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({d
         if (dayFormat === "short") return format(date, "MM-dd-yyyy");
     };
 
-    const daterangepickerRef = useRef<DateRangePickerRef>(null);
-
     useImperativeHandle(ref, () => ({
         reset: () => setRange(undefined),
         getSelectedValue: () => range,
         setValue: (range: DateRange | undefined) => setRange(range),
         ...daterangepickerRef.current,
     }));
+
+    useEffect(() => {
+        if (onRangeChange) {
+            onRangeChange(range);
+        }
+    }, [range, onRangeChange]);
 
     return (
         <div className={cn("relative inline-block space-y-1", className)} ref={menuRef}>

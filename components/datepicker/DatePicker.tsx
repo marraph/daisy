@@ -26,6 +26,7 @@ interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantP
     iconSize: number;
     preSelectedValue?: Date | null | undefined;
     onClose?: () => void;
+    onValueChange?: (value: Date | null) => void;
     closeButton: boolean;
     dayFormat: "long" | "short";
 }
@@ -36,7 +37,8 @@ type DatepickerRef = HTMLDivElement & {
     setValue: (value: Date | null | undefined) => void;
 };
 
-const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({dayFormat, closeButton, onClose, preSelectedValue, text, iconSize, size, className, ...props}, ref) => {
+const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({onValueChange, dayFormat, closeButton, onClose, preSelectedValue, text, iconSize, size, className, ...props}, ref) => {
+    const datepickerRef = useRef<DatepickerRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(preSelectedValue ? preSelectedValue : undefined);
 
@@ -55,17 +57,17 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({dayFormat,
         if (dayFormat === "short") return format(selectedValue, "MM-dd-yyyy");
     }
 
-
     const menuRef = useOutsideClick(() => {
         setIsOpen(false);
     });
 
     const handleDayClick = (day: Date | undefined) => {
-        setSelectedValue(day);
+        const newValue = (selectedValue === day) ? null : day;
+        setSelectedValue(newValue);
         setIsOpen(false);
+        onValueChange && onValueChange(newValue)
     };
 
-    const datepickerRef = useRef<DatepickerRef>(null);
 
     useImperativeHandle(ref, () => ({
         reset: () => setSelectedValue(null),
@@ -90,7 +92,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({dayFormat,
                     <CloseButton iconSize={size === "medium" ? 15 : 16}
                         className={cn("w-min bg-black h-min rounded-l-none border border-white border-opacity-20",
                             (size === "medium" ? "py-1" : ""), className)}
-                        onClick={(e) => {e.stopPropagation(); setSelectedValue(undefined); onClose();}}
+                        onClick={(e) => {e.stopPropagation(); handleDayClick(undefined); onClose();}}
                     />
                 }
             </div>

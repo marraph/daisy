@@ -24,9 +24,12 @@ export const Default: Story = {
         const comboboxRef = useRef<ComboboxRef>(null);
 
         return (
-            <Combobox size={"small"} buttonTitle={"Title"} ref={comboboxRef} icon={
-                <GitBranch size={12} className={"mr-2"}/>
-            }>
+            <Combobox size={"small"}
+                      buttonTitle={"Title"}
+                      ref={comboboxRef}
+                      icon={<GitBranch size={12} className={"mr-2"}/>}
+                      onValueChange={(value) => console.log(value)}
+            >
                 {items.map((item, index) => (
                     <ComboboxItem key={index} title={item} size={"small"}/>
                 ))}

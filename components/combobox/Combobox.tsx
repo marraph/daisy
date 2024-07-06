@@ -39,10 +39,11 @@ interface ComboboxItemProps extends React.HTMLAttributes<HTMLDivElement>, Varian
     onClick?: () => void;
 }
 
-interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLDivElement>, VariantProps<typeof combobox> {
+interface ComboboxProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof combobox> {
     buttonTitle: string;
     preSelectedValue?: string | null | undefined;
     icon?: ReactNode;
+    onValueChange?: (value: string | null) => void;
 }
 
 type ComboboxRef = HTMLDivElement & {
@@ -64,8 +65,8 @@ const ComboboxItem = forwardRef<HTMLDivElement, ComboboxItemProps>(({ size, titl
 ComboboxItem.displayName = "ComboboxItem";
 
 
-
-const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({icon, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({onValueChange, icon, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
+    const comboRef = useRef<ComboboxRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
 
@@ -74,15 +75,11 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({icon, size, buttonTitl
     });
 
     const handleItemClick = (item: string) => {
-        if (selectedValue === item) {
-            setSelectedValue(null);
-        } else {
-            setSelectedValue(item);
-        }
+        const newValue = (selectedValue === item) ? null : item;
+        setSelectedValue(newValue);
         setIsOpen(false);
+        onValueChange && onValueChange(newValue)
     };
-
-    const comboRef = useRef<ComboboxRef>(null);
 
     useImperativeHandle(ref, () => ({
         reset: () => setSelectedValue(null),
