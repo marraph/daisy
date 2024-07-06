@@ -32,7 +32,7 @@ const Switch = forwardRef<SwitchRef, React.LabelHTMLAttributes<HTMLLabelElement>
                 checked={isChecked}
                 onChange={toggleSwitch}
             />
-            <div className={cn(`absolute w-12 h-7 bg-black rounded-full shadow-inner ${isChecked ? 'bg-white' : 'bg-dark'}`, className)}></div>
+            <div className={cn(`border border-white border-opacity-20 absolute w-12 h-7 bg-black rounded-full shadow-inner ${isChecked ? 'bg-white' : 'bg-dark'}`, className)}></div>
             <div className={cn(`absolute left-1 -top-2.5 w-5 h-5 bg-black rounded-full transition transform ${isChecked ? 'translate-x-5' : 'translate-x-0'}`, className)}></div>
         </label>
     );

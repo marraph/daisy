@@ -5,6 +5,7 @@ import {cn} from "../../utils/cn";
 import {Button} from "../button/Button";
 import {Seperator} from "../seperator/Seperator";
 import {CloseButton} from "../closebutton/CloseButton";
+import {Switch, SwitchRef} from "../switch/Switch";
 
 type DialogRef = HTMLDialogElement & {
     show: () => void;
@@ -18,60 +19,74 @@ interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElement> {
 interface DialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
     dialogRef:  React.MutableRefObject<DialogRef>;
+    switchRef?: React.MutableRefObject<SwitchRef>;
+    onClose?: () => void;
 }
 
 interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
     cancelButton: boolean;
     saveButtonTitle: string;
+    switchButton: boolean;
     dialogRef:  React.MutableRefObject<DialogRef>;
+    switchRef?: React.MutableRefObject<SwitchRef>;
     onClick?: () => void;
-    validate?: () => boolean;
+    onClose?: () => void;
 }
 
 interface DialogContentProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 
-const DialogHeader: React.FC<DialogHeaderProps> = ({ title, dialogRef }) => {
+const DialogHeader: React.FC<DialogHeaderProps> = ({ title, dialogRef, switchRef, onClose }) => {
     return (
-        <>
-            <div className={"flex flex-row justify-between items-center p-2 pl-4"}>
-                <span className={"text-md text-white"}>{title}</span>
-                <CloseButton onClick={() => dialogRef.current.close()}/>
-            </div>
-            <Seperator/>
-        </>
+        <div className={"rounded-t-lg border border-white border-opacity-20 flex flex-row justify-between items-center p-4 pr-2"}>
+            <span className={"text-md text-white"}>{title}</span>
+            <CloseButton onClick={() => {
+                    dialogRef.current.close();
+                    switchRef.current.setValue(false);
+                    onClose();
+            }}
+            />
+        </div>
     );
 }
 
-const DialogFooter: React.FC<DialogFooterProps> = ({ cancelButton, saveButtonTitle, dialogRef, onClick, validate }) => {
+const DialogFooter: React.FC<DialogFooterProps> = ({ cancelButton, saveButtonTitle, dialogRef, onClick, switchButton, switchRef, onClose }) => {
     return (
-        <>
-            <Seperator/>
-            <div className={"bg-dark flex flex-row justify-end items-center p-2 space-x-2"}>
-                {cancelButton &&
-                    <Button text={"Cancel"}
-                            className={"h-8"}
-                            onClick={() => dialogRef.current.close()}
-                    />
-                }
-                <Button text={saveButtonTitle}
-                        theme={"white"}
+        <div className={"rounded-b-lg border border-white border-opacity-20 bg-dark flex flex-row justify-end items-center p-2 space-x-2"}>
+            {switchButton &&
+                <div className={"flex flex-row items-center space-x-2 text-gray text-xs mr-16"}>
+                    <span>{"Create more"}</span>
+                    <Switch ref={switchRef}/>
+                </div>
+            }
+            {cancelButton &&
+                <Button text={"Cancel"}
                         className={"h-8"}
                         onClick={() => {
                             dialogRef.current.close();
-                            onClick();
+                            switchRef.current.setValue(false);
+                            onClose();
                         }}
-                        disabled={validate()}
                 />
-            </div>
-        </>
+            }
+            <Button text={saveButtonTitle}
+                    theme={"white"}
+                    className={"h-8"}
+                    onClick={() => {
+                        if (!switchRef || !switchRef.current.getValue()) {
+                            dialogRef.current.close();
+                        }
+                        onClick();
+                    }}
+            />
+        </div>
     );
 }
 
 const DialogContent: React.FC<DialogContentProps> = ({ ...props }) => {
     return (
-        <div className={"items-center p-4"}>
+        <div className={"border-x border-white border-opacity-20 items-center p-4"}>
             {props.children}
         </div>
     );
@@ -87,14 +102,16 @@ const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, ...props 
     }));
 
     return (
-        <dialog className={cn("group backdrop:bg-black/60 backdrop backdrop-opacity-20 backdrop-brightness-0" +
-                              "border border-white border-opacity-20 rounded-lg bg-black", className)}
-                style={{width: width}}
-                {...props}
-                ref={dialogRef}
-        >
-            {props.children}
-        </dialog>
+        <div className={"rounded-lg flex items-center justify-center"}>
+            <dialog className={cn("group backdrop:bg-black/60 backdrop backdrop-opacity-20 backdrop-brightness-0" +
+                "rounded-lg bg-black", className)}
+                    style={{width: width}}
+                    {...props}
+                    ref={dialogRef}
+            >
+                {props.children}
+            </dialog>
+        </div>
     );
 
 
