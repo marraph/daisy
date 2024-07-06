@@ -26,6 +26,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, Varian
     placeholder: string;
     icon?: React.ReactNode;
     preSelectedValue?: string | number | null | undefined;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type InputRef = HTMLInputElement & {
@@ -35,7 +36,7 @@ type InputRef = HTMLInputElement & {
     blur: () => void;
 };
 
-const Input = forwardRef<InputRef, InputProps>(({ preSelectedValue, icon, elementSize, border, label, placeholder, className, ...props }, ref) => {
+const Input = forwardRef<InputRef, InputProps>(({ onChange, preSelectedValue, icon, elementSize, border, label, placeholder, className, ...props }, ref) => {
     const [inputValue, setInputValue] = React.useState<string | number >(preSelectedValue || "");
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -52,6 +53,13 @@ const Input = forwardRef<InputRef, InputProps>(({ preSelectedValue, icon, elemen
         blur: () => inputRef.current?.blur(),
         ...inputRef.current,
     }));
+
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(e.target.value);
+        if (onChange) {
+            onChange(e);
+        }
+    }
 
     return (
         <div className={cn("flex flex-col", className)}>
@@ -76,7 +84,7 @@ const Input = forwardRef<InputRef, InputProps>(({ preSelectedValue, icon, elemen
 
                 <input className={cn(input({ border, elementSize }), icon && 'rounded-l-none border-l-0 pl-1', className)}
                        placeholder={placeholder} spellCheck={false} ref={inputRef} value={inputValue}
-                       onChange={(e) => setInputValue(e.target.value)}
+                       onChange={(e) => handleOnChange(e)}
                        size={Math.max((inputValue as string).length, placeholder.length)}
                        {...props}>
                 </input>
