@@ -38,6 +38,7 @@ export const Default = () => {
                               cancelButton={true}
                               switchButton={false}
                               dialogRef={dialogRef}
+                              disabledButton={true}
                 />
             </Dialog>
         </>

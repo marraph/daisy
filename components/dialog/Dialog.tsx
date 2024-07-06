@@ -31,6 +31,7 @@ interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
     switchRef?: React.MutableRefObject<SwitchRef>;
     onClick?: () => void;
     onClose?: () => void;
+    disabledButton?: boolean;
 }
 
 interface DialogContentProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -51,7 +52,7 @@ const DialogHeader: React.FC<DialogHeaderProps> = ({ title, dialogRef, switchRef
     );
 }
 
-const DialogFooter: React.FC<DialogFooterProps> = ({ cancelButton, saveButtonTitle, dialogRef, onClick, switchButton, switchRef, onClose }) => {
+const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton, cancelButton, saveButtonTitle, dialogRef, onClick, switchButton, switchRef, onClose }) => {
     return (
         <div className={"rounded-b-lg border border-white border-opacity-20 bg-dark flex flex-row justify-end items-center p-2 space-x-2"}>
             {switchButton &&
@@ -79,6 +80,7 @@ const DialogFooter: React.FC<DialogFooterProps> = ({ cancelButton, saveButtonTit
                         }
                         onClick();
                     }}
+                    disabled={disabledButton}
             />
         </div>
     );
@@ -103,8 +105,7 @@ const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, ...props 
 
     return (
         <div className={"rounded-lg flex items-center justify-center"}>
-            <dialog className={cn("group backdrop:bg-black/60 backdrop backdrop-opacity-20 backdrop-brightness-0" +
-                "rounded-lg bg-black", className)}
+            <dialog className={cn("group backdrop:bg-black/60 backdrop backdrop-opacity-20 backdrop-brightness-0 rounded-lg bg-black overflow-visible", className)}
                     style={{width: width}}
                     {...props}
                     ref={dialogRef}
