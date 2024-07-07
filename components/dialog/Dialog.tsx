@@ -44,7 +44,7 @@ const DialogHeader: React.FC<DialogHeaderProps> = ({ title, dialogRef, switchRef
             <span className={"text-md text-white"}>{title}</span>
             <CloseButton onClick={() => {
                     dialogRef.current.close();
-                    switchRef.current.setValue(false);
+                    if (switchRef.current) switchRef.current.setValue(false);
                     onClose();
             }}
             />
@@ -66,7 +66,7 @@ const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton, cancelButto
                         className={"h-8"}
                         onClick={() => {
                             dialogRef.current.close();
-                            switchRef.current.setValue(false);
+                            if (switchRef.current) switchRef.current.setValue(false);
                             onClose();
                         }}
                 />
@@ -104,15 +104,13 @@ const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, ...props 
     }));
 
     return (
-        <div className={"rounded-lg flex items-center justify-center"}>
-            <dialog className={cn("group backdrop:bg-black/60 backdrop backdrop-opacity-20 backdrop-brightness-0 rounded-lg bg-black overflow-visible", className)}
-                    style={{width: width}}
-                    {...props}
-                    ref={dialogRef}
-            >
-                {props.children}
-            </dialog>
-        </div>
+        <dialog className={cn("group backdrop:bg-black/60 backdrop backdrop-opacity-20 backdrop-brightness-0 rounded-lg bg-black overflow-visible", className)}
+                style={{width: width}}
+                {...props}
+                ref={dialogRef}
+        >
+            {props.children}
+        </dialog>
     );
 
 

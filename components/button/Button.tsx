@@ -8,7 +8,7 @@ const button = cva("w-max rounded-lg font-medium text-sm py-2 px-4 flex items-ce
   variants: {
     theme: {
       dark: ["bg-black", "text-gray", "hover:text-white", "hover:bg-dark", "border", "border-white", "border-opacity-20"],
-      white: ["bg-white", "text-dark", "hover:text-black", "hover:bg-selectwhite",
+      white: ["bg-white", "text-dark", "hover:text-black", "hover:bg-selectwhite", "border", "border-white",
         "disabled:cursor-not-allowed", "disabled:hover:none", "disabled:bg-dark", "disabled:text-gray",
         "disabled:border", "disabled:border-white", "disabled:border-opacity-20"],
     },
