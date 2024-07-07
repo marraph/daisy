@@ -46,6 +46,7 @@ interface SearchSelectProps extends React.HTMLAttributes<HTMLDivElement>, Varian
     buttonTitle?: string;
     preSelectedValue?: string | null | undefined;
     icon?: ReactNode;
+    onValueChange?: (value: string | null) => void;
 }
 
 type SearchSelectRef = HTMLInputElement & {
@@ -79,7 +80,7 @@ const SearchSelectItem = forwardRef<HTMLDivElement, SearchSelectItemProps>(({ hi
 SearchSelectItem.displayName = "SearchSelectItem";
 
 
-const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({icon, size,  buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({onValueChange, icon, size,  buttonTitle, preSelectedValue, className, ...props}, ref) => {
     const inputRef = useRef<InputRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
@@ -91,15 +92,10 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({icon, size
     });
 
     const handleItemClick = (item: string) => {
-        if (selectedValue === item) {
-            setSelectedValue(null);
-            setSearchTerm("");
-            inputRef.current?.setValue("");
-        } else {
-            setSelectedValue(item);
-            setSearchTerm(item);
-            setIsOpen(false);
-        }
+        const newValue = (selectedValue === item) ? null : item;
+        setSelectedValue(newValue);
+        setIsOpen(false);
+        onValueChange && onValueChange(newValue)
     };
 
     const searchselectRef = useRef<SearchSelectRef>(null);
