@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from './Table';
+import {Table, TableAction, TableBody, TableCell, TableHead, TableHeader, TableRow} from './Table';
 import {Meta, StoryObj} from "@storybook/react";
 
 const meta: Meta<typeof Table> = {
@@ -65,7 +65,7 @@ export const Default: Story = {
         return (
             <Table>
                 <TableHeader>
-                    <TableRow className={"border-none hover:bg-black"}>
+                    <TableRow className={"border-none hover:bg-black w-full"}>
                         <TableHead>Invoice</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Method</TableHead>
@@ -79,6 +79,7 @@ export const Default: Story = {
                             <TableCell>{invoice.paymentStatus}</TableCell>
                             <TableCell>{invoice.paymentMethod}</TableCell>
                             <TableCell>{invoice.totalAmount}</TableCell>
+                            <TableAction onClick={() => console.log("Clicked")}/>
                         </TableRow>
                     ))}
                 </TableBody>

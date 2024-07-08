@@ -19,7 +19,6 @@ interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElement> {
 interface DialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
     dialogRef:  React.MutableRefObject<DialogRef>;
-    switchRef?: React.MutableRefObject<SwitchRef>;
     onClose?: () => void;
 }
 
@@ -38,13 +37,12 @@ interface DialogContentProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 
-const DialogHeader: React.FC<DialogHeaderProps> = ({ title, dialogRef, switchRef, onClose }) => {
+const DialogHeader: React.FC<DialogHeaderProps> = ({ title, dialogRef, onClose }) => {
     return (
         <div className={"rounded-t-lg border border-white border-opacity-20 flex flex-row justify-between items-center p-4 pr-2"}>
             <span className={"text-md text-white"}>{title}</span>
             <CloseButton onClick={() => {
                     dialogRef.current.close();
-                    if (switchRef.current) switchRef.current.setValue(false);
                     onClose();
             }}
             />
@@ -66,7 +64,6 @@ const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton, cancelButto
                         className={"h-8"}
                         onClick={() => {
                             dialogRef.current.close();
-                            if (switchRef.current) switchRef.current.setValue(false);
                             onClose();
                         }}
                 />
@@ -74,12 +71,7 @@ const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton, cancelButto
             <Button text={saveButtonTitle}
                     theme={"white"}
                     className={"h-8"}
-                    onClick={() => {
-                        if (!switchRef || !switchRef.current.getValue()) {
-                            dialogRef.current.close();
-                        }
-                        onClick();
-                    }}
+                    onClick={() => onClick()}
                     disabled={disabledButton}
             />
         </div>
@@ -104,13 +96,16 @@ const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, ...props 
     }));
 
     return (
-        <dialog className={cn("group backdrop:bg-black/60 backdrop backdrop-opacity-20 backdrop-brightness-0 rounded-lg bg-black overflow-visible", className)}
+        <div className={"flex items-center justify-center"}>
+            <dialog
+                className={cn("group backdrop:bg-black/60 backdrop backdrop-opacity-20 backdrop-brightness-0 rounded-lg bg-black overflow-visible", className)}
                 style={{width: width}}
                 {...props}
                 ref={dialogRef}
-        >
-            {props.children}
-        </dialog>
+            >
+                {props.children}
+            </dialog>
+        </div>
     );
 
 
