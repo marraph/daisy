@@ -46,7 +46,7 @@ interface SearchSelectProps extends React.HTMLAttributes<HTMLDivElement>, Varian
     buttonTitle?: string;
     preSelectedValue?: string | null | undefined;
     icon?: ReactNode;
-    onValueChange?: (value: string | null) => void;
+    onValueChange?: (value: string) => void;
 }
 
 type SearchSelectRef = HTMLInputElement & {
