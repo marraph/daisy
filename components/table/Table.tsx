@@ -6,7 +6,7 @@ import {Button} from "../button/Button";
 import {EllipsisVertical} from "lucide-react";
 
 type TableActionProps = {
-    onClick: () => void;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
     className?: string;
 }
 
@@ -17,7 +17,7 @@ const TableAction: React.FC<TableActionProps> = ({ onClick }) => {
                     className={"p-1.5 mx-2 hover:bg-selectwhite hover:text-dark"}
                     onClick={(e) => {
                         e.stopPropagation();
-                        onClick();
+                        onClick(e);
                     }}
             >
                 <EllipsisVertical size={16}/>
