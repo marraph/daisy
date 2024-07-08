@@ -5,15 +5,14 @@ import { cn } from "../../utils/cn";
 import {Button} from "../button/Button";
 import {EllipsisVertical} from "lucide-react";
 
-type TableActionProps = React.TableHTMLAttributes<HTMLTableCellElement> & {
+type TableActionProps = {
     onClick: () => void;
     className?: string;
 }
 
-const TableAction = forwardRef<HTMLTableCellElement, TableActionProps>(({ onClick, className, ...props }) => {
-
+const TableAction: React.FC<TableActionProps> = ({ onClick }) => {
     return (
-        <td className={cn("px-2 align-middle", className)} {...props}>
+        <td className={cn("px-2 align-middle")}>
             <Button text={""}
                     className={"p-1.5 mx-2 hover:bg-selectwhite hover:text-dark"}
                     onClick={(e) => {
@@ -25,7 +24,7 @@ const TableAction = forwardRef<HTMLTableCellElement, TableActionProps>(({ onClic
             </Button>
         </td>
     );
-});
+};
 TableAction.displayName = "TableAction";
 
 
