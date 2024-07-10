@@ -75,11 +75,19 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({o
         ...daterangepickerRef.current,
     }));
 
-    useEffect(() => {
-        if (onRangeChange) {
-            onRangeChange(range);
+    const handleDayClick = (day: Date | undefined) => {
+        if (range === undefined) {
+            setRange({from: day, to: addDays(day, 1)});
+        } else {
+            if (day === undefined) return;
+            if (day < range.from) {
+                setRange({from: day, to: range.to});
+            } else {
+                setRange({from: range.from, to: day});
+            }
         }
-    }, [range, onRangeChange]);
+        onRangeChange && onRangeChange(range);
+    }
 
     return (
         <div className={cn("relative inline-block space-y-1", className)} ref={menuRef}>
@@ -118,6 +126,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({o
                     <DayPicker mode={"range"}
                                selected={range}
                                onSelect={setRange}
+                               onDayClick={handleDayClick}
                                showOutsideDays={true}
                                className={cn("p-3 text-white bg-black rounded-lg border border-white border-opacity-20", className)}
                                classNames={{
