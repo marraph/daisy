@@ -40,7 +40,18 @@ function putFilterInCache(sessionStorage: Storage, filters: Filter[], key: strin
 }
 
 function getFilterFromCache(sessionStorage: Storage): Filter[] | null {
-    return Array(JSON.parse(sessionStorage.getItem('filters'))) ?? null;
+    const storedFilters = sessionStorage.getItem('filters');
+    if (!storedFilters) return null;
+
+    try {
+        const parsedFilters = JSON.parse(storedFilters);
+        if (Array.isArray(parsedFilters)) {
+            return parsedFilters.filter(filter => filter && filter.key && filter.value);
+        }
+    } catch (error) {
+        console.error("Failed to parse filters from sessionStorage", error);
+    }
+    return null;
 }
 
 
