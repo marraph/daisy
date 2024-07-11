@@ -7,6 +7,11 @@ import {useOutsideClick} from "../../utils/clickOutside";
 import {motion} from "framer-motion";
 import {ComboboxRef} from "../combobox/Combobox";
 
+type Filter = {
+    key: string,
+    value: string | null,
+}
+
 interface FilterProps extends React.HTMLAttributes<HTMLDivElement> {
     onFilterChange?: (filters: { [key: string]: string | null }) => void;
     onResetTeamSelected?: () => void;
@@ -184,5 +189,5 @@ const FilterButton = forwardRef<FilterRef, FilterProps>(({onFilterChange, onRese
 FilterButton.displayName = "FilterButton";
 
 
-export {FilterButton, FilterItem, FilterRef};
+export {FilterButton, FilterItem, FilterRef, Filter};
 
