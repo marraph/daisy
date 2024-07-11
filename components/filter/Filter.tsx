@@ -150,7 +150,7 @@ const FilterButton = forwardRef<FilterRef, FilterProps>(({onFilterChange, onRese
             <div className={"flex flex-row"}>
                 <button className={
                     `w-max h-8 flex flex-row items-center space-x-2 bg-black rounded-lg text-sm font-normal text-gray border border-white border-opacity-20
-                    ${Object.values(filterList).filter(Boolean).length <= 0 ?
+                    ${filterList && Object.values(filterList).filter(Boolean).length <= 0 ?
                         "hover:text-white hover:bg-dark px-4 rounded-lg" :
                         "hover:text-white hover:bg-dark pl-4 pr-4 rounded-l-lg rounded-r-none border-r-0"}`
                 }
@@ -160,11 +160,11 @@ const FilterButton = forwardRef<FilterRef, FilterProps>(({onFilterChange, onRese
                         }}>
                     <Filter size={20} className={"mr-1 my-2"}/>
                     <span className={"flex flex-row py-2"}>
-                        {Object.values(filterList).filter(Boolean).length <= 0 ? "Filter" :
-                            `${Object.values(filterList).filter(Boolean).length} Filter`}
+                        {filterList && Object.values(filterList).filter(Boolean).length <= 0 ? "Filter" :
+                            `${filterList && Object.values(filterList).filter(Boolean).length} Filter`}
                     </span>
                 </button>
-                {Object.values(filterList).filter(Boolean).length > 0 &&
+                {filterList && Object.values(filterList).filter(Boolean).length > 0 &&
                     <div
                         className={"group flex flex-row h-8 rounded-r-lg bg-black items-center border border-white border-opacity-20 hover:bg-dark hover:text-white"}
                         onClick={(e) => {
