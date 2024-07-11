@@ -1,11 +1,10 @@
 "use client";
 
 import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
-import {Check, ChevronRight, Filter, ListFilter} from "lucide-react";
+import {Check, ChevronRight, Filter} from "lucide-react";
 import {CloseButton} from "../closebutton/CloseButton";
 import {useOutsideClick} from "../../utils/clickOutside";
 import {motion} from "framer-motion";
-import {ComboboxRef} from "../combobox/Combobox";
 
 type Filter = {
     key: string,
@@ -39,8 +38,8 @@ function putFilterInCache(sessionStorage: Storage, filters: Filter[], key: strin
     sessionStorage.setItem('filters', JSON.stringify(filters));
 }
 
-function getFilterFromCache(sessionStorage: Storage) {
-    JSON.parse(sessionStorage.getItem('filters'));
+function getFilterFromCache(sessionStorage: Storage): Filter[] {
+    return JSON.parse(sessionStorage.getItem('filters'));
 }
 
 
