@@ -60,8 +60,10 @@ const FilterItem = forwardRef<HTMLDivElement, FilterItemProps>(({title, icon, da
     const [isHovered, setIsHovered] = useState(false);
 
     const toggleOpen = () => {
-        if (isOpen) onClose();
-        else onOpen();
+        if (isOpen)
+            onClose && onClose();
+        else
+            onOpen && onOpen();
     };
 
     const handleItemClick = (item: string) => {
