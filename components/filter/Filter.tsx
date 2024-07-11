@@ -33,7 +33,7 @@ type FilterRef = HTMLDivElement & {
     reset: () => void;
 };
 
-function putFilterInCache(sessionStorage: Storage, filters: Filter[], key: string, value: string) {
+function putFilterInCache(sessionStorage: Storage, filters: Filter[], key: string, value: string | null) {
     filters.push({key, value});
     sessionStorage.setItem('filters', JSON.stringify(filters));
 }
