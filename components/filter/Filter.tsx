@@ -40,8 +40,7 @@ function putFilterInCache(sessionStorage: Storage, filters: Filter[], key: strin
 }
 
 function getFilterFromCache(sessionStorage: Storage): Filter[] {
-    const values: Filter[] = JSON.parse(sessionStorage.getItem('filters'));
-    return values;
+    return Array(JSON.parse(sessionStorage.getItem('filters'))) ?? [];
 }
 
 
