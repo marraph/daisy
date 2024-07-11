@@ -12,7 +12,7 @@ type Filter = {
 }
 
 interface FilterProps extends React.HTMLAttributes<HTMLDivElement> {
-    onFilterChange?: (filters: Filter[] | null) => void;
+    onFilterChange?: (filters: Filter | null) => void;
     onResetTeamSelected?: () => void;
 }
 
@@ -33,9 +33,10 @@ type FilterRef = HTMLDivElement & {
     reset: () => void;
 };
 
-function putFilterInCache(sessionStorage: Storage, filters: Filter[], key: string, value: string | null) {
+function putFilterInCache(sessionStorage: Storage, filters: Filter[], key: string, value: string | null): Filter[] {
     filters.push({key, value});
     sessionStorage.setItem('filters', JSON.stringify(filters));
+    return filters;
 }
 
 function getFilterFromCache(sessionStorage: Storage): Filter[] {
@@ -132,7 +133,7 @@ const FilterButton = forwardRef<FilterRef, FilterProps>(({onFilterChange, onRese
         };
         setFilterList(newFilterList);
         if (onFilterChange) {
-            onFilterChange(newFilterList);
+            onFilterChange({key: item, value: title});
         }
     }
 
