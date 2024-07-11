@@ -30,6 +30,7 @@ interface FilterItemProps extends React.HTMLAttributes<HTMLDivElement> {
 
 type FilterRef = HTMLDivElement & {
     getSelectedItems: () =>  Filter[];
+    setFilter: (filter: Filter) => void;
     reset: () => void;
 };
 
@@ -152,6 +153,13 @@ const FilterButton = forwardRef<FilterRef, FilterProps>(({onFilterChange, onRese
 
     useImperativeHandle(ref, () => ({
         reset: () => setFilterList([]),
+        setFilter: (filter: Filter) => {
+            const newFilterList = {
+                ...filterList,
+                [filter.key]: filter.value,
+            };
+            setFilterList(newFilterList);
+        },
         getSelectedItems: () => filterList,
         ...filterRef.current
     }));
