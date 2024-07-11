@@ -133,7 +133,7 @@ const FilterButton = forwardRef<FilterRef, FilterProps>(({onFilterChange, onRese
         };
         setFilterList(newFilterList);
         if (onFilterChange) {
-            onFilterChange({key: item, value: title});
+            onFilterChange({key: title, value: item});
         }
     }
 
