@@ -39,8 +39,8 @@ function putFilterInCache(sessionStorage: Storage, filters: Filter[], key: strin
     return filters;
 }
 
-function getFilterFromCache(sessionStorage: Storage): Filter[] {
-    return Array(JSON.parse(sessionStorage.getItem('filters'))) ?? [];
+function getFilterFromCache(sessionStorage: Storage): Filter[] | null {
+    return Array(JSON.parse(sessionStorage.getItem('filters'))) ?? null;
 }
 
 
