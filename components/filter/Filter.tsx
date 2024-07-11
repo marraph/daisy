@@ -13,7 +13,7 @@ type Filter = {
 }
 
 interface FilterProps extends React.HTMLAttributes<HTMLDivElement> {
-    onFilterChange?: (filters: { [key: string]: string | null }) => void;
+    onFilterChange?: (filters: Filter[] | null) => void;
     onResetTeamSelected?: () => void;
 }
 
@@ -30,9 +30,18 @@ interface FilterItemProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 type FilterRef = HTMLDivElement & {
-    getSelectedItems: () => { [key: string]: string | null };
+    getSelectedItems: () =>  Filter[] | null;
     reset: () => void;
 };
+
+function putFilterInCache(sessionStorage: Storage, filters: Filter[], key: string, value: string) {
+    filters.push({key, value});
+    sessionStorage.setItem('filters', JSON.stringify(filters));
+}
+
+function getFilterFromCache(sessionStorage: Storage) {
+    JSON.parse(sessionStorage.getItem('filters'));
+}
 
 
 const FilterItem = forwardRef<HTMLDivElement, FilterItemProps>(({title, icon, data, isOpen, onOpen, onClose, onItemSelect, selectedItem, className, ...props}, ref) => {
@@ -84,7 +93,7 @@ FilterItem.displayName = "FilterItem";
 
 
 const FilterButton = forwardRef<FilterRef, FilterProps>(({onFilterChange, onResetTeamSelected, className, ...props}, ref) => {
-    const [filterList, setFilterList] = useState<{ [key: string]: string | null }>({});
+    const [filterList, setFilterList] = useState<Filter[] | null>(null);
     const [showFilter, setShowFilter] = useState(false);
     const [openItem, setOpenItem] = useState<string | null>(null);
     const [height, setHeight] = useState(0);
@@ -102,10 +111,10 @@ const FilterButton = forwardRef<FilterRef, FilterProps>(({onFilterChange, onRese
     });
 
     const deleteFilter = () => {
-        setFilterList({});
+        setFilterList(null);
         closeMenus();
         if (onFilterChange) {
-            onFilterChange({});
+            onFilterChange(null);
         }
         if (onResetTeamSelected) {
             onResetTeamSelected();
@@ -131,7 +140,7 @@ const FilterButton = forwardRef<FilterRef, FilterProps>(({onFilterChange, onRese
     const filterRef = useRef<FilterRef>(null);
 
     useImperativeHandle(ref, () => ({
-        reset: () => setFilterList({}),
+        reset: () => setFilterList(null),
         getSelectedItems: () => filterList,
         ...filterRef.current
     }));
@@ -189,5 +198,5 @@ const FilterButton = forwardRef<FilterRef, FilterProps>(({onFilterChange, onRese
 FilterButton.displayName = "FilterButton";
 
 
-export {FilterButton, FilterItem, FilterRef, Filter};
+export {FilterButton, FilterItem, FilterRef, Filter, getFilterFromCache, putFilterInCache};
 
