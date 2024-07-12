@@ -21,8 +21,8 @@ layout:
 * description?: string
 * icon?: ReactNode
 * closeButton: boolean
-
-
+* titleClassnames?: string
+* descriptionClassnames?: string
 
 
 

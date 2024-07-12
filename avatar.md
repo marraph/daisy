@@ -3,7 +3,7 @@
 ### Properties
 
 * size: number
-* shape: "box" | "round"
+* shape?: "box" | "round"(default)
 * img\_url: string
 
 
