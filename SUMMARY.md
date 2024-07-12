@@ -4,3 +4,4 @@
 * [Avatar](avatar.md)
 * [Badge](badge.md)
 * [Breadcrump](breadcrump.md)
+* [Button](button.md)
