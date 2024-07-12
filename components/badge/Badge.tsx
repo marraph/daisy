@@ -8,11 +8,7 @@ const badge = cva("w-max flex items-center font-semibold space-x-2", {
     variants: {
         theme: {
             dark: ["bg-black", "text-gray"],
-            primary: ["bg-blue", "text-white"],
-            success: ["bg-success", "text-success"],
-            warning: ["bg-warning", "text-warning"],
-            error: ["bg-error", "text-error"],
-            ghost: ["bg-opacity-100", "text-white", "text-opacity-20"],
+            white: ["bg-white", "text-dark"],
         },
         border: {
             white: ["border-2", "border-white", "border-opacity-20"],
@@ -38,7 +34,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, Varian
 const Badge = forwardRef<HTMLDivElement, BadgeProps>(({ theme, border, size, text, className, ...props }, ref) => (
     <div className={cn(badge({theme, border, size}), className)} ref={ref} {...props}>
         {props.children}
-        <p>{text}</p>
+        <span>{text}</span>
     </div>
 ));
 Badge.displayName = "Badge";

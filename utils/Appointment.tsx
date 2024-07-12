@@ -2,7 +2,7 @@
 
 import { cva, VariantProps } from "class-variance-authority";
 import React, {forwardRef} from "react";
-import {cn} from "../../utils/cn";
+import {cn} from "./cn";
 
 const appointment = cva("relative flex w-full h-20 text-white ", {
     variants: {

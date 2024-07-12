@@ -1,16 +1,18 @@
 "use client";
 
 import { cva, VariantProps } from "class-variance-authority";
-import React, {forwardRef} from "react";
+import React, {forwardRef, ReactNode} from "react";
 import { cn } from "../../utils/cn";
 
 const button = cva("w-max rounded-lg font-medium text-sm py-2 px-4 flex items-center", {
   variants: {
     theme: {
-      dark: ["bg-black", "text-gray", "hover:text-white", "hover:bg-dark", "border", "border-white", "border-opacity-20"],
+      dark: ["bg-black", "text-gray", "hover:text-white", "hover:bg-dark", "border", "border-white", "border-opacity-20",
+             "disabled:cursor-not-allowed", "disabled:hover:none", "disabled:bg-gray", "disabled:text-placeholder",
+             "disabled:border", "disabled:border-white", "disabled:border-opacity-20"],
       white: ["bg-white", "text-dark", "hover:text-black", "hover:bg-selectwhite", "border", "border-white",
-        "disabled:cursor-not-allowed", "disabled:hover:none", "disabled:bg-dark", "disabled:text-gray",
-        "disabled:border", "disabled:border-white", "disabled:border-opacity-20"],
+              "disabled:cursor-not-allowed", "disabled:hover:none", "disabled:bg-dark", "disabled:text-gray",
+              "disabled:border", "disabled:border-white", "disabled:border-opacity-20"],
     },
     size: {
       small: ["text-xs", "py-1", "px-2"],
@@ -25,11 +27,12 @@ const button = cva("w-max rounded-lg font-medium text-sm py-2 px-4 flex items-ce
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof button> {
   text: string;
+  icon?: ReactNode;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ theme, text, className, ...props }, ref) => (
-    <button className={cn(button({ theme }), className)} ref={ref} {...props}>
-      {props.children}
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ icon, theme, size, text, className, ...props }, ref) => (
+    <button className={cn(button({ theme, size }), className)} ref={ref} {...props}>
+      {icon && icon}
       {text}
     </button>
 ));
