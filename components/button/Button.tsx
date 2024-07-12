@@ -14,8 +14,7 @@ const button = cva("w-max rounded-lg font-medium text-sm py-2 px-4 flex items-ce
     },
     size: {
       small: ["text-xs", "py-1", "px-2"],
-      medium: ["text-sm", "py-2", "px-3"],
-      large: ["text-base", "py-3", "px-4"],
+      medium: ["text-sm", "py-1.5", "px-3"],
     },
   },
   defaultVariants: {

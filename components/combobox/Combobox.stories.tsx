@@ -2,6 +2,7 @@ import React, {useRef} from 'react';
 import {Combobox, ComboboxItem, ComboboxRef} from './Combobox';
 import {Meta, StoryObj} from "@storybook/react";
 import {GitBranch} from "lucide-react";
+import {Button} from "../button/Button";
 
 const meta: Meta<typeof Combobox> = {
     title: "Components/Combobox",
@@ -24,11 +25,12 @@ export const Default: Story = {
         const comboboxRef = useRef<ComboboxRef>(null);
 
         return (
-            <Combobox size={"small"}
+            <Combobox size={"medium"}
                       buttonTitle={"Title"}
                       ref={comboboxRef}
                       icon={<GitBranch size={12} className={"mr-2"}/>}
                       onValueChange={(value) => console.log(value)}
+                      label={"Label"}
             >
                 {items.map((item, index) => (
                     <ComboboxItem key={index} title={item} size={"small"}/>

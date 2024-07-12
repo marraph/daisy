@@ -71,7 +71,7 @@ const Input = forwardRef<InputRef, InputProps>(({ onChange, preSelectedValue, ic
             <div className={cn("relative flex flex-row items-center", className)}>
 
                 {icon && elementSize === "medium" &&
-                    <div className={"bg-black border border-white border-opacity-20 border-r-0 p-2.5 rounded-l-lg text-gray"}>
+                    <div className={"bg-black border border-white border-opacity-20 border-r-0 p-2 rounded-l-lg text-gray"}>
                         {icon}
                     </div>
                 }

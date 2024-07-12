@@ -11,7 +11,7 @@ const combobox = cva("group/combo cursor-pointer text-gray whitespace-nowrap rou
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],
-            medium: ["text-sm", "py-2", "px-4"],
+            medium: ["text-sm", "py-1.5", "px-4"],
             large: ["text-base", "py-3", "px-6"],
         },
     },
@@ -25,7 +25,6 @@ const comboboxItem = cva("text-gray text-sm cursor-pointer rounded-lg hover:bg-d
         size: {
             small: ["text-xs", "p-2"],
             medium: ["text-sm", "p-3"],
-            large: ["text-base", "p-4"],
         },
     },
     defaultVariants: {
@@ -44,6 +43,7 @@ interface ComboboxProps extends React.HTMLAttributes<HTMLDivElement>, VariantPro
     preSelectedValue?: string | null | undefined;
     icon?: ReactNode;
     onValueChange?: (value: string | null) => void;
+    label?: string;
 }
 
 type ComboboxRef = HTMLDivElement & {
@@ -65,7 +65,7 @@ const ComboboxItem = forwardRef<HTMLDivElement, ComboboxItemProps>(({ size, titl
 ComboboxItem.displayName = "ComboboxItem";
 
 
-const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({onValueChange, icon, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({label, onValueChange, icon, size, buttonTitle, preSelectedValue, className, ...props}, ref) => {
     const comboRef = useRef<ComboboxRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
@@ -78,7 +78,7 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({onValueChange, icon, s
         const newValue = (selectedValue === item) ? null : item;
         setSelectedValue(newValue);
         setIsOpen(false);
-        onValueChange && onValueChange(newValue)
+        onValueChange && onValueChange(newValue);
     };
 
     useImperativeHandle(ref, () => ({
@@ -89,29 +89,35 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({onValueChange, icon, s
     }));
 
     return (
-        <div className={cn("relative space-y-1", className)} ref={menuRef}>
-            <div className={cn(combobox({ size }), className)} {...props} onClick={() => setIsOpen(!isOpen)}>
-                {icon}
-                <span>{selectedValue ?? buttonTitle}</span>
-                <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12} />
-            </div>
-            {isOpen && React.Children.count(props.children) > 0 && (
-                <div className={cn("absolute top-full min-w-max bg-black border border-white border-opacity-20 text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}>
-                    {React.Children.map(props.children, (child, index) => {
-                        if (React.isValidElement<ComboboxItemProps>(child)) {
-                            return React.cloneElement(child, {
-                                onClick: () => {
-                                    child.props.onClick && child.props.onClick();
-                                    handleItemClick(child.props.title);
-                                },
-                                isSelected: selectedValue === child.props.title,
-                                key: index
-                            });
-                        }
-                        return child;
-                    })}
+        <div className={"flex flex-col space-y-1"}>
+            {label &&
+                <span className={"ml-1 text-placeholder text-sm"}>{label}</span>
+            }
+
+            <div className={cn("relative space-y-1", className)} ref={menuRef}>
+                <div className={cn(combobox({ size }), className)} {...props} onClick={() => setIsOpen(!isOpen)}>
+                    {icon}
+                    <span>{selectedValue ?? buttonTitle}</span>
+                    <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
                 </div>
-            )}
+                {isOpen && React.Children.count(props.children) > 0 && (
+                    <div className={cn("absolute top-full min-w-max bg-black border border-white border-opacity-20 text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}>
+                        {React.Children.map(props.children, (child, index) => {
+                            if (React.isValidElement<ComboboxItemProps>(child)) {
+                                return React.cloneElement(child, {
+                                    onClick: () => {
+                                        child.props.onClick && child.props.onClick();
+                                        handleItemClick(child.props.title);
+                                    },
+                                    isSelected: selectedValue === child.props.title,
+                                    key: index
+                                });
+                            }
+                            return child;
+                        })}
+                    </div>
+                )}
+            </div>
         </div>
     );
 });
