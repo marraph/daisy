@@ -11,7 +11,7 @@ const combobox = cva("group/combo cursor-pointer text-gray whitespace-nowrap rou
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],
-            medium: ["text-sm", "py-2", "px-4"],
+            medium: ["text-sm", "py-1.5", "px-4"],
             large: ["text-base", "py-3", "px-6"],
         },
     },
