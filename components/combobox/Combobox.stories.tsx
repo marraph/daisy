@@ -25,19 +25,17 @@ export const Default: Story = {
         const comboboxRef = useRef<ComboboxRef>(null);
 
         return (
-            <div className={"flex flex-row bg-warning"}>
-                <Combobox size={"medium"}
-                          buttonTitle={"Title"}
-                          ref={comboboxRef}
-                          icon={<GitBranch size={12} className={"mr-2"}/>}
-                          onValueChange={(value) => console.log(value)}
-                >
-                    {items.map((item, index) => (
-                        <ComboboxItem key={index} title={item} size={"small"}/>
-                    ))}
-                </Combobox>
-                <Button text={"Button"} />
-            </div>
+            <Combobox size={"medium"}
+                      buttonTitle={"Title"}
+                      ref={comboboxRef}
+                      icon={<GitBranch size={12} className={"mr-2"}/>}
+                      onValueChange={(value) => console.log(value)}
+                      label={"Label"}
+            >
+                {items.map((item, index) => (
+                    <ComboboxItem key={index} title={item} size={"small"}/>
+                ))}
+            </Combobox>
         );
     },
 };
