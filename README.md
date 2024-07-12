@@ -12,38 +12,29 @@ layout:
     visible: true
 ---
 
-# Alert
+# Button
 
 ### Properties
 
-* duration: number
-* title: string
-* description?: string
+* theme: "dark"(default) | "white"
+* size: "small" | "medium"(default)
+* text: string
 * icon?: ReactNode
-* closeButton: boolean
-* titleClassnames?: string
-* descriptionClassnames?: string
 
 
 
 {% tabs %}
-{% tab title="Example" %}
-<figure><img src=".gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+{% tab title="First Tab" %}
+<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
 
-{% tab title="Code" %}
+{% tab title="Second Tab" %}
 ```tsx
-const alertRef = useRef<AlertRef>(null);
-
-<Alert duration={3000}
-       closeButton={true}
-       ref={alertRef}
-       icon={<Rocket size={30} className={"text-white"}/>}
-       title={"This is a cool alert"}
-       description={"This is the alert description!"}
+<Button theme={"dark"}
+        size={"medium"}
+        text={"Open Wallet"}
+        icon={<Wallet size={20} className={"mr-3"}/>}
 />
-
-<button onClick={alertRef.current?.show()}/>
 ```
 {% endtab %}
 {% endtabs %}
