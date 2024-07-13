@@ -17,6 +17,7 @@ layout:
 ### Properties
 
 * buttonTitle: string
+* size: "small" | "medium"(default)
 * preSelectedValue?: string | null | undefined
 * icon?: ReactNode
 * onValueChange?: void
