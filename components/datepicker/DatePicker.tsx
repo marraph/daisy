@@ -23,6 +23,7 @@ const datepicker = cva("flex flex-row items-center bg-black rounded-lg border bo
 
 interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof datepicker> {
     text: string;
+    label?: string;
     preSelectedValue?: Date | null | undefined;
     onClose?: () => void;
     onValueChange?: (value: Date | null) => void;
@@ -36,7 +37,7 @@ type DatepickerRef = HTMLDivElement & {
     setValue: (value: Date | null | undefined) => void;
 };
 
-const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({onValueChange, dayFormat, closeButton, onClose, preSelectedValue, text, size, className, ...props}, ref) => {
+const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onValueChange, dayFormat, closeButton, onClose, preSelectedValue, text, size, className, ...props}, ref) => {
     const datepickerRef = useRef<DatepickerRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(preSelectedValue ? preSelectedValue : undefined);
@@ -76,31 +77,37 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({onValueCha
     }));
 
     return (
-        <div className={cn("relative inline-block space-y-1", className)} ref={menuRef}>
-            <div className={"flex flex-row items-center"}>
-                <div className={cn(datepicker({size}),
-                    `${!selectedValue ? "px-2 rounded-lg" : "px-2 rounded-l-lg border-r-0"}`,
-                    `${closeButton ? "rounded-r-none" : "rounded-r-lg border-r"}`,
-                    `${closeButton && !selectedValue && "rounded-r-lg"}`, className)}
-                     onClick={() => setIsOpen(!isOpen)} {...props}>
-                    <CalendarDays size={size === "small" ? 12 : 16} className={"mr-1"}/>
-                    <span>{!selectedValue ? text : formatDate()}</span>
-                    <ChevronsUpDown size={12}/>
-                </div>
-                {selectedValue && closeButton &&
-                    <CloseButton iconSize={16}
-                        className={cn("w-min bg-black h-min rounded-l-none border border-edge",
-                            (size === "medium" ? "py-1" : ""), className)}
-                        onClick={(e) => {e.stopPropagation(); handleDayClick(undefined); onClose();}}
-                    />
-                }
-            </div>
+        <div className={"flex flex-col space-y-1"}>
+            {label &&
+                <span className={"ml-1 text-marcador text-xs"}>{label}</span>
+            }
 
-            {isOpen && (
-                <div className={cn("absolute top-full left-0 overflow-hidden", className)} ref={menuRef}>
-                    <Calendar onDayClick={handleDayClick} />
+            <div className={cn("relative inline-block space-y-1", className)} ref={menuRef}>
+                <div className={"flex flex-row items-center"}>
+                    <div className={cn(datepicker({size}),
+                        `${!selectedValue ? "px-2 rounded-lg" : "px-2 rounded-l-lg border-r-0"}`,
+                        `${closeButton ? "rounded-r-none" : "rounded-r-lg border-r"}`,
+                        `${closeButton && !selectedValue && "rounded-r-lg"}`, className)}
+                         onClick={() => setIsOpen(!isOpen)} {...props}>
+                        <CalendarDays size={size === "small" ? 12 : 16} className={"mr-1"}/>
+                        <span>{!selectedValue ? text : formatDate()}</span>
+                        <ChevronsUpDown size={12}/>
+                    </div>
+                    {selectedValue && closeButton &&
+                        <CloseButton iconSize={16}
+                            className={cn("w-min bg-black h-min rounded-l-none border border-edge",
+                                (size === "medium" ? "py-1" : ""), className)}
+                            onClick={(e) => {e.stopPropagation(); handleDayClick(undefined); onClose();}}
+                        />
+                    }
                 </div>
-            )}
+
+                {isOpen && (
+                    <div className={cn("absolute top-full left-0 overflow-hidden", className)} ref={menuRef}>
+                        <Calendar onDayClick={handleDayClick} />
+                    </div>
+                )}
+            </div>
         </div>
     );
 })

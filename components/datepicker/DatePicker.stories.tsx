@@ -23,6 +23,7 @@ export const Default: Story = {
                         dayFormat={"long"}
                         closeButton={true}
                         onValueChange={(value) => console.log(value)}
+                        label={"Datum"}
             />
         );
     },
