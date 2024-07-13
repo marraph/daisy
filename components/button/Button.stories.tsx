@@ -19,7 +19,7 @@ type Story = StoryObj<typeof Button>
 export const Default: Story = {
   render: () => {
     return (
-      <Button theme={"dark"}
+      <Button theme={"white"}
               size={"medium"}
               text={"Open Wallet"}
               icon={<Wallet size={20} className={"mr-3"}/>}

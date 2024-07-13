@@ -11,9 +11,9 @@ interface BreadcrumpProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Breadcrump = forwardRef<HTMLDivElement, BreadcrumpProps>(({ pastText, nowText, onClick, className, ...props }, ref) => (
-    <div className={cn("w-max rounded-lg font-normal bg-dark text-placeholder flex flex-row items-center text-xs border border-white border-opacity-20 p-1",
+    <div className={cn("w-max rounded-lg font-normal bg-dark text-marcador flex flex-row items-center text-xs border border-edge p-1",
         className)} ref={ref} {...props}>
-        <span className={"cursor-pointer hover:text-white hover:bg-black rounded-md py-1 px-2"} onClick={onClick}>
+        <span className={"cursor-pointer hover:text-white hover:bg-dark-light rounded-md py-1 px-2"} onClick={onClick}>
             {pastText}
         </span>
         <ChevronRight strokeWidth={2} size={15} color={"gray"} className={"mx-1"}/>

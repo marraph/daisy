@@ -11,7 +11,7 @@ const badge = cva("w-max flex items-center font-semibold space-x-2", {
             white: ["bg-white", "text-dark"],
         },
         border: {
-            white: ["border-2", "border-white", "border-opacity-20"],
+            white: ["border-2", "border-edge"],
             none: [""],
         },
         size: {

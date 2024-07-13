@@ -67,13 +67,12 @@ const Alert = forwardRef<AlertRef, AlertProps>(({ icon, title, description, dura
     return (
         <>
             {animate &&
-                <div className={`
-                     fixed bottom-4 right-4 z-50 border border-white border-opacity-20 bg-dark
-                     w-max rounded-lg font-normal p-2 text-gray text-base flex flex-row items-center
-                     shadow-2xl transition-all duration-500 ease-in-out opacity-0 translate-y-full`}
+                <div className={`fixed bottom-4 right-4 z-50 border border-edge bg-dark
+                                w-max rounded-lg font-normal p-2 text-gray text-base flex flex-row items-center
+                                shadow-2xl transition-all duration-500 ease-in-out opacity-0 translate-y-full`}
                      ref={alertRef} {...props}>
                     <div className={"flex flex-row"}>
-                        <div className={" flex flex-row items-center"}>
+                        <div className={"flex flex-row items-center"}>
                             <div className={"m-3"}>
                                 {icon && icon}
                             </div>
@@ -86,7 +85,9 @@ const Alert = forwardRef<AlertRef, AlertProps>(({ icon, title, description, dura
                             </div>
                         </div>
                         {closeButton &&
-                            <CloseButton className={"justify-end top-0 h-max ml-8 bg-dark"} onClick={() => setVisible(false)}/>
+                            <CloseButton className={"justify-end top-0 h-max ml-8 bg-dark"}
+                                         onClick={() => {setVisible(false); setAnimate(false);}}
+                            />
                         }
                     </div>
 
