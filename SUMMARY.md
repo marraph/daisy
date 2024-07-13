@@ -18,3 +18,5 @@
 * [Datepicker](components/datepicker.md)
 * [Daterangepicker](components/daterangepicker.md)
 * [Dialog](components/dialog.md)
+* [Input](components/input.md)
+* [Searchselect](components/searchselect.md)
