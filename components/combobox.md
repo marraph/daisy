@@ -46,7 +46,10 @@ const items = ["Option 1", "Option 2", "Option 3"];
           label={"Label"}
 >
    {items.map((item, index) => (
-        <ComboboxItem key={index} title={item} size={"medium"}/>
+        <ComboboxItem key={index} 
+                      title={item} 
+                      size={"medium"}
+        />
     ))}
 </Combobox>
 ```

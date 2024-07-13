@@ -1,16 +1,17 @@
 # Table of contents
 
+## Philosophy
+
+* [Color Scheme](README.md)
+
 ## Components
 
-* [Button](README.md)
-* [Breadcrump](components/breadcrump.md)
-* [Badge](components/badge.md)
-* [Avatar](components/avatar.md)
 * [Alert](components/alert.md)
+* [Avatar](components/avatar.md)
+* [Badge](components/badge.md)
+* [Breadcrump](components/breadcrump.md)
+* [Button](<README (1).md>)
 * [Checkbox](components/checkbox.md)
 * [Closebutton](components/closebutton.md)
 * [Combobox](components/combobox.md)
-
-***
-
-* [Color Scheme](color-scheme.md)
+* [Contextmenu](components/contextmenu.md)
