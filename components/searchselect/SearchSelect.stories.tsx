@@ -17,24 +17,25 @@ export default meta;
 
 type Story = StoryObj<typeof SearchSelect>
 
-const items = ["Option 1", "Option 2 rinrihnire", "Option 3"];
 
 export const Default: Story = {
     render: () => {
 
-        const searchselectRef = useRef<SearchSelectRef>(null);
+        const items = ["Option 1", "Option 2", "Option 3"];
 
         return (
-            <div className={"flex flex-row bg-error"}>
-                <SearchSelect size={"small"} buttonTitle={"Title"} ref={searchselectRef}
-                              icon={<GitBranch size={12}/>}>
-                    {items.map((item, index) => (
-                        <SearchSelectItem key={index} title={item} size={"small"}/>
-                    ))}
-                </SearchSelect>
-
-                <DatePicker text={"Select a date"} iconSize={16} size={"medium"}/>
-            </div>
+            <SearchSelect size={"medium"}
+                          buttonTitle={"Title"}
+                          icon={<GitBranch size={12}/>}
+                          label={"Label"}
+            >
+                {items.map((item, index) => (
+                    <SearchSelectItem key={index}
+                                      title={item}
+                                      size={"medium"}
+                    />
+                ))}
+            </SearchSelect>
         );
     },
 };
