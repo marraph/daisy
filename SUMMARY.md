@@ -15,7 +15,6 @@
 * [Closebutton](components/closebutton.md)
 * [Combobox](components/combobox.md)
 * [Contextmenu](components/contextmenu.md)
-
-***
-
-* [Datepicker](datepicker.md)
+* [Datepicker](components/datepicker.md)
+* [Daterangepicker](components/daterangepicker.md)
+* [Dialog](components/dialog.md)
