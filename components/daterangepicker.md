@@ -17,6 +17,7 @@ layout:
 ### Properties
 
 * text: string
+* label?: string
 * preSelectedRange?: DateRange | undefined
 * closeButton: boolean
 * dayFormat: "short" | "long"

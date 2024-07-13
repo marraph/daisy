@@ -17,6 +17,7 @@ layout:
 ### Properties
 
 * text: string
+* label?: string
 * size: "small" | "medium"(default)
 * preSelectedValue?: Date | null | undefined
 * dayFormat: "short" | "long"
