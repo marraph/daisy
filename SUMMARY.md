@@ -7,6 +7,8 @@
 * [Badge](components/badge.md)
 * [Avatar](components/avatar.md)
 * [Alert](components/alert.md)
+* [Checkbox](components/checkbox.md)
+* [Closebutton](components/closebutton.md)
 
 ***
 
