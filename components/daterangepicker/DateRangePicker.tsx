@@ -1,8 +1,7 @@
 "use client";
 
-import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
-import { cn } from "../../utils/cn";
-import {Calendar} from "../calendar/Calendar";
+import React, {forwardRef, useImperativeHandle, useRef, useState} from "react";
+import {cn} from "../../utils/cn";
 import {addDays, format} from "date-fns";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
@@ -10,11 +9,11 @@ import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
 import {DateRange, DayPicker} from "react-day-picker";
 
-const daterangepicker = cva("flex flex-row items-center bg-black rounded-lg border border-white border-opacity-20 text-gray cursor-pointer hover:text-white hover:bg-dark", {
+const daterangepicker = cva("flex flex-row items-center bg-black rounded-lg border border-edge text-gray cursor-pointer hover:text-white hover:bg-dark space-x-2", {
     variants: {
         size: {
-            small: ["text-xs", "py-1", "px-2", "space-x-2"],
-            medium: ["text-sm", "py-1.5", "px-3", "space-x-2", "h-8"],
+            small: ["text-xs", "py-1", "px-2"],
+            medium: ["text-sm", "py-1.5", "px-3"],
         },
     },
     defaultVariants: {
@@ -24,7 +23,6 @@ const daterangepicker = cva("flex flex-row items-center bg-black rounded-lg bord
 
 interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof daterangepicker> {
     text: string;
-    iconSize: number;
     preSelectedRange?: DateRange | undefined;
     onClose?: () => void;
     onRangeChange?: (range: DateRange | undefined) => void;
@@ -38,7 +36,7 @@ type DateRangePickerRef = HTMLDivElement & {
     setValue: (range: DateRange) => void;
 };
 
-const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({onRangeChange, dayFormat, closeButton, onClose, preSelectedRange, text, iconSize, size, className, ...props}, ref) => {
+const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({onRangeChange, dayFormat, closeButton, onClose, preSelectedRange, text, size, className, ...props}, ref) => {
     const daterangepickerRef = useRef<DateRangePickerRef>(null);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -97,7 +95,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({o
                     `${closeButton ? "rounded-r-none" : "rounded-r-lg border-r"}`,
                     `${closeButton && range === undefined && "rounded-r-lg"}`, className)}
                      onClick={() => setIsOpen(!isOpen)} {...props}>
-                    <CalendarDays size={iconSize} className={"mr-1"}/>
+                    <CalendarDays size={size === "small" ? 12 : 16} className={"mr-1"}/>
                     <div className={"flex flex-row space-x-2"}>
                         {range === undefined &&
                             <span>{text}</span>
@@ -113,8 +111,8 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({o
                 <ChevronsUpDown size={12}/>
                 </div>
                 {range && closeButton &&
-                    <CloseButton iconSize={size === "medium" ? 15 : 16}
-                                 className={cn("w-min bg-black h-min rounded-l-none border border-white border-opacity-20",
+                    <CloseButton iconSize={16}
+                                 className={cn("w-min bg-black h-min rounded-l-none border border-edge",
                                  (size === "medium" ? "py-1" : ""), className)}
                                  onClick={(e) => {e.stopPropagation(); setRange(undefined); onClose();}}
                     />
@@ -128,7 +126,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({o
                                onSelect={setRange}
                                onDayClick={handleDayClick}
                                showOutsideDays={true}
-                               className={cn("p-3 text-white bg-black rounded-lg border border-white border-opacity-20", className)}
+                               className={cn("p-3 text-white bg-black rounded-lg border border-edge", className)}
                                classNames={{
                                    months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
                                    month: "space-y-4",
@@ -146,7 +144,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({o
                                    day: cn("h-9 w-9 p-0 font-normal cursor-pointer rounded-lg hover:bg-dark"),
                                    day_range_end: "day-range-end rounded-r-lg rounded-l-none",
                                    day_range_start: "rounded-l-lg rounded-r-none",
-                                   day_selected: "bg-selectwhite text-dark hover:bg-selectwhite rounded-lg",
+                                   day_selected: "bg-dark-light text-white hover:bg-dark-light rounded-lg",
                                    day_today: "bg-dark text-white rounded-lg",
                                    day_outside: "day-outside opacity-50",
                                    day_disabled: "text-muted-foreground opacity-50",

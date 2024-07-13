@@ -7,7 +7,7 @@ import { cn } from "../../utils/cn";
 const button = cva("w-max rounded-lg font-medium text-sm py-2 px-4 flex items-center", {
   variants: {
     theme: {
-      dark: ["bg-black", "text-gray", "hover:text-white", "hover:bg-dark", "border", "border-white", "border-opacity-20",
+      dark: ["bg-black", "text-gray", "hover:text-white", "hover:bg-dark", "border", "border-edge",
              "disabled:cursor-not-allowed", "disabled:hover:none", "disabled:bg-dark-light", "disabled:text-marcador",
              "disabled:border", "disabled:border-edge"],
       white: ["bg-white", "text-dark", "hover:text-black", "hover:bg-white-dark", "border", "border-white",

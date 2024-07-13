@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import {Meta, StoryObj} from "@storybook/react";
-import {DateRangePicker, DateRangePickerRef} from "./DateRangePicker";
+import {DateRangePicker} from "./DateRangePicker";
 
 const meta: Meta<typeof DateRangePicker> = {
     title: "Components/DateRangePicker",
@@ -17,10 +17,12 @@ type Story = StoryObj<typeof DateRangePicker>;
 
 export const Default: Story = {
     render: () => {
-        const dRef = useRef<DateRangePickerRef>(null);
         return (
-            <DateRangePicker text={"Select a range"} iconSize={12} size={"medium"} dayFormat={"short"}
-                             closeButton={true} ref={dRef}/>
+            <DateRangePicker text={"Select a range"}
+                             size={"medium"}
+                             dayFormat={"short"}
+                             closeButton={true}
+            />
         );
     },
 };

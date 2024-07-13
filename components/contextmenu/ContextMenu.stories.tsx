@@ -22,7 +22,7 @@ export const Default: Story = {
             <ContextMenu>
                 <ContextMenuItem title="Item 1" icon={<GitBranch size={14}/>}/>
                 <ContextMenuItem title="Item 2"/>
-                <ContextMenuItem title="Item 3" />
+                <ContextMenuItem title="Item 3" shortcut={"⌘S"}/>
             </ContextMenu>
         );
     },
