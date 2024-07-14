@@ -12,30 +12,23 @@ layout:
     visible: true
 ---
 
-# Input
+# Textarea
 
 ### Properties
 
 * placeholder: string
 * label?: string
-* icon: ReactNode
-* preSelectedValue?: string | number | null | unedfined
-* onChange?: void
 
 
 
 {% tabs %}
 {% tab title="Example" %}
-<figure><img src="../.gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
 
 {% tab title="Code" %}
 ```tsx
-<Input placeholder={"Small input"}
-       elementSize={"medium"}
-       label={"Label"}
-       icon={<Hourglass size={16}/>}
-/>
+<Textarea placeholder={"Small input"}/>
 ```
 {% endtab %}
 {% endtabs %}

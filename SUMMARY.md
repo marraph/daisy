@@ -25,3 +25,5 @@
 * [Switch](components/switch.md)
 * [SwitchButton](components/switchbutton.md)
 * [Table](components/table.md)
+* [Textarea](components/textarea.md)
+* [Tooltip](components/tooltip.md)
