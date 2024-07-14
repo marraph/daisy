@@ -2,8 +2,8 @@
 
 import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {Check, ChevronRight, Filter} from "lucide-react";
-import {CloseButton} from "../closebutton/CloseButton";
-import {useOutsideClick} from "../../utils/clickOutside";
+import {CloseButton} from "../components/closebutton/CloseButton";
+import {useOutsideClick} from "./clickOutside";
 import {motion} from "framer-motion";
 
 type Filter = {
