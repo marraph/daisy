@@ -20,3 +20,6 @@
 * [Dialog](components/dialog.md)
 * [Input](components/input.md)
 * [Searchselect](components/searchselect.md)
+* [Shortcut](components/shortcut.md)
+* [Skeleton](components/skeleton.md)
+* [Page](components/page.md)

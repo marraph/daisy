@@ -12,22 +12,22 @@ layout:
     visible: true
 ---
 
-# Closebutton
+# Shortcut
 
 ### Properties
 
-* iconSize?: number
+* text: string
 
 
 
 {% tabs %}
 {% tab title="Example" %}
-<figure><img src="../.gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
 
-{% tab title="Second Tab" %}
+{% tab title="Code" %}
 ```tsx
-<CloseButton iconSize={16}/>
+<Shortcut text={"⌘ S"}/>
 ```
 {% endtab %}
 {% endtabs %}
