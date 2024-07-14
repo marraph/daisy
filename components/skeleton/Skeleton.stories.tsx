@@ -18,9 +18,9 @@ type Story = StoryObj<typeof Skeleton>
 export const Default: Story = {
     render: () => {
         return (
-            <Skeleton>
+            <Skeleton className={"space-x-4"}>
                 <SkeletonElement width={100} height={100} />
-                <SkeletonColumn>
+                <SkeletonColumn className={"space-y-2"}>
                     <SkeletonElement width={300} height={40} />
                     <SkeletonElement width={400} height={30} />
                 </SkeletonColumn>

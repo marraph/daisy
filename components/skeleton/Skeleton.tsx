@@ -9,7 +9,7 @@ interface SkeletonElementProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const SkeletonElement = forwardRef<HTMLDivElement, SkeletonElementProps>(({ width, height, className, ...props }, ref) => (
-    <div className={cn("bg-dark rounded-full", className)} ref={ref} {...props} style={{width: `${width}px`, height: `${height}px`}}>
+    <div className={cn("bg-dark-light rounded-full", className)} ref={ref} {...props} style={{width: `${width}px`, height: `${height}px`}}>
     </div>
 ));
 SkeletonElement.displayName = "SkeletonElement";

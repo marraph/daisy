@@ -12,16 +12,16 @@ type TableActionProps = {
 
 const TableAction: React.FC<TableActionProps> = ({ onClick }) => {
     return (
-        <td className={cn("px-2 align-middle")}>
+        <td className={cn("px-2")}>
             <Button text={""}
-                    className={"p-1.5 mx-2 hover:bg-selectwhite hover:text-dark"}
+                    size={"medium"}
+                    className={"p-1.5 hover:bg-white-dark hover:text-dark"}
+                    icon={<EllipsisVertical size={16}/>}
                     onClick={(e) => {
                         e.stopPropagation();
                         onClick(e);
                     }}
-            >
-                <EllipsisVertical size={16}/>
-            </Button>
+            />
         </td>
     );
 };
@@ -38,7 +38,7 @@ TableCell.displayName = "TableCell";
 
 const TableRow = forwardRef<HTMLTableRowElement, TableHTMLAttributes<HTMLTableRowElement>>(({ className, ...props }, ref) => {
     return(
-        <tr className={cn("group/row bg-black border-t border-white border-opacity-20 hover:bg-dark hover:text-white cursor-pointer", className)}
+        <tr className={cn("group/row bg-black border-t border-edge hover:bg-dark hover:text-white cursor-pointer", className)}
             ref={ref} {...props}>
             {props.children}
         </tr>
@@ -58,7 +58,7 @@ TableHead.displayName = "TableHead";
 const TableHeader = forwardRef<HTMLTableSectionElement, TableHTMLAttributes<HTMLTableSectionElement>>(({ className, ...props }, ref) => {
     return (
         <thead className={cn("", className)} ref={ref} {...props}>
-        {props.children}
+            {props.children}
         </thead>
     );
 });
@@ -68,7 +68,7 @@ TableHeader.displayName = "TableHeader";
 const TableBody = forwardRef<HTMLTableSectionElement, TableHTMLAttributes<HTMLTableSectionElement>>(({ className, ...props }, ref) => {
     return (
         <tbody className={cn("", className)} ref={ref} {...props}>
-        {props.children}
+            {props.children}
         </tbody>
     );
 });
@@ -77,7 +77,7 @@ TableBody.displayName = "TableBody";
 
 const Table = forwardRef<HTMLTableElement, TableHTMLAttributes<HTMLTableElement>>(({ className, ...props }, ref) => {
     return (
-        <div className={cn("w-full text-gray cursor-pointer text-base overflow-auto bg-black rounded-lg border border-white border-opacity-20", className)}>
+        <div className={cn("w-full text-gray cursor-pointer text-base overflow-auto bg-black rounded-lg border border-edge", className)}>
             <table className={cn("", className)} ref={ref} {...props}>
                 {props.children}
             </table>

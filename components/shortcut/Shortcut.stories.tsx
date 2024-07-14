@@ -18,7 +18,7 @@ type Story = StoryObj<typeof Shortcut>;
 export const Default: Story = {
     render: () => {
         return (
-            <Shortcut text={"⌘ S"}></Shortcut>
+            <Shortcut text={"⌘ S"}/>
         );
     },
 };
