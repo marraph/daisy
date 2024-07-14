@@ -12,22 +12,22 @@ layout:
     visible: true
 ---
 
-# Shortcut
+# Switch
 
 ### Properties
 
-* text: string
+* preSelectedValue: boolean
 
 
 
 {% tabs %}
 {% tab title="Example" %}
-<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
 
 {% tab title="Code" %}
 ```tsx
-<Shortcut text={"⌘ S"}/>
+<Switch preSelectedValue={true}/>
 ```
 {% endtab %}
 {% endtabs %}

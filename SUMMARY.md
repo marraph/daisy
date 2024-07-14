@@ -22,4 +22,6 @@
 * [Searchselect](components/searchselect.md)
 * [Shortcut](components/shortcut.md)
 * [Skeleton](components/skeleton.md)
-* [Page](components/page.md)
+* [Switch](components/switch.md)
+* [SwitchButton](components/switchbutton.md)
+* [Table](components/table.md)
