@@ -4,7 +4,8 @@ import React, {forwardRef, useRef} from "react";
 import { cn } from "../../utils/cn";
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    text: string;
+    text?: string;
+    textClassname?: string;
 }
 
 type CheckboxRef = HTMLInputElement & {
@@ -12,7 +13,7 @@ type CheckboxRef = HTMLInputElement & {
     setValue: (value: boolean) => void;
 }
 
-const Checkbox = forwardRef<CheckboxRef, CheckboxProps>(({ text, className, ...props }, ref) => {
+const Checkbox = forwardRef<CheckboxRef, CheckboxProps>(({ text, textClassname, className, ...props }, ref) => {
     const checkboxRef = useRef<CheckboxRef>(null);
 
     React.useImperativeHandle(ref, () => ({
@@ -24,11 +25,15 @@ const Checkbox = forwardRef<CheckboxRef, CheckboxProps>(({ text, className, ...p
     }), [checkboxRef]);
 
     return (
-        <div className={cn("w-max font-normal flex items-center p-2 text-white", className)} {...props}>
-            <input type={"checkbox"} ref={checkboxRef}
-                   className={cn("size-4 accent-black border-gray border-opacity-20 " +
-                       "rounded-md mr-2 checked:accent-black", className)}/>
-            <p>{text}</p>
+        <div className={"w-max font-normal flex items-center p-2 text-white"}>
+            <input type={"checkbox"}
+                   ref={checkboxRef}
+                   className={cn("size-4 accent-black border-edge rounded-md mr-2 checked:accent-black", className)}
+                   {...props}
+            />
+            {text &&
+                <span className={cn(textClassname)}>{text}</span>
+            }
         </div>
     );
 });

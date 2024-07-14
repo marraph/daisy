@@ -5,19 +5,19 @@ import { cn } from "../../utils/cn";
 import {ChevronRight} from "lucide-react";
 
 interface BreadcrumpProps extends React.HTMLAttributes<HTMLDivElement> {
-    pastText?: string;
-    nowText?: string;
+    pastText: string;
+    nowText: string;
     onClick?: MouseEventHandler<HTMLSpanElement>;
 }
 
 const Breadcrump = forwardRef<HTMLDivElement, BreadcrumpProps>(({ pastText, nowText, onClick, className, ...props }, ref) => (
-    <div className={cn("w-max rounded-lg font-normal bg-opacity-20 bg-black text-placeholder flex flex-row items-center text-xs border border-white border-opacity-20 p-1",
+    <div className={cn("w-max rounded-lg font-normal bg-dark text-marcador flex flex-row items-center text-xs border border-edge p-1",
         className)} ref={ref} {...props}>
-        <span className={cn("cursor-pointer hover:text-white hover:bg-dark rounded-md py-1 px-2")} onClick={onClick}>
+        <span className={"cursor-pointer hover:text-white hover:bg-dark-light rounded-md py-1 px-2"} onClick={onClick}>
             {pastText}
         </span>
         <ChevronRight strokeWidth={2} size={15} color={"gray"} className={"mx-1"}/>
-        <span className={cn("text-gray py-1 pl-1.5 pr-2")}>
+        <span className={"text-gray py-1 pl-1.5 pr-2"}>
             {nowText}
         </span>
     </div>

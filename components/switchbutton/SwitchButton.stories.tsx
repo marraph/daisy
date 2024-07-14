@@ -1,4 +1,4 @@
-import { SwitchButton } from './SwitchButton';
+import {SwitchButton} from './SwitchButton';
 import {Meta, StoryObj} from "@storybook/react";
 import React from "react";
 
@@ -18,7 +18,7 @@ type Story = StoryObj<typeof SwitchButton>
 export const Default: Story = {
     render: () => {
         return (
-            <SwitchButton firstTitle={"Table"} secondTitle={"Card"} className={"h-8"}/>
+            <SwitchButton firstTitle={"First Title"} secondTitle={"Second Title"}/>
         );
     },
 };

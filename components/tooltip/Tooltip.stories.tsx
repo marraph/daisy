@@ -21,11 +21,15 @@ export const Default: Story = {
 
         return (
             <>
-                <div className={"size-40 bg-error"}
-                     onMouseEnter={(event) => tooltipRef.current?.show(event)} onMouseLeave={() => tooltipRef.current?.hide()}>
-                </div>
+                <div className={"size-20 bg-error"}
+                     onMouseEnter={(event) => tooltipRef.current?.show(event)}
+                     onMouseLeave={() => tooltipRef.current?.hide()}
+                />
 
-                <Tooltip message={"this is a tooltip"} delay={500} ref={tooltipRef}/>
+                <Tooltip message={"this is a tooltip"}
+                         delay={500}
+                         ref={tooltipRef}
+                />
             </>
 
         );

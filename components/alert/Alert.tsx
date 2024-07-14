@@ -1,65 +1,26 @@
 "use client";
 
-import {cva, VariantProps} from "class-variance-authority";
 import {cn} from "../../utils/cn";
 import React, {forwardRef, ReactNode, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {CloseButton} from "../closebutton/CloseButton";
 
-interface AlertIconProps extends React.HTMLAttributes<HTMLDivElement> {
-    icon: ReactNode;
-}
-
-interface AlertTitleProps extends React.HTMLAttributes<HTMLDivElement> {
-    title: string;
-}
-
-interface AlertDescriptionProps extends React.HTMLAttributes<HTMLDivElement> {
-    description: string;
-}
-
 interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     closeButton: boolean;
     duration: number;
+    title: string;
+    description?: string;
+    icon?: ReactNode;
+    titleClassnames?: string;
+    descriptionClassnames?: string;
 }
-
-
-const AlertIcon = forwardRef<HTMLDivElement, AlertIconProps>(({ icon, className, ...props }, ref) => (
-    <div className={cn("m-3", className)} ref={ref} {...props}>
-        {icon}
-    </div>
-));
-AlertIcon.displayName = "AlertIcon";
-
-
-const AlertTitle = forwardRef<HTMLDivElement, AlertTitleProps>(({ title, className, ...props }, ref) => (
-        <div className={cn("text-white font-semibold", className)} ref={ref} {...props}>
-            {title}
-        </div>
-));
-AlertTitle.displayName = "AlertTitle";
-
-
-const AlertDescription = forwardRef<HTMLDivElement, AlertDescriptionProps>(({ description, className, ...props }, ref) => (
-    <div className={cn("float-left", className)} ref={ref} {...props}>
-        {description}
-    </div>
-));
-AlertDescription.displayName = "AlertDescription";
-
-
-const AlertContent = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-    <div className={cn("px-2 py-1 flex flex-col items-start align-center ", className)} ref={ref} {...props}>
-        {props.children}
-    </div>
-));
-AlertContent.displayName = "AlertContent";
 
 type AlertRef = HTMLDivElement & {
     show: () => void;
     hide: () => void;
 };
 
-const Alert = forwardRef<AlertRef, AlertProps>(({ duration, closeButton, className, ...props }, ref) => {
+const Alert = forwardRef<AlertRef, AlertProps>(({ icon, title, description, duration, closeButton,
+                                                    titleClassnames, descriptionClassnames, className, ...props }, ref) => {
     const [visible, setVisible] = useState(false);
     const [animate, setAnimate] = useState(false);
     const alertRef = useRef(null);
@@ -106,17 +67,27 @@ const Alert = forwardRef<AlertRef, AlertProps>(({ duration, closeButton, classNa
     return (
         <>
             {animate &&
-                <div className={`
-                     fixed bottom-4 right-4 z-50 border border-white border-opacity-20 bg-dark
-                     w-max rounded-lg font-normal p-2 text-gray text-base flex flex-row items-center
-                     shadow-2xl transition-all duration-500 ease-in-out opacity-0 translate-y-full`}
+                <div className={`fixed bottom-4 right-4 z-50 border border-edge bg-dark
+                                w-max rounded-lg font-normal p-2 text-gray text-base flex flex-row items-center
+                                shadow-2xl transition-all duration-500 ease-in-out opacity-0 translate-y-full`}
                      ref={alertRef} {...props}>
                     <div className={"flex flex-row"}>
-                        <div className={" flex flex-row items-center"}>
-                            {props.children}
+                        <div className={"flex flex-row items-center"}>
+                            <div className={"m-3"}>
+                                {icon && icon}
+                            </div>
+                            <div className={"px-2 py-1 flex flex-col items-start align-center "} ref={ref} {...props}>
+                                <span className={cn("text-white font-semibold", titleClassnames)}>{title}</span>
+                                {description &&
+                                    <span className={cn("float-left", descriptionClassnames)}>{description}</span>
+                                }
+
+                            </div>
                         </div>
                         {closeButton &&
-                            <CloseButton className={"justify-end top-0 h-max ml-8 bg-dark"} onClick={() => setVisible(false)}/>
+                            <CloseButton className={"justify-end top-0 h-max ml-8 bg-dark"}
+                                         onClick={() => {setVisible(false); setAnimate(false);}}
+                            />
                         }
                     </div>
 
@@ -128,4 +99,4 @@ const Alert = forwardRef<AlertRef, AlertProps>(({ duration, closeButton, classNa
 Alert.displayName = "Alert";
 
 
-export {Alert, AlertContent, AlertIcon, AlertTitle, AlertDescription, AlertRef};
+export {Alert, AlertRef};

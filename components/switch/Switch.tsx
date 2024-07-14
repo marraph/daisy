@@ -4,13 +4,17 @@ import React, {forwardRef, HTMLAttributes, useImperativeHandle, useRef, useState
 import {cn} from "../../utils/cn";
 import {GitBranch} from "lucide-react";
 
+interface SwitchProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
+    preSelectedValue?: boolean;
+}
+
 type SwitchRef = HTMLLabelElement & {
     getValue: () => boolean;
     setValue: (value: boolean) => void;
 };
 
-const Switch = forwardRef<SwitchRef, React.LabelHTMLAttributes<HTMLLabelElement>>(({ className, ...props }, ref) => {
-    const [isChecked, setIsChecked] = useState(false);
+const Switch = forwardRef<SwitchRef, SwitchProps>(({ preSelectedValue, className, ...props }, ref) => {
+    const [isChecked, setIsChecked] = useState<boolean>(preSelectedValue ?? false);
 
     const toggleSwitch = () => {
         setIsChecked(!isChecked);
@@ -32,8 +36,8 @@ const Switch = forwardRef<SwitchRef, React.LabelHTMLAttributes<HTMLLabelElement>
                 checked={isChecked}
                 onChange={toggleSwitch}
             />
-            <div className={cn(`border border-white border-opacity-20 absolute w-12 h-7 bg-black rounded-full shadow-inner ${isChecked ? 'bg-white' : 'bg-dark'}`, className)}></div>
-            <div className={cn(`absolute left-1 -top-2.5 w-5 h-5 bg-black rounded-full transition transform ${isChecked ? 'translate-x-5' : 'translate-x-0'}`, className)}></div>
+            <div className={cn(`border border-edge absolute w-14 h-8 bg-black rounded-full shadow-inner ${isChecked ? 'bg-white' : 'bg-dark-light'}`, className)}></div>
+            <div className={cn(`absolute left-1 -top-3 w-6 h-6 bg-black rounded-full transition transform ${isChecked ? 'translate-x-6' : 'translate-x-0'}`, className)}></div>
         </label>
     );
 });

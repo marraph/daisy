@@ -17,23 +17,20 @@ export default meta;
 
 type Story = StoryObj<typeof Combobox>
 
-const items = ["Option 1", "Option 2 rinrihnire", "Option 3"];
-
 export const Default: Story = {
     render: () => {
 
-        const comboboxRef = useRef<ComboboxRef>(null);
+        const items = ["Option 1", "Option 2", "Option 3"];
 
         return (
             <Combobox size={"medium"}
                       buttonTitle={"Title"}
-                      ref={comboboxRef}
                       icon={<GitBranch size={12} className={"mr-2"}/>}
                       onValueChange={(value) => console.log(value)}
                       label={"Label"}
             >
                 {items.map((item, index) => (
-                    <ComboboxItem key={index} title={item} size={"small"}/>
+                    <ComboboxItem key={index} title={item} size={"medium"}/>
                 ))}
             </Combobox>
         );

@@ -35,7 +35,8 @@ const Tooltip = forwardRef<TooltipRef, TooltipProps>(({ delay, message, classNam
     useImperativeHandle(ref, () => ({
         show: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
             setVisible({visible: true, x: event.clientX, y: event.clientY}),
-        hide: () => setVisible({visible: false, x: 0, y: 0}),
+        hide: () =>
+            setVisible({visible: false, x: 0, y: 0}),
         ...tooltipRef.current,
     }));
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, {forwardRef, useImperativeHandle, useRef} from "react";
+import React, {forwardRef, MutableRefObject, useImperativeHandle, useRef} from "react";
 import {cn} from "../../utils/cn";
 import {Button} from "../button/Button";
 import {Seperator} from "../seperator/Seperator";
@@ -18,7 +18,7 @@ interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElement> {
 
 interface DialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
-    dialogRef:  React.MutableRefObject<DialogRef>;
+    dialogRef:  MutableRefObject<DialogRef>;
     onClose?: () => void;
 }
 
@@ -26,8 +26,8 @@ interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
     cancelButton: boolean;
     saveButtonTitle: string;
     switchButton: boolean;
-    dialogRef:  React.MutableRefObject<DialogRef>;
-    switchRef?: React.MutableRefObject<SwitchRef>;
+    dialogRef:  MutableRefObject<DialogRef>;
+    switchRef?: MutableRefObject<SwitchRef>;
     onClick?: () => void;
     onClose?: () => void;
     disabledButton?: boolean;
@@ -39,7 +39,7 @@ interface DialogContentProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const DialogHeader: React.FC<DialogHeaderProps> = ({ title, dialogRef, onClose }) => {
     return (
-        <div className={"rounded-t-lg border border-white border-opacity-20 flex flex-row justify-between items-center p-4 pr-2"}>
+        <div className={"rounded-t-lg border border-edge flex flex-row justify-between items-center p-4 pr-2"}>
             <span className={"text-md text-white"}>{title}</span>
             <CloseButton onClick={() => {
                     dialogRef.current.close();
@@ -52,7 +52,7 @@ const DialogHeader: React.FC<DialogHeaderProps> = ({ title, dialogRef, onClose }
 
 const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton, cancelButton, saveButtonTitle, dialogRef, onClick, switchButton, switchRef, onClose }) => {
     return (
-        <div className={"rounded-b-lg border border-white border-opacity-20 bg-dark flex flex-row justify-end items-center p-2 space-x-2"}>
+        <div className={"rounded-b-lg border border-edge bg-dark flex flex-row justify-end items-center p-2 space-x-2"}>
             {switchButton &&
                 <div className={"flex flex-row items-center space-x-2 text-gray text-xs mr-16"}>
                     <span>{"Create more"}</span>
@@ -80,7 +80,7 @@ const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton, cancelButto
 
 const DialogContent: React.FC<DialogContentProps> = ({ ...props }) => {
     return (
-        <div className={"border-x border-white border-opacity-20 items-center p-4"}>
+        <div className={"border-x border-edge items-center p-4"}>
             {props.children}
         </div>
     );

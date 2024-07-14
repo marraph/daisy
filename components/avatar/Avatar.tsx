@@ -23,11 +23,13 @@ export interface AvatarProps extends React.ImgHTMLAttributes<HTMLImageElement>, 
 }
 
 const Avatar = forwardRef<HTMLImageElement, AvatarProps>(({ shape, img_url, size, className, ...props }, ref) => (
-        <Image className={cn(avatar({ shape }), className)} ref={ref}  {...props}
-            src={img_url}
-            alt={"Avatar"}
-            width={size}
-            height={size}
+        <Image className={cn(avatar({ shape }), className)}
+               ref={ref}
+               {...props}
+               src={img_url}
+               alt={"Avatar"}
+               width={size}
+               height={size}
         />
 ));
 Avatar.displayName = "Avatar";

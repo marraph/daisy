@@ -17,6 +17,6 @@ type Story = StoryObj<typeof CloseButton>;
 
 export const Default: Story = {
   render: () => {
-    return <CloseButton></CloseButton>;
+    return <CloseButton/>;
   },
 };

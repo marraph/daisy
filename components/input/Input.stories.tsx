@@ -21,6 +21,7 @@ export const Default: Story = {
         return (
             <Input placeholder={"Small input"}
                    elementSize={"medium"}
+                   label={"Label"}
                    icon={<Hourglass size={16}/>}
             />
         );

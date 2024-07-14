@@ -9,12 +9,11 @@ import {Input, InputRef} from "../input/Input";
 import {handleInternalServerErrorResponse} from "next/dist/server/future/route-modules/helpers/response-handlers";
 
 const searchselect = cva("group/combo cursor-pointer text-gray whitespace-nowrap rounded-lg font-normal flex flex-row items-center " +
-    "hover:text-white border border-white border-opacity-20 overflow-hidden bg-black", {
+    "hover:text-white border border-edge overflow-hidden bg-black", {
     variants: {
         size: {
             small: ["text-xs", "px-2"],
             medium: ["text-sm", "px-3"],
-            large: ["text-base", "px-4"],
         },
     },
     defaultVariants: {
@@ -22,12 +21,11 @@ const searchselect = cva("group/combo cursor-pointer text-gray whitespace-nowrap
     },
 });
 
-const searchselectItem = cva("text-gray text-sm cursor-pointer rounded-lg hover:bg-dark hover:text-white flex items-center mx-1 bg-black", {
+const searchselectItem = cva("text-gray cursor-pointer rounded-lg hover:bg-dark hover:text-white flex items-center mx-1 bg-black", {
     variants: {
         size: {
-            small: ["text-xs", "p-2"],
-            medium: ["text-sm", "p-3"],
-            large: ["text-base", "p-4"],
+            small: ["text-xs", "p-1"],
+            medium: ["text-sm", "p-2"],
         },
     },
     defaultVariants: {
@@ -43,7 +41,8 @@ interface SearchSelectItemProps extends React.HTMLAttributes<HTMLDivElement>, Va
 }
 
 interface SearchSelectProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof searchselect> {
-    buttonTitle?: string;
+    buttonTitle: string;
+    label?: string;
     preSelectedValue?: string | null | undefined;
     icon?: ReactNode;
     onValueChange?: (value: string) => void;
@@ -80,7 +79,7 @@ const SearchSelectItem = forwardRef<HTMLDivElement, SearchSelectItemProps>(({ hi
 SearchSelectItem.displayName = "SearchSelectItem";
 
 
-const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({onValueChange, icon, size,  buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onValueChange, icon, size,  buttonTitle, preSelectedValue, className, ...props}, ref) => {
     const inputRef = useRef<InputRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
@@ -92,8 +91,9 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({onValueCha
     });
 
     const handleItemClick = (item: string) => {
-        const newValue = (selectedValue === item) ? null : item;
+        const newValue = (selectedValue === item) ? "" : item;
         setSelectedValue(newValue);
+        setSearchTerm(newValue)
         setIsOpen(false);
         onValueChange && onValueChange(newValue)
     };
@@ -145,18 +145,24 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({onValueCha
     }, [filteredChildren, searchTerm]);
 
     return (
-        <div className={cn("relative space-y-1", className)} ref={menuRef}>
-            <div className={cn(searchselect({ size }), "h-8", className)} {...props} onClick={() => setIsOpen(true)}>
+        <div className={cn("flex flex-col relative space-y-1", className)} ref={menuRef}>
+            {label &&
+                <span className={"ml-1 text-marcador text-xs"}>{label}</span>
+            }
+            <div className={cn(searchselect({ size }), className)} {...props} onClick={() => setIsOpen(true)}>
                 {icon}
-                <Input placeholder={buttonTitle} value={searchTerm} border={"none"}
+                <Input placeholder={buttonTitle}
+                       value={searchTerm}
+                       border={"none"}
+                       elementSize={size}
                        onChange={handleInputChange}
                        size={Math.max((searchTerm as string).length/100*90, buttonTitle.length/100*90)}
-                       ref={inputRef} >
-                </Input>
+                       ref={inputRef}
+                />
                 <ChevronsUpDown className={cn("group-hover/combo:text-white text-gray", className)} size={12} />
             </div>
             {isOpen && filteredChildren.length > 0 &&
-                <div className={cn("absolute top-full min-w-max bg-black border border-white border-opacity-20 text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}>
+                <div className={cn("absolute top-full min-w-max bg-black border border-edge text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}>
                     {filteredChildren.map((child, index) => {
                         if (React.isValidElement<SearchSelectItemProps>(child)) {
                             return React.cloneElement(child, {

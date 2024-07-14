@@ -21,26 +21,31 @@ type Story = StoryObj<typeof Dialog>;
 export const Default = () => {
 
     const dialogRef = useRef<DialogRef>(null);
-    const switchRef = useRef<SwitchRef>(null);
 
     return (
         <>
-            <button className={"bg-black text-white p-2 text-base rounded-lg border border-white border-opacity-20"} onClick={() => dialogRef?.current.show()}>Dialog</button>
             <Dialog ref={dialogRef} width={600}>
-                <DialogHeader title={"Create Task Dialog"}
+                <DialogHeader title={"Example Dialog"}
                               dialogRef={dialogRef}
                 />
-                <DialogContent>
-                    <Button text={"Button"}></Button>
-                    <Input placeholder={"placeholder"}></Input>
+                <DialogContent className={"space-y-2"}>
+                    <div className={"space-y-2"}>
+                        <Button text={"Button"}></Button>
+                        <Input placeholder={"Placeholder"}></Input>
+                    </div>
                 </DialogContent>
                 <DialogFooter saveButtonTitle={"Save"}
                               cancelButton={true}
                               switchButton={false}
                               dialogRef={dialogRef}
-                              disabledButton={true}
+                              disabledButton={false}
                 />
             </Dialog>
+
+            <button className={"bg-black text-white p-2 text-base rounded-lg border border-edge"}
+                    onClick={() => dialogRef?.current.show()}>Dialog
+            </button>
+
         </>
     );
 };

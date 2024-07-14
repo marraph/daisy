@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import {Meta, StoryObj} from "@storybook/react";
-import {DatePicker, DatepickerRef} from "./DatePicker";
+import {DatePicker} from "./DatePicker";
 
 const meta: Meta<typeof DatePicker> = {
     title: "Components/DatePicker",
@@ -17,17 +17,14 @@ type Story = StoryObj<typeof DatePicker>;
 
 export const Default: Story = {
     render: () => {
-        const dRef = useRef<DatepickerRef>(null);
         return (
-            <div className={"flex flex-row"}>
-                <DatePicker text={"Select a date"}
-                            iconSize={12} size={"medium"}
-                            dayFormat={"long"}
-                            closeButton={true}
-                            ref={dRef}
-                            onValueChange={(value) => console.log(value)}
-                />
-            </div>
+            <DatePicker text={"Select a date"}
+                        size={"small"}
+                        dayFormat={"long"}
+                        closeButton={true}
+                        onValueChange={(value) => console.log(value)}
+                        label={"Datum"}
+            />
         );
     },
 };

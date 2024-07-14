@@ -18,7 +18,10 @@ type Story = StoryObj<typeof Avatar>
 export const Round: Story = {
     render: () => {
         return (
-            <Avatar shape={"round"} width={100} height={100} img_url={"/image-example.jpg"}/>
+            <Avatar shape={"round"}
+                    img_url={"/image-example.jpg"}
+                    size={100}
+            />
         );
     },
 };
@@ -26,7 +29,10 @@ export const Round: Story = {
 export const Box: Story = {
     render: () => {
         return (
-            <Avatar shape={"box"} width={100} height={100} img_url={"/image-example.jpg"}/>
+            <Avatar shape={"box"}
+                    img_url={"/image-example.jpg"}
+                    size={100}
+            />
         );
     },
 };
