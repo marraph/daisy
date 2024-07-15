@@ -16,6 +16,28 @@
   }
 }
 
+body {
+  .rcs-inner-handle {
+    background-color: #484848;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+}
 /* body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

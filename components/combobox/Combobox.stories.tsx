@@ -1,8 +1,7 @@
-import React, {useRef} from 'react';
-import {Combobox, ComboboxItem, ComboboxRef} from './Combobox';
+import React from 'react';
+import {Combobox, ComboboxItem} from './Combobox';
 import {Meta, StoryObj} from "@storybook/react";
 import {GitBranch} from "lucide-react";
-import {Button} from "../button/Button";
 
 const meta: Meta<typeof Combobox> = {
     title: "Components/Combobox",
@@ -20,7 +19,7 @@ type Story = StoryObj<typeof Combobox>
 export const Default: Story = {
     render: () => {
 
-        const items = ["Option 1", "Option 2", "Option 3"];
+        const items = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5", "Option 6", "Option 7", "Option 8", "Option 9", "Option 10"];
 
         return (
             <Combobox size={"medium"}

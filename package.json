@@ -1,6 +1,6 @@
 {
   "name": "@marraph/daisy",
-  "version": "1.0.47",
+  "version": "1.0.48",
   "description": "Daisy is a component library for the marraph organisation",
   "scripts": {
     "dev": "next dev",
@@ -21,6 +21,7 @@
     "next": "14.2.3",
     "prop-types": "^15.8.1",
     "react": "^18",
+    "react-custom-scroll": "^7.0.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
     "tailwind-merge": "^2.3.0"

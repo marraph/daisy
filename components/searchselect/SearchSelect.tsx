@@ -7,6 +7,7 @@ import {cva, VariantProps} from "class-variance-authority";
 import {useOutsideClick} from "../../utils/clickOutside";
 import {Input, InputRef} from "../input/Input";
 import {handleInternalServerErrorResponse} from "next/dist/server/future/route-modules/helpers/response-handlers";
+import {CustomScroll} from "react-custom-scroll";
 
 const searchselect = cva("group/combo cursor-pointer text-gray whitespace-nowrap rounded-lg font-normal flex flex-row items-center " +
     "hover:text-white border border-edge overflow-hidden bg-black", {
@@ -162,22 +163,26 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
                 <ChevronsUpDown className={cn("group-hover/combo:text-white text-gray", className)} size={12} />
             </div>
             {isOpen && filteredChildren.length > 0 &&
-                <div className={cn("absolute top-full min-w-max bg-black border border-edge text-gray whitespace-nowrap rounded-lg py-1 space-y-1 overflow-hidden", className)}>
-                    {filteredChildren.map((child, index) => {
-                        if (React.isValidElement<SearchSelectItemProps>(child)) {
-                            return React.cloneElement(child, {
-                                onClick: () => {
-                                    child.props.onClick && child.props.onClick();
-                                    handleItemClick(child.props.title);
-                                },
-                                isSelected: selectedValue === child.props.title,
-                                key: index,
-                                highlight: searchTerm,
-                            });
-                        }
-                        return child;
-                    })}
-                </div>
+                <CustomScroll>
+                    <div className={cn("flex flex-col min-w-max bg-black border border-edge text-gray rounded-lg", className)}>
+                        <div className={"bg-black rounded-lg space-y-1 py-1"}>
+                            {filteredChildren.map((child, index) => {
+                                if (React.isValidElement<SearchSelectItemProps>(child)) {
+                                    return React.cloneElement(child, {
+                                        onClick: () => {
+                                            child.props.onClick && child.props.onClick();
+                                            handleItemClick(child.props.title);
+                                        },
+                                        isSelected: selectedValue === child.props.title,
+                                        key: index,
+                                        highlight: searchTerm,
+                                    });
+                                }
+                                return child;
+                            })}
+                        </div>
+                    </div>
+                </CustomScroll>
             }
         </div>
     );
