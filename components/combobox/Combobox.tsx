@@ -89,21 +89,23 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({label, onValueChange, 
     }));
 
     return (
-        <div className={"flex flex-col space-y-1"}>
+        <div className={"flex flex-col space-y-1 isolate"}>
             {label &&
                 <span className={"ml-1 text-marcador text-xs"}>{label}</span>
             }
 
-            <div className={cn("relative space-y-1", className)} ref={menuRef}>
+            <div className={cn("space-y-1", className)} ref={menuRef}>
                 <div className={cn(combobox({size}), className)} {...props} onClick={() => setIsOpen(!isOpen)}>
                     {icon}
                     <span>{selectedValue ?? buttonTitle}</span>
                     <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
                 </div>
                 {isOpen && React.Children.count(props.children) > 0 && (
-                    <CustomScroll >
-                        <div className={cn("flex flex-col min-w-max bg-black border border-edge text-gray rounded-lg max-h-48", className)}>
-                            <div className={"bg-black rounded-lg space-y-1 py-1"}>
+                    <div className={"fixed z-50 min-w-max"}>
+
+                    <CustomScroll>
+                        <div className={"max-h-48"}>
+                            <div className={"flex flex-col text-gray bg-black rounded-lg border border-edge space-y-1 py-1"}>
                                 {React.Children.map(props.children, (child, index) => {
                                     if (React.isValidElement<ComboboxItemProps>(child)) {
                                         return React.cloneElement(child, {
@@ -120,6 +122,7 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({label, onValueChange, 
                             </div>
                         </div>
                     </CustomScroll>
+                    </div>
                 )}
             </div>
         </div>
