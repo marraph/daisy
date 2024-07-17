@@ -33,6 +33,7 @@ const SwitchButton = forwardRef<SwitchButtonRef, SwitchButtonProps>(({ preSelect
 
     const handleClick = () => {
         setSelectedValue(!selectedValue);
+        onClick && onClick();
     };
 
     return (
