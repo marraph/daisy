@@ -23,19 +23,15 @@ export const Default: Story = {
     render: () => {
 
         return (
-            <div className={"flex flex-col"}>
-                <Combobox size={"medium"}
-                          buttonTitle={"Title"}
-                          icon={<GitBranch size={12} className={"mr-2"}/>}
-                          onValueChange={(value) => console.log(value)}
-                >
-                    {items.map((item, index) => (
-                        <ComboboxItem key={index} title={item} size={"medium"}/>
-                    ))}
-                </Combobox>
-                <Button text={"button"}/>
-            </div>
-
+            <Combobox size={"medium"}
+                      buttonTitle={"Title"}
+                      icon={<GitBranch size={12} className={"mr-2"}/>}
+                      onValueChange={(value) => console.log(value)}
+            >
+                {items.map((item, index) => (
+                    <ComboboxItem key={index} title={item} size={"medium"}/>
+                ))}
+            </Combobox>
         );
     },
 };

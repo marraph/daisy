@@ -101,10 +101,10 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({label, onValueChange, 
                     <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
                 </div>
                 {isOpen && React.Children.count(props.children) > 0 && (
-                    <div className={"fixed max-h-48 w-max"}>
+                    <div className={"fixed bg-black h-48 w-max rounded-lg border border-edge overflow-hidden shadow-inner"}>
                     <CustomScroll>
-                        <div className={"max-h-48 rounded-lg"}>
-                            <div className={"flex flex-col text-gray bg-black rounded-lg border border-edge space-y-1 py-1"}>
+                        <div className={"max-h-48"}>
+                            <div className={"flex flex-col text-gray space-y-1 py-1"}>
                                 {React.Children.map(props.children, (child, index) => {
                                     if (React.isValidElement<ComboboxItemProps>(child)) {
                                         return React.cloneElement(child, {
