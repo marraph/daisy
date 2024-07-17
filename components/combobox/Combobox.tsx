@@ -89,7 +89,7 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({label, onValueChange, 
     }));
 
     return (
-        <div className={"flex flex-col space-y-1 isolate"}>
+        <div className={"flex flex-col space-y-1"}>
             {label &&
                 <span className={"ml-1 text-marcador text-xs"}>{label}</span>
             }
@@ -101,10 +101,9 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({label, onValueChange, 
                     <ChevronsUpDown className={cn("group-hover/combo:text-white ml-2 text-gray", className)} size={12}/>
                 </div>
                 {isOpen && React.Children.count(props.children) > 0 && (
-                    <div className={"fixed z-50 min-w-max"}>
-
+                    <div className={"fixed max-h-48 w-max"}>
                     <CustomScroll>
-                        <div className={"max-h-48"}>
+                        <div className={"max-h-48 rounded-lg"}>
                             <div className={"flex flex-col text-gray bg-black rounded-lg border border-edge space-y-1 py-1"}>
                                 {React.Children.map(props.children, (child, index) => {
                                     if (React.isValidElement<ComboboxItemProps>(child)) {
