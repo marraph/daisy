@@ -29,12 +29,13 @@ const badge = cva("w-max flex items-center font-semibold space-x-2", {
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badge> {
     text: string;
+    textClassName?: string;
 }
 
-const Badge = forwardRef<HTMLDivElement, BadgeProps>(({ theme, border, size, text, className, ...props }, ref) => (
+const Badge = forwardRef<HTMLDivElement, BadgeProps>(({ theme, border, size, text, textClassName, className, ...props }, ref) => (
     <div className={cn(badge({theme, border, size}), className)} ref={ref} {...props}>
         {props.children}
-        <span>{text}</span>
+        <span className={textClassName}>{text}</span>
     </div>
 ));
 Badge.displayName = "Badge";
