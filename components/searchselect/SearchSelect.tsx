@@ -146,44 +146,68 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
     }, [filteredChildren, searchTerm]);
 
     return (
-        <div className={cn("flex flex-col relative space-y-1", className)} ref={menuRef}>
+        <div className={cn("flex flex-col space-y-1", className)} ref={menuRef}>
             {label &&
                 <span className={"ml-1 text-marcador text-xs"}>{label}</span>
             }
-            <div className={cn(searchselect({ size }), className)} {...props} onClick={() => setIsOpen(true)}>
-                {icon}
-                <Input placeholder={buttonTitle}
-                       value={searchTerm}
-                       border={"none"}
-                       elementSize={size}
-                       onChange={handleInputChange}
-                       size={Math.max((searchTerm as string).length/100*90, buttonTitle.length/100*90)}
-                       ref={inputRef}
-                />
-                <ChevronsUpDown className={cn("group-hover/combo:text-white text-gray", className)} size={12} />
-            </div>
-            {isOpen && filteredChildren.length > 0 &&
-                <CustomScroll>
-                    <div className={cn("flex flex-col min-w-max bg-black border border-edge text-gray rounded-lg", className)}>
-                        <div className={"bg-black rounded-lg space-y-1 py-1"}>
-                            {filteredChildren.map((child, index) => {
-                                if (React.isValidElement<SearchSelectItemProps>(child)) {
-                                    return React.cloneElement(child, {
-                                        onClick: () => {
-                                            child.props.onClick && child.props.onClick();
-                                            handleItemClick(child.props.title);
-                                        },
-                                        isSelected: selectedValue === child.props.title,
-                                        key: index,
-                                        highlight: searchTerm,
-                                    });
-                                }
-                                return child;
-                            })}
-                        </div>
+
+            <div className={"space-y-1"} ref={menuRef}>
+                <div className={cn(searchselect({ size }), className)} {...props} onClick={() => setIsOpen(true)}>
+                    {icon}
+                    <Input placeholder={buttonTitle}
+                           value={searchTerm}
+                           border={"none"}
+                           elementSize={size}
+                           onChange={handleInputChange}
+                           size={Math.max((searchTerm as string).length/100*90, buttonTitle.length/100*90)}
+                           ref={inputRef}
+                    />
+                    <ChevronsUpDown className={cn("group-hover/combo:text-white text-gray", className)} size={12} />
+                </div>
+                {isOpen && filteredChildren.length > 0 && (
+                    <div className={"fixed bg-black max-h-48 w-max rounded-lg border border-edge overflow-hidden shadow-inner"}>
+                        {filteredChildren.length >= 5 ? (
+                            <CustomScroll>
+                                <div className={"max-h-48"}>
+                                    <div className={"flex flex-col text-gray space-y-1 py-1"}>
+                                        {filteredChildren.map((child, index) => {
+                                            if (React.isValidElement<SearchSelectItemProps>(child)) {
+                                                return React.cloneElement(child, {
+                                                    onClick: () => {
+                                                        child.props.onClick && child.props.onClick();
+                                                        handleItemClick(child.props.title);
+                                                    },
+                                                    isSelected: selectedValue === child.props.title,
+                                                    key: index,
+                                                    highlight: searchTerm,
+                                                });
+                                            }
+                                            return child;
+                                        })}
+                                    </div>
+                                </div>
+                            </CustomScroll>
+                        ) : (
+                            <div className={"flex flex-col text-gray space-y-1 py-1"}>
+                                {filteredChildren.map((child, index) => {
+                                    if (React.isValidElement<SearchSelectItemProps>(child)) {
+                                        return React.cloneElement(child, {
+                                            onClick: () => {
+                                                child.props.onClick && child.props.onClick();
+                                                handleItemClick(child.props.title);
+                                            },
+                                            isSelected: selectedValue === child.props.title,
+                                            key: index,
+                                            highlight: searchTerm,
+                                        });
+                                    }
+                                    return child;
+                                })}
+                            </div>
+                        )}
                     </div>
-                </CustomScroll>
-            }
+                )}
+            </div>
         </div>
     );
 });
