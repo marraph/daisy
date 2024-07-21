@@ -12,9 +12,8 @@ interface NavigationItemProps extends React.HTMLAttributes<HTMLDivElement> {
 const NavigationItem: React.FC<NavigationItemProps> = ({ title, icon, selected, ...props }) => {
     return (
         <div className={selected ?
-            "text-sm rounded-lg font-normal cursor-pointer flex items-center bg-dark text-white border border-edge" :
-            "bg-black text-gray text-sm rounded-lg font-normal cursor-pointer flex items-center hover:bg-dark hover:text-white border border-edge border-opacity-0"}
-            style={{width: 240}}
+            "w-max text-sm rounded-lg font-normal cursor-pointer flex items-center bg-dark text-white border border-edge" :
+            "w-max bg-black text-gray text-sm rounded-lg font-normal cursor-pointer flex items-center hover:bg-dark hover:text-white border border-edge border-opacity-0"}
             {...props}>
             <div className={cn("m-2 ml-4 mr-2")}>
                 {icon}
