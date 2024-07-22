@@ -84,7 +84,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
     const inputRef = useRef<InputRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
-    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [searchTerm, setSearchTerm] = useState<string>(preSelectedValue || "");
     const previousSearchTerm = useRef<string>("");
 
     const menuRef = useOutsideClick(() => {
