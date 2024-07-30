@@ -84,13 +84,13 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
     }));
 
     return (
-        <div className={"absolute flex flex-col space-y-1"}>
+        <div className={"flex flex-col space-y-1"}>
             {label &&
                 <span className={"ml-1 text-marcador text-xs"}>{label}</span>
             }
 
             <div className={cn("inline-block space-y-1", className)} ref={menuRef}>
-                <div className={"flex flex-row items-center"}>
+                <div className={"relative flex flex-row items-center"}>
                     <div className={cn(datepicker({size}),
                         `${!selectedValue ? "px-2 rounded-lg" : "px-2 rounded-l-lg border-r-0"}`,
                         `${closeButton ? "rounded-r-none" : "rounded-r-lg border-r"}`,
@@ -113,7 +113,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
                 </div>
 
                 {isOpen && (
-                    <div className={cn("top-full left-0 overflow-hidden", className)} ref={menuRef}>
+                    <div className={cn("absolute top-full left-0 overflow-hidden", className)} ref={menuRef}>
                         <Calendar onDayClick={handleDayClick} />
                     </div>
                 )}
