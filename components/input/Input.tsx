@@ -67,7 +67,7 @@ const Input = forwardRef<InputRef, InputProps>(({ onChange, preSelectedValue, ic
                 <span className={"ml-1 text-marcador text-xs"}>{label}</span>
             }
 
-            <div className={cn("relative flex flex-row items-center", className)}>
+            <div className={cn("flex flex-row items-center", className)}>
                 {icon && elementSize === "medium" &&
                     <div className={"bg-black border border-edge border-r-0 p-2 rounded-l-lg text-gray"}>
                         {icon}
