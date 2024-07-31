@@ -31,6 +31,7 @@ export const Default: Story = {
                           buttonTitle={"Title"}
                           icon={<GitBranch size={12}/>}
                           label={"Label"}
+                          preSelectedValue={"Option 1"}
             >
                 {items.map((item, index) => (
                     <SearchSelectItem key={index}

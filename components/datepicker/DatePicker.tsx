@@ -68,6 +68,13 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
         onValueChange && onValueChange(newValue)
     };
 
+    const handleToggle = (e) => {
+        e.stopPropagation();
+        if (!isOpen) {
+            setIsOpen(true);
+        }
+    };
+
 
     useImperativeHandle(ref, () => ({
         reset: () => setSelectedValue(null),
@@ -82,21 +89,24 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
                 <span className={"ml-1 text-marcador text-xs"}>{label}</span>
             }
 
-            <div className={cn("relative inline-block space-y-1", className)} ref={menuRef}>
-                <div className={"flex flex-row items-center"}>
+            <div className={cn("inline-block space-y-1", className)} ref={menuRef}>
+                <div className={"relative flex flex-row items-center"}>
                     <div className={cn(datepicker({size}),
                         `${!selectedValue ? "px-2 rounded-lg" : "px-2 rounded-l-lg border-r-0"}`,
                         `${closeButton ? "rounded-r-none" : "rounded-r-lg border-r"}`,
                         `${closeButton && !selectedValue && "rounded-r-lg"}`, className)}
-                         onClick={() => setIsOpen(!isOpen)} {...props}>
-                        <CalendarDays size={size === "small" ? 12 : 16} className={"mr-1"}/>
+                         onClick={(e) => handleToggle(e)} {...props}
+                    >
+                        <CalendarDays size={size === "small" ? 12 : 16}
+                                      className={"mr-1"}
+                        />
                         <span>{!selectedValue ? text : formatDate()}</span>
                         <ChevronsUpDown size={12}/>
                     </div>
                     {selectedValue && closeButton &&
-                        <CloseButton iconSize={16}
-                            className={cn("w-min bg-black h-min rounded-l-none border border-edge",
-                                (size === "medium" ? "py-1" : ""), className)}
+                        <CloseButton
+                            iconSize={16}
+                            className={cn("w-min bg-black h-min rounded-l-none border border-edge", (size === "medium" ? "py-1" : ""), className)}
                             onClick={(e) => {e.stopPropagation(); handleDayClick(undefined); onClose();}}
                         />
                     }

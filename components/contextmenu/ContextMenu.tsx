@@ -31,7 +31,7 @@ ContextMenuItem.displayName = "ContextMenuItem";
 
 const ContextMenu = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
     return (
-        <div className={cn("w-full rounded-lg font-normal p-1 bg-black text-gray border border-edge", className)} ref={ref} {...props}>
+        <div className={cn("z-50 w-full rounded-lg font-normal p-1 bg-black text-gray border border-edge", className)} ref={ref} {...props}>
             {React.Children.map(props.children, (child) => {
                 if (React.isValidElement<ContextMenuItemProps>(child)) {
                     return React.cloneElement(child, {
