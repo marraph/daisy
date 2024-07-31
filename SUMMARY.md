@@ -6,7 +6,6 @@
 
 ## Components
 
-* [Alert](components/alert.md)
 * [Avatar](components/avatar.md)
 * [Badge](components/badge.md)
 * [Breadcrump](components/breadcrump.md)
