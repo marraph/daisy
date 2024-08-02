@@ -6,6 +6,7 @@ import {Button} from "../button/Button";
 import {Seperator} from "../seperator/Seperator";
 import {CloseButton} from "../closebutton/CloseButton";
 import {Switch, SwitchRef} from "../switch/Switch";
+import {AnimatePresence, motion} from "framer-motion";
 
 type DialogRef = HTMLDialogElement & {
     show: () => void;
@@ -97,18 +98,22 @@ const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, ...props 
 
     return (
         <div className={"flex items-center justify-center"}>
-            <dialog
+            <AnimatePresence>
+            <motion.dialog
+                layout
+                initial={{ opacity: 0, scale: 0.2 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.2 }}
+                transition={{ duration: 0.5 }}
                 className={cn("group backdrop:bg-black/60 backdrop backdrop-opacity-20 backdrop-brightness-0 rounded-lg bg-black overflow-visible", className)}
                 style={{width: width}}
-                {...props}
                 ref={dialogRef}
             >
                 {props.children}
-            </dialog>
+            </motion.dialog>
+            </AnimatePresence>
         </div>
     );
-
-
 });
 Dialog.displayName = "Dialog";
 
