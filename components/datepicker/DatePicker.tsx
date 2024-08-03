@@ -1,6 +1,6 @@
 "use client";
 
-import React, {ReactNode, useEffect, useImperativeHandle, useRef, useState} from "react";
+import React, {useEffect, useImperativeHandle, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {Calendar} from "../calendar/Calendar";
 import {format} from "date-fns";
@@ -8,7 +8,6 @@ import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
-import ReactDOM from "react-dom";
 
 const datepicker = cva("flex flex-row items-center bg-black rounded-lg border border-edge text-gray cursor-pointer hover:text-white hover:bg-dark space-x-2", {
     variants: {
@@ -22,9 +21,6 @@ const datepicker = cva("flex flex-row items-center bg-black rounded-lg border bo
     },
 });
 
-interface DatePickerPortalProps {
-    children: ReactNode;
-}
 
 interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof datepicker> {
     text: string;
@@ -42,13 +38,6 @@ type DatepickerRef = HTMLDivElement & {
     setValue: (value: Date | null | undefined) => void;
 };
 
-const DatePickerPortal: React.FC<DatePickerPortalProps> = ({children}) => {
-    return ReactDOM.createPortal(
-        children,
-        document.body
-    );
-}
-
 const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onValueChange, dayFormat, closeButton, onClose, preSelectedValue, text, size, className, ...props}, ref) => {
     const datepickerRef = useRef<DatepickerRef>(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -61,7 +50,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
     useEffect(() => {
         if (isOpen && itemRef.current) {
             const rect = itemRef.current.getBoundingClientRect();
-            setDropdownPosition({ top: rect.bottom + 4, left: rect.left });
+            setDropdownPosition({ top: rect.bottom, left: rect.left });
         }
     }, [isOpen]);
 
@@ -141,14 +130,11 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
                 </div>
 
                 {isOpen && (
-                    <DatePickerPortal>
-                        <div className={cn("absolute z-50", className)}
-                             style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
-                             ref={portalRef}
-                        >
-                            <Calendar onDayClick={handleDayClick} selected={selectedValue} />
-                        </div>
-                    </DatePickerPortal>
+                    <div className={cn("absolute z-50", className)}
+                         style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
+                    >
+                        <Calendar onDayClick={handleDayClick} selected={selectedValue} />
+                    </div>
                 )}
             </div>
         </div>

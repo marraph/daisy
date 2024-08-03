@@ -10,6 +10,8 @@ import {Seperator} from "../seperator/Seperator";
 
 interface ContextMenuProps {
     children: ReactNode;
+    xPos?: number;
+    yPos?: number;
 }
 
 interface ContextMenuContainerProps {
@@ -68,7 +70,7 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ title, icon, shortcut
         <div ref={menuRef}>
             <div
                 className={cn(
-                    "w-full bg-black cursor-pointer rounded-lg hover:bg-dark hover:text-white p-2 flex flex-row justify-between items-center space-x-4",
+                    "w-full text-sm bg-black cursor-pointer rounded-lg hover:bg-dark hover:text-white p-2 flex flex-row justify-between items-center space-x-4",
                     open && "bg-dark text-white", className
                 )}
                 onClick={handleClick}
@@ -95,7 +97,7 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ title, icon, shortcut
                     >
                         {items.map((item: any, index: number) =>
                             <div key={index}
-                                 className={cn("flex flex-row items-center space-x-2 px-2 py-1 rounded-lg text-gray hover:bg-dark",
+                                 className={cn("flex flex-row items-center text-sm space-x-2 px-2 py-1 rounded-lg text-gray hover:bg-dark",
                                      item.selected && "bg-dark text-white"
                                  )}
                                  onClick={() => {
@@ -135,9 +137,11 @@ const ContextMenuContainer: React.FC<ContextMenuContainerProps> = ({ children })
 }
 
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ children }) => {
+const ContextMenu: React.FC<ContextMenuProps> = ({ children, xPos, yPos }) => {
     return (
-        <div className={"z-50 rounded-lg bg-black border border-edge"}>
+        <div className={"z-50 w-max rounded-lg bg-black border border-edge"}
+            style={xPos && yPos && { top: yPos, left: xPos }}
+        >
             {children}
         </div>
     );

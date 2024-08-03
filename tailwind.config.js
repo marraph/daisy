@@ -12,7 +12,7 @@ module.exports = {
       "black-light": "#111111",
       "dark": "#171717",
       "dark-light": "#1C1C1C",
-      "edge": "#484848",
+      "edge": "#363636",
       "marcador": "#878787",
       "gray": "#A6A6A6",
       "white": "#ECECEC",
