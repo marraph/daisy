@@ -14,6 +14,7 @@ type DialogRef = HTMLDialogElement & {
 
 interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElement> {
     width: number;
+    onClose: () => void;
 }
 
 interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -79,10 +80,11 @@ const DialogContent: React.FC<HTMLAttributes<HTMLDivElement>> = ({ ...props }) =
     );
 }
 
-const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, ...props }, ref) => {
+const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, onClose, ...props }, ref) => {
     const dialogRef = useRef<DialogRef>(null);
 
     const handleClose = useCallback(() => {
+        onClose();
         dialogRef.current?.close();
     }, []);
 
