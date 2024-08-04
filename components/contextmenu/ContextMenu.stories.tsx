@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {ContextMenu, ContextMenuContainer, ContextMenuItem} from './ContextMenu';
 import {Meta, StoryObj} from "@storybook/react";
 import {GitBranch} from "lucide-react";
@@ -21,25 +21,34 @@ type Story = StoryObj<typeof ContextMenu>;
 export const Default: Story = {
     render: () => {
 
-        const selectItems = [
-            { id: 1, title: "Item 1", icon: <GitBranch size={14}/>, selected: false },
-            { id: 2, title: "Item 2", icon: <GitBranch size={14}/>, selected: true },
-            { id: 3, title: "Item 3", icon: <GitBranch size={14}/>, selected: false },
-        ];
+        const [contextMenu, setContextMenu] = useState({ x: 0, y: 0, visible: false });
 
-        const [show, setShow] = useState(false);
+        const handleContextMenu = useCallback((e: React.MouseEvent<HTMLElement>) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (e.target instanceof HTMLButtonElement || e.target instanceof SVGElement) {
+                const buttonElement = e.currentTarget;
+                const rect = buttonElement.getBoundingClientRect();
+
+                const coordinates = {
+                    x: rect.left - 52,
+                    y: rect.top + 34
+                };
+                setContextMenu({ x: coordinates.x, y: coordinates.y, visible: true });
+            } else {
+                setContextMenu({ x: e.clientX, y: e.clientY, visible: true });
+            }
+        }, []);
 
         return (
-            <div className={"h-screen w-screen"}>
-                <Button text={"Click"} onClick={() => setShow(!show)}></Button>
+            <div className={"h-40 w-40 bg-white"} onContextMenu={(e) => handleContextMenu(e)}>
 
-                {show &&
-                    <ContextMenu xPos={100} yPos={100}>
+                {contextMenu.visible &&
+                    <ContextMenu xPos={contextMenu.x} yPos={contextMenu.y}>
                         <ContextMenuContainer>
                             <ContextMenuItem title="Item 1"
                                              icon={<GitBranch size={14}/>}
-                                             selectItems={selectItems}
-                                             onItemClick={(item) => console.log(item)}
                             />
                         </ContextMenuContainer>
                         <Seperator/>

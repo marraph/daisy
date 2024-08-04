@@ -139,7 +139,7 @@ const ContextMenuContainer: React.FC<ContextMenuContainerProps> = ({ children })
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ children, xPos, yPos }) => {
     return (
-        <div className={"z-50 w-max rounded-lg bg-black border border-edge"}
+        <div className={"absolute z-50 w-max rounded-lg bg-black border border-edge"}
             style={xPos && yPos && { top: yPos, left: xPos }}
         >
             {children}
