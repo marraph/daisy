@@ -26,7 +26,6 @@ export const Default = () => {
         <>
             <Dialog ref={dialogRef} width={600}>
                 <DialogHeader title={"Example Dialog"}
-                              dialogRef={dialogRef}
                 />
                 <DialogContent className={"space-y-2"}>
                     <div className={"space-y-2"}>
@@ -35,9 +34,6 @@ export const Default = () => {
                     </div>
                 </DialogContent>
                 <DialogFooter saveButtonTitle={"Save"}
-                              cancelButton={true}
-                              switchButton={false}
-                              dialogRef={dialogRef}
                               disabledButton={false}
                 />
             </Dialog>

@@ -1,11 +1,11 @@
 "use client";
 
-import React, {forwardRef, MutableRefObject, useImperativeHandle, useRef} from "react";
+import React, {forwardRef, HTMLAttributes, MutableRefObject, useCallback, useImperativeHandle, useRef} from "react";
 import {cn} from "../../utils/cn";
 import {Button} from "../button/Button";
-import {Seperator} from "../seperator/Seperator";
 import {CloseButton} from "../closebutton/CloseButton";
 import {Switch, SwitchRef} from "../switch/Switch";
+import {DialogProvider, useDialogContext} from "./DialogProvider";
 
 type DialogRef = HTMLDialogElement & {
     show: () => void;
@@ -16,41 +16,34 @@ interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElement> {
     width: number;
 }
 
-interface DialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-    title: string;
-    dialogRef:  MutableRefObject<DialogRef>;
-    onClose?: () => void;
-}
-
 interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
-    cancelButton: boolean;
+    cancelButton?: boolean;
     saveButtonTitle: string;
-    switchButton: boolean;
-    dialogRef:  MutableRefObject<DialogRef>;
+    switchButton?: boolean;
     switchRef?: MutableRefObject<SwitchRef>;
     onClick?: () => void;
-    onClose?: () => void;
     disabledButton?: boolean;
 }
 
-interface DialogContentProps extends React.HTMLAttributes<HTMLDivElement> {
-}
 
+const DialogHeader: React.FC<{ title: string }> = ({ title }) => {
+    const { dialogRef, onClose } = useDialogContext();
 
-const DialogHeader: React.FC<DialogHeaderProps> = ({ title, dialogRef, onClose }) => {
     return (
         <div className={"rounded-t-lg border border-edge flex flex-row justify-between items-center p-4 pr-2"}>
             <span className={"text-md text-white"}>{title}</span>
             <CloseButton onClick={() => {
                     dialogRef.current.close();
                     onClose();
-            }}
+                }}
             />
         </div>
     );
 }
 
-const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton, cancelButton, saveButtonTitle, dialogRef, onClick, switchButton, switchRef, onClose }) => {
+const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton = false, cancelButton = true, saveButtonTitle, onClick, switchButton = false, switchRef }) => {
+    const { dialogRef, onClose } = useDialogContext();
+
     return (
         <div className={"rounded-b-lg border border-edge bg-dark flex flex-row justify-end items-center p-2 space-x-2"}>
             {switchButton &&
@@ -78,9 +71,9 @@ const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton, cancelButto
     );
 }
 
-const DialogContent: React.FC<DialogContentProps> = ({ ...props }) => {
+const DialogContent: React.FC<HTMLAttributes<HTMLDivElement>> = ({ ...props }) => {
     return (
-        <div className={"border-x border-edge items-center p-4"}>
+        <div className={"border-x border-edge items-center p-4"} {...props}>
             {props.children}
         </div>
     );
@@ -88,6 +81,10 @@ const DialogContent: React.FC<DialogContentProps> = ({ ...props }) => {
 
 const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, ...props }, ref) => {
     const dialogRef = useRef<DialogRef>(null);
+
+    const handleClose = useCallback(() => {
+        dialogRef.current?.close();
+    }, []);
 
     useImperativeHandle(ref, () => ({
         show: () => dialogRef.current?.showModal(),
@@ -103,12 +100,12 @@ const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, ...props 
                 {...props}
                 ref={dialogRef}
             >
-                {props.children}
+                <DialogProvider dialogRef={dialogRef} onClose={handleClose}>
+                    {props.children}
+                </DialogProvider>
             </dialog>
         </div>
     );
-
-
 });
 Dialog.displayName = "Dialog";
 
