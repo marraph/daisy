@@ -97,7 +97,6 @@ const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, onClose, 
     return (
         <div className={"flex items-center justify-center"}>
             <dialog
-                key={Math.random().toString(36).substr(2, 9)}
                 className={cn("group backdrop:bg-black/60 backdrop backdrop-opacity-20 backdrop-brightness-0 rounded-lg bg-black overflow-visible", className)}
                 style={{width: width}}
                 {...props}
