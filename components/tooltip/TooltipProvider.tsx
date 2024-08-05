@@ -19,8 +19,8 @@ const useTooltip = () => {
 export const TooltipProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [tooltip, setTooltip] = useState<TooltipProps | null>(null);
 
-    const addTooltip = useCallback((props: TooltipProps) => {
-        setTooltip({...props });
+    const addTooltip = useCallback((props: Omit<TooltipProps, 'x' | 'y'>) => {
+        setTooltip(props);
     }, []);
 
     const removeTooltip = useCallback(() => {
