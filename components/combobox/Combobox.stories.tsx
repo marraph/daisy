@@ -29,7 +29,7 @@ export const Default: Story = {
                       onValueChange={(value) => console.log(value)}
             >
                 {items.map((item, index) => (
-                    <ComboboxItem key={index} title={item} size={"medium"}/>
+                    <ComboboxItem key={index} title={item}/>
                 ))}
             </Combobox>
         );
