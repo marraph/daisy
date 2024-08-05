@@ -13,8 +13,8 @@ const searchselect = cva("group/combo flex flex-row items-center cursor-pointer 
     "hover:text-white border border-edge overflow-hidden bg-black", {
     variants: {
         size: {
-            small: ["text-xs", "p-1"],
-            medium: ["text-sm", "p-2"],
+            small: ["text-xs", "py-1", "px-2"],
+            medium: ["text-sm", "py-1.5", "px-3"],
         },
     },
     defaultVariants: {
