@@ -9,20 +9,8 @@ import {Input, InputRef} from "../input/Input";
 import {handleInternalServerErrorResponse} from "next/dist/server/future/route-modules/helpers/response-handlers";
 import {CustomScroll} from "react-custom-scroll";
 
-const searchselect = cva("group/combo cursor-pointer text-gray whitespace-nowrap rounded-lg font-normal flex flex-row items-center " +
+const searchselect = cva("group/combo flex flex-row items-center cursor-pointer text-gray whitespace-nowrap rounded-lg font-normal " +
     "hover:text-white border border-edge overflow-hidden bg-black", {
-    variants: {
-        size: {
-            small: ["text-xs", "px-2"],
-            medium: ["text-sm", "px-3"],
-        },
-    },
-    defaultVariants: {
-        size: "medium",
-    },
-});
-
-const searchselectItem = cva("text-gray cursor-pointer rounded-lg hover:bg-dark hover:text-white flex items-center mx-1 bg-black", {
     variants: {
         size: {
             small: ["text-xs", "p-1"],
@@ -34,19 +22,32 @@ const searchselectItem = cva("text-gray cursor-pointer rounded-lg hover:bg-dark 
     },
 });
 
-interface SearchSelectItemProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof searchselectItem> {
+const searchselectItem = cva("flex flex-row items-center text-gray cursor-pointer rounded-lg hover:bg-dark hover:text-white mx-1 bg-black", {
+    variants: {
+        size: {
+            small: ["text-xs", "p-1"],
+            medium: ["text-sm", "p-2"],
+        },
+    },
+    defaultVariants: {
+        size: "medium",
+    },
+});
+
+interface SearchSelectItemProps extends VariantProps<typeof searchselectItem> {
     title: string;
     isSelected?: boolean;
     highlight?: string;
     onClick?: () => void;
 }
 
-interface SearchSelectProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof searchselect> {
+interface SearchSelectProps extends VariantProps<typeof searchselect> {
     buttonTitle: string;
     label?: string;
     preSelectedValue?: string | null | undefined;
     icon?: ReactNode;
     onValueChange?: (value: string) => void;
+    children: ReactNode;
 }
 
 type SearchSelectRef = HTMLInputElement & {
@@ -55,33 +56,29 @@ type SearchSelectRef = HTMLInputElement & {
     setValue: (value: string | null | undefined) => void;
 };
 
-const SearchSelectItem = forwardRef<HTMLDivElement, SearchSelectItemProps>(({ highlight, size, title, isSelected, onClick, className, ...props }, ref) => {
+const SearchSelectItem: React.FC<SearchSelectItemProps> = ({ highlight, size, title, isSelected, onClick }) => {
     const parts = title.split(new RegExp(`(${highlight})`, 'gi'));
 
     return (
-        <div className={cn(searchselectItem({size}), className, (isSelected) ? "bg-dark text-white" : "bg-black")}
-             ref={ref} {...props} onClick={onClick}>
-            {(isSelected) && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
-            <div className={"flex flex-row justify-between items-center w-full"}>
-                <span>
-                    {parts.map((part, index) => (
-                        part.toLowerCase() === highlight?.toLowerCase() ? (
-                            <span key={index} className="text-white">{part}</span>
-                        ) : (
-                            <span key={index}>{part}</span>
-                        )
-                    ))}
-                </span>
-                {props.children}
-            </div>
+        <div className={cn(searchselectItem({size}), { "bg-dark text-white" : isSelected })} onClick={onClick}>
+            {isSelected && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
+            <span>
+                {parts.map((part, index) => (
+                    part.toLowerCase() === highlight?.toLowerCase() ? (
+                        <span key={index} className="text-white">{part}</span>
+                    ) : (
+                        <span key={index}>{part}</span>
+                    )
+                ))}
+            </span>
         </div>
-    )
-});
-SearchSelectItem.displayName = "SearchSelectItem";
+    );
+}
 
 
-const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onValueChange, icon, size,  buttonTitle, preSelectedValue, className, ...props}, ref) => {
+const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onValueChange, icon, size,  buttonTitle, preSelectedValue, children}, ref) => {
     const inputRef = useRef<InputRef>(null);
+    const searchselectRef = useRef<SearchSelectRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
     const [searchTerm, setSearchTerm] = useState<string>(preSelectedValue || "");
@@ -98,8 +95,6 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
         setIsOpen(false);
         onValueChange && onValueChange(newValue)
     };
-
-    const searchselectRef = useRef<SearchSelectRef>(null);
 
     useImperativeHandle(ref, () => ({
         reset: () => {
@@ -124,7 +119,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
         }
     };
 
-    const filteredChildren = React.Children.toArray(props.children).filter((child) => {
+    const filteredChildren = React.Children.toArray(children).filter((child) => {
         if (React.isValidElement<SearchSelectItemProps>(child)) {
             return child.props.title.toLowerCase().includes(searchTerm.toLowerCase());
         }
@@ -146,13 +141,13 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
     }, [filteredChildren, searchTerm]);
 
     return (
-        <div className={cn("flex flex-col space-y-1", className)} ref={menuRef}>
+        <div className={"flex flex-col space-y-1"} ref={menuRef}>
             {label &&
                 <span className={"ml-1 text-marcador text-xs"}>{label}</span>
             }
 
             <div className={"space-y-1"} ref={menuRef}>
-                <div className={cn(searchselect({ size }), className)} {...props} onClick={() => setIsOpen(true)}>
+                <div className={cn(searchselect({ size }))} onClick={() => setIsOpen(true)}>
                     {icon}
                     <Input placeholder={buttonTitle}
                            value={searchTerm}
@@ -162,10 +157,10 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
                            size={Math.max((searchTerm as string).length/100*90, buttonTitle.length/100*90)}
                            ref={inputRef}
                     />
-                    <ChevronsUpDown className={cn("group-hover/combo:text-white text-gray", className)} size={12} />
+                    <ChevronsUpDown className={"group-hover/combo:text-white text-gray"} size={12} />
                 </div>
-                {isOpen && filteredChildren.length > 0 && (
-                    <div className={"fixed bg-black max-h-48 w-max rounded-lg border border-edge overflow-hidden shadow-inner"}>
+                {isOpen && filteredChildren.length > 0 &&
+                    <div className={"fixed max-h-48 w-max bg-black rounded-lg border border-edge overflow-hidden shadow-inner"}>
                         {filteredChildren.length >= 5 ? (
                             <CustomScroll>
                                 <div className={"max-h-48"}>
@@ -180,6 +175,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
                                                     isSelected: selectedValue === child.props.title,
                                                     key: index,
                                                     highlight: searchTerm,
+                                                    size: size
                                                 });
                                             }
                                             return child;
@@ -199,6 +195,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
                                             isSelected: selectedValue === child.props.title,
                                             key: index,
                                             highlight: searchTerm,
+                                            size: size
                                         });
                                     }
                                     return child;
@@ -206,7 +203,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
                             </div>
                         )}
                     </div>
-                )}
+                }
             </div>
         </div>
     );

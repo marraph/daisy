@@ -7,6 +7,32 @@ import { Shortcut } from "../shortcut/Shortcut";
 import ReactDOM from "react-dom";
 import {useOutsideClick} from "../../utils/clickOutside";
 import {Seperator} from "../seperator/Seperator";
+import {cva, VariantProps} from "class-variance-authority";
+
+const contextMenuContainer = cva("rounded-lg font-normal text-gray", {
+    variants: {
+        size: {
+            small: ["text-xs", "p-0.5"],
+            medium: ["text-sm", "p-1"],
+        },
+    },
+    defaultVariants: {
+        size: "medium",
+    },
+});
+
+const contextMenuItem = cva("w-full bg-black cursor-pointer rounded-lg hover:bg-dark hover:text-white flex flex-row justify-between items-center", {
+    variants: {
+        size: {
+            small: ["text-xs", "px-2", "py-1", "space-x-2"],
+            medium: ["text-sm", "px-3", "py-2", "space-x-4"],
+        },
+    },
+    defaultVariants: {
+        size: "medium",
+    },
+});
+
 
 interface ContextMenuProps {
     children: ReactNode;
@@ -14,15 +40,11 @@ interface ContextMenuProps {
     yPos?: number;
 }
 
-interface ContextMenuContainerProps {
+interface ContextMenuContainerProps extends VariantProps<typeof contextMenuContainer>{
     children: ReactNode;
 }
 
-interface ContextMenuPortalProps {
-    children: ReactNode;
-}
-
-interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof contextMenuItem>  {
     title: string;
     shortcut?: string;
     icon?: ReactNode;
@@ -31,7 +53,8 @@ interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement> {
     onItemClick?: (item: any) => void;
 }
 
-const ContextMenuPortal: React.FC<ContextMenuPortalProps> = ({ children }) => {
+
+const ContextMenuPortal: React.FC<{ children: ReactNode }> = ({ children }) => {
     return ReactDOM.createPortal(
         children,
         document.body
@@ -39,7 +62,7 @@ const ContextMenuPortal: React.FC<ContextMenuPortalProps> = ({ children }) => {
 }
 
 
-const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ title, icon, shortcut, selectItems, onClick, onItemClick, className, ...props }) => {
+const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ size, title, icon, shortcut, selectItems, onClick, onItemClick, className, ...props }) => {
     const [open, setOpen] = useState(false);
     const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
     const [items, setItems] = useState<{ id: number, title: string, icon: ReactNode, selected: boolean }[]>(selectItems || []);
@@ -68,14 +91,10 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ title, icon, shortcut
 
     return (
         <div ref={menuRef}>
-            <div
-                className={cn(
-                    "w-full text-sm bg-black cursor-pointer rounded-lg hover:bg-dark hover:text-white p-2 flex flex-row justify-between items-center space-x-4",
-                    open && "bg-dark text-white", className
-                )}
-                onClick={handleClick}
-                ref={itemRef}
-                {...props}
+            <div className={cn(contextMenuItem({size}), open && "bg-dark text-white", className)}
+                 onClick={handleClick}
+                 ref={itemRef}
+                 {...props}
             >
                 <div className={"flex flex-row items-center space-x-2"}>
                     {icon && icon}
@@ -119,12 +138,13 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ title, icon, shortcut
 }
 
 
-const ContextMenuContainer: React.FC<ContextMenuContainerProps> = ({ children }) => {
+const ContextMenuContainer: React.FC<ContextMenuContainerProps> = ({ children, size }) => {
     return (
-        <div className={"rounded-lg font-normal text-gray p-1"}>
+        <div className={cn(contextMenuContainer({size}))}>
             {React.Children.map(children, (child) => {
                 if (React.isValidElement<ContextMenuItemProps>(child)) {
                     return React.cloneElement(child, {
+                        size: size,
                         onClick: () => {
                             child.props.onClick && child.props.onClick();
                         },
@@ -146,7 +166,6 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ children, xPos, yPos }) => {
         </div>
     );
 }
-ContextMenu.displayName = "ContextMenuItem";
 
 
 export {ContextMenu, ContextMenuItem, ContextMenuContainer};

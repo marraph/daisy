@@ -15,7 +15,7 @@ const TableAction: React.FC<TableActionProps> = ({ onClick }) => {
         <td className={cn("px-2")}>
             <Button text={""}
                     size={"medium"}
-                    className={"p-1.5 hover:bg-white-dark hover:text-dark"}
+                    className={"p-1.5 hover:bg-dark-light hover:text-white"}
                     icon={<EllipsisVertical size={16}/>}
                     onClick={(e) => {
                         e.stopPropagation();

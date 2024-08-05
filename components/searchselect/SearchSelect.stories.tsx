@@ -27,7 +27,7 @@ export const Default: Story = {
         return (
             <div>
 
-            <SearchSelect size={"medium"}
+            <SearchSelect size={"small"}
                           buttonTitle={"Title"}
                           icon={<GitBranch size={12}/>}
                           label={"Label"}
@@ -36,7 +36,6 @@ export const Default: Story = {
                 {items.map((item, index) => (
                     <SearchSelectItem key={index}
                                       title={item}
-                                      size={"medium"}
                     />
                 ))}
             </SearchSelect>

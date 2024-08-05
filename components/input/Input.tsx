@@ -8,7 +8,7 @@ const input = cva("group/input w-auto rounded-lg font-normal text-gray bg-black 
     variants: {
         border: {
             default: ["bg-black", "border", "border-edge", "outline-none", "focus:ring-2", "focus:ring-marcador"],
-            none: ["border-0",],
+            none: ["border-0"],
         },
         elementSize: {
             small: ["text-xs", "py-1", "px-2"],
@@ -62,28 +62,29 @@ const Input = forwardRef<InputRef, InputProps>(({ onChange, preSelectedValue, ic
     }
 
     return (
-        <div className={cn("flex flex-col space-y-1", className)}>
+        <div className={"flex flex-col space-y-1"}>
             {label &&
-                <span className={"ml-1 text-marcador text-xs"}>{label}</span>
+                <span className={"ml-1 text-marcador text-xs"}>
+                    {label}
+                </span>
             }
 
-            <div className={cn("flex flex-row items-center", className)}>
-                {icon && elementSize === "medium" &&
-                    <div className={"bg-black border border-edge border-r-0 p-2 rounded-l-lg text-gray"}>
+            <div className={"flex flex-row items-center"}>
+                {icon &&
+                    <div className={cn("bg-black border border-edge border-r-0 rounded-l-lg text-gray",
+                        elementSize === "medium" ? "p-2" : "p-1.5")}>
                         {icon}
                     </div>
                 }
-                {icon && elementSize === "small" &&
-                    <div className={"bg-black border border-edge border-r-0 p-1.5 rounded-l-lg text-gray"}>
-                        {icon}
-                    </div>
-                }
-
-                <input className={cn(input({ border, elementSize }), icon && 'rounded-l-none border-l-0 pl-1', className)}
-                       placeholder={placeholder} spellCheck={false} ref={inputRef} value={inputValue}
+                <input className={cn(input({ border, elementSize }), {"rounded-l-none border-l-0 pl-1": icon}, className)}
+                       placeholder={placeholder}
+                       spellCheck={false}
+                       ref={inputRef}
+                       value={inputValue}
                        onChange={(e) => handleOnChange(e)}
                        size={Math.max((inputValue as string).length, placeholder.length)}
-                       {...props}>
+                       {...props}
+                >
                 </input>
             </div>
         </div>
