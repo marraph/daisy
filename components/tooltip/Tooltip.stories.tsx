@@ -1,6 +1,7 @@
-import {Tooltip, TooltipRef} from './Tooltip';
+import {Tooltip} from './Tooltip';
 import {Meta, StoryObj} from "@storybook/react";
-import React, {useRef} from "react";
+import React from "react";
+import {TooltipProvider, useTooltip} from "./TooltipProvider";
 
 const meta: Meta<typeof Tooltip> = {
     title: "Components/Tooltip",
@@ -15,23 +16,30 @@ export default meta;
 
 type Story = StoryObj<typeof Tooltip>
 
+const TooltipTemplate = () => {
+    const { addTooltip, removeTooltip } = useTooltip();
+
+    return (
+        <div className={"size-40 bg-error"}
+             onMouseEnter={(e) => addTooltip({
+                 message: "this is a error",
+                 x: e.clientX,
+                 y: e.clientY,
+             })}
+             onMouseLeave={() => removeTooltip()}
+        />
+    );
+
+}
+
 export const Default: Story = {
     render: () => {
-        const tooltipRef = useRef<TooltipRef>(null);
-
         return (
-            <>
-                <div className={"size-20 bg-error"}
-                     onMouseEnter={(event) => tooltipRef.current?.show(event)}
-                     onMouseLeave={() => tooltipRef.current?.hide()}
-                />
-
-                <Tooltip message={"this is a tooltip"}
-                         delay={500}
-                         ref={tooltipRef}
-                />
-            </>
-
+            <div className={"h-screen w-screen left-1/2 w-1/2"}>
+                <TooltipProvider>
+                    <TooltipTemplate/>
+                </TooltipProvider>
+            </div>
         );
     },
 };
