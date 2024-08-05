@@ -13,14 +13,34 @@ interface TooltipProps extends HTMLAttributes<HTMLDivElement>{
 }
 
 
-const Tooltip: React.FC<TooltipProps> = ({ x, y, delay, color, message, ...props }) => {
+const Tooltip: React.FC<TooltipProps> = ({ x, y, delay = 1000, color, message, ...props }) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const timeout = useRef<number | null>(null);
+
+    useEffect(() => {
+        if (delay) {
+            timeout.current = window.setTimeout(() => setIsVisible(true), delay);
+        }
+        
+        return () => {
+            if (timeout.current) {
+                clearTimeout(timeout.current);
+            }
+        }
+    }, [delay]);
+    
+    
     return (
-        <div className={"absolute flex flex-row space-x-2 rounded-lg py-2 px-2 bg-dark text-white z-50"}
-             style={{top: y -40, left: x +10}}
-        >
-            {props.children}
-            <span className={"items-start"}>{message}</span>
-        </div>
+        <>
+            {isVisible &&
+                <div className={"absolute z-50 flex flex-row space-x-2 rounded-lg py-2 px-2 bg-dark text-white"}
+                     style={{top: y -40, left: x +10}}
+                >
+                    {props.children}
+                    <span className={"items-start"}>{message}</span>
+                </div>
+            }
+        </>
     );
 }
 
