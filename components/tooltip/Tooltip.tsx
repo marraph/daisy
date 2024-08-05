@@ -12,7 +12,6 @@ interface TooltipProps extends HTMLAttributes<HTMLDivElement>{
     x: number;
 }
 
-
 const Tooltip: React.FC<TooltipProps> = ({ x, y, delay = 1000, color, message, ...props }) => {
     const [isVisible, setIsVisible] = useState(false);
     const timeout = useRef<number | null>(null);
