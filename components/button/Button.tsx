@@ -4,15 +4,12 @@ import { cva, VariantProps } from "class-variance-authority";
 import React, {forwardRef, ReactNode} from "react";
 import { cn } from "../../utils/cn";
 
-const button = cva("w-max rounded-lg font-medium text-sm py-2 px-4 flex items-center", {
+const button = cva("w-max rounded-lg font-medium text-sm py-2 px-4 flex items-center disabled:cursor-not-allowed disabled:hover:none disabled:bg-dark-light disabled:border disabled:border-edge", {
   variants: {
     theme: {
-      dark: ["bg-black", "text-gray", "hover:text-white", "hover:bg-dark", "border", "border-edge",
-             "disabled:cursor-not-allowed", "disabled:hover:none", "disabled:bg-dark-light", "disabled:text-marcador",
-             "disabled:border", "disabled:border-edge"],
-      white: ["bg-white", "text-dark", "hover:text-black", "hover:bg-white-dark", "border", "border-white",
-              "disabled:cursor-not-allowed", "disabled:hover:none", "disabled:bg-dark-light", "disabled:text-gray",
-              "disabled:border", "disabled:border-edge",],
+      black: ["bg-black", "text-gray", "hover:text-white", "hover:bg-dark", "border", "border-edge", "disabled:text-marcador"],
+      dark: ["bg-black-light", "text-gray", "hover:text-white", "hover:bg-dark-light", "border", "border-edge", "disabled:text-marcador"],
+      white: ["bg-white", "text-dark", "hover:text-black", "hover:bg-white-dark", "border", "border-white", "disabled:text-gray"],
     },
     size: {
       small: ["text-xs", "py-1", "px-2"],
