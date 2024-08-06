@@ -7,7 +7,7 @@ import {useOutsideClick} from "../../utils/clickOutside";
 import {cva, VariantProps} from "class-variance-authority";
 import {CustomScroll} from "react-custom-scroll";
 
-const combobox = cva("group/combo flex flex-row items-center cursor-pointer text-gray whitespace-nowrap rounded-lg font-normal " +
+const combobox = cva("group/combo flex flex-row items-center cursor-pointer text-gray rounded-lg font-normal " +
     "hover:text-white border border-edge overflow-hidden bg-black", {
     variants: {
         size: {
@@ -20,7 +20,7 @@ const combobox = cva("group/combo flex flex-row items-center cursor-pointer text
     },
 });
 
-const comboboxItem = cva("flex flex-row items-center text-gray cursor-pointer rounded-lg hover:bg-dark hover:text-whit bg-black mx-1", {
+const comboboxItem = cva("flex flex-row items-center text-gray cursor-pointer rounded-lg hover:bg-dark hover:text-white bg-black mx-1", {
     variants: {
         size: {
             small: ["text-xs", "p-1"],
@@ -100,11 +100,11 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
                     <ChevronsUpDown className={"group-hover/combo:text-white ml-2 text-gray"} size={12}/>
                 </div>
                 {isOpen && React.Children.count(children) > 0 &&
-                    <div className={"fixed z-50 max-h-48 w-max bg-black rounded-lg border border-edge overflow-hidden shadow-inner"}>
-                        {React.Children.count(children) >= 5 ? (
+                    <div className={"fixed z-50 max-h-48 w-max bg-black rounded-lg border border-edge overflow-hidden"}>
+                        {React.Children.count(children) > (size === "medium" ? 4 : 6) ? (
                             <CustomScroll>
                                 <div className={"max-h-48"}>
-                                    <div className={"flex flex-col text-gray space-y-1 py-1"}>
+                                    <div className={"flex flex-col text-gray space-y-1 py-1 pr-1"}>
                                         {React.Children.map(children, (child, index) => {
                                             if (React.isValidElement<ComboboxItemProps>(child)) {
                                                 return React.cloneElement(child, {

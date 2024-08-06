@@ -1,9 +1,7 @@
-import React, {useRef} from 'react';
-import {SearchSelect, SearchSelectItem, SearchSelectRef} from './SearchSelect';
+import React from 'react';
+import {SearchSelect, SearchSelectItem} from './SearchSelect';
 import {Meta, StoryObj} from "@storybook/react";
 import {GitBranch} from "lucide-react";
-import {DatePicker} from "../datepicker/DatePicker";
-import {Button} from "../button/Button";
 
 const meta: Meta<typeof SearchSelect> = {
     title: "Components/SearchSelect",
@@ -22,16 +20,13 @@ type Story = StoryObj<typeof SearchSelect>
 export const Default: Story = {
     render: () => {
 
-        const items = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
+        const items = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
         return (
-            <div>
-
-            <SearchSelect size={"small"}
+            <SearchSelect size={"medium"}
                           buttonTitle={"Title"}
                           icon={<GitBranch size={12}/>}
                           label={"Label"}
-                          preSelectedValue={"Option 1"}
             >
                 {items.map((item, index) => (
                     <SearchSelectItem key={index}
@@ -39,9 +34,6 @@ export const Default: Story = {
                     />
                 ))}
             </SearchSelect>
-                <Button text={"button"}></Button>
-            </div>
-
         );
     },
 };

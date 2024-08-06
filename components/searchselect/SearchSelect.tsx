@@ -9,7 +9,7 @@ import {Input, InputRef} from "../input/Input";
 import {handleInternalServerErrorResponse} from "next/dist/server/future/route-modules/helpers/response-handlers";
 import {CustomScroll} from "react-custom-scroll";
 
-const searchselect = cva("group/combo flex flex-row items-center cursor-pointer text-gray whitespace-nowrap rounded-lg font-normal " +
+const searchselect = cva("group/combo flex flex-row items-center cursor-pointer text-gray rounded-lg font-normal " +
     "hover:text-white border border-edge overflow-hidden bg-black", {
     variants: {
         size: {
@@ -160,11 +160,11 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
                     <ChevronsUpDown className={"group-hover/combo:text-white text-gray"} size={12} />
                 </div>
                 {isOpen && filteredChildren.length > 0 &&
-                    <div className={"fixed max-h-48 w-max bg-black rounded-lg border border-edge overflow-hidden shadow-inner"}>
-                        {filteredChildren.length >= 5 ? (
+                    <div className={"fixed z-50 max-h-48 w-max bg-black rounded-lg border border-edge overflow-hidden"}>
+                        {filteredChildren.length > (size === "medium" ? 4 : 6) ? (
                             <CustomScroll>
                                 <div className={"max-h-48"}>
-                                    <div className={"flex flex-col text-gray space-y-1 py-1"}>
+                                    <div className={"flex flex-col text-gray space-y-1 pr-1 py-1"}>
                                         {filteredChildren.map((child, index) => {
                                             if (React.isValidElement<SearchSelectItemProps>(child)) {
                                                 return React.cloneElement(child, {
