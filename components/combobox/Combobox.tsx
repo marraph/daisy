@@ -100,7 +100,7 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
                     <ChevronsUpDown className={"group-hover/combo:text-white ml-2 text-gray"} size={12}/>
                 </div>
                 {isOpen && React.Children.count(children) > 0 &&
-                    <div className={"fixed max-h-48 w-max bg-black rounded-lg border border-edge overflow-hidden shadow-inner"}>
+                    <div className={"fixed z-50 max-h-48 w-max bg-black rounded-lg border border-edge overflow-hidden shadow-inner"}>
                         {React.Children.count(children) >= 5 ? (
                             <CustomScroll>
                                 <div className={"max-h-48"}>
