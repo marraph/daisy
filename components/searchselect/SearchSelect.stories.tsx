@@ -12,6 +12,7 @@ const meta: Meta<typeof SearchSelect> = {
     tags: ["autodocs"],
 };
 
+
 export default meta;
 
 type Story = StoryObj<typeof SearchSelect>
