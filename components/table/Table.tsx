@@ -38,7 +38,7 @@ TableCell.displayName = "TableCell";
 
 const TableRow = forwardRef<HTMLTableRowElement, TableHTMLAttributes<HTMLTableRowElement>>(({ className, ...props }, ref) => {
     return(
-        <tr className={cn("group/row bg-black border-t border-edge hover:bg-dark hover:text-white cursor-pointer", className)}
+        <tr className={cn("group/row bg-black-light border-t border-edge hover:bg-dark hover:text-white cursor-pointer", className)}
             ref={ref} {...props}>
             {props.children}
         </tr>
@@ -49,7 +49,7 @@ TableRow.displayName = "TableRow";
 
 const TableHead = forwardRef<HTMLTableCellElement, TableHTMLAttributes<HTMLTableCellElement>>(({className, ...props}, ref) => {
     return (
-        <th className={cn("h-12 px-4 text-left text-white align-middle font-medium", className)} ref={ref} {...props} />
+        <th className={cn("h-12 px-4 text-left text-marcador text-sm align-middle font-medium bg-dark", className)} ref={ref} {...props} />
     );
 });
 TableHead.displayName = "TableHead";
@@ -77,7 +77,7 @@ TableBody.displayName = "TableBody";
 
 const Table = forwardRef<HTMLTableElement, TableHTMLAttributes<HTMLTableElement>>(({ className, ...props }, ref) => {
     return (
-        <div className={cn("w-full text-gray cursor-pointer text-base overflow-auto bg-black rounded-lg border border-edge", className)}>
+        <div className={cn("w-full text-gray cursor-pointer text-base overflow-auto bg-dark rounded-lg border border-edge", className)}>
             <table className={cn("", className)} ref={ref} {...props}>
                 {props.children}
             </table>

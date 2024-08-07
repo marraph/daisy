@@ -101,7 +101,7 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
                 </div>
                 {isOpen && React.Children.count(children) > 0 &&
                     <div className={"fixed z-50 max-h-48 w-max bg-black rounded-lg border border-edge overflow-hidden"}>
-                        {React.Children.count(children) > (size === "medium" ? 4 : 6) ? (
+                        {React.Children.count(children) > (size === "medium" ?  4 : 6) ? (
                             <CustomScroll>
                                 <div className={"max-h-48"}>
                                     <div className={"flex flex-col text-gray space-y-1 py-1 pr-1"}>
