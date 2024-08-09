@@ -10,11 +10,11 @@ import {handleInternalServerErrorResponse} from "next/dist/server/future/route-m
 import {CustomScroll} from "react-custom-scroll";
 
 const searchselect = cva("group/combo flex flex-row items-center cursor-pointer text-gray rounded-lg font-normal " +
-    "hover:text-white border border-edge overflow-hidden bg-black", {
+    "hover:text-white border border-edge overflow-hidden bg-black-light", {
     variants: {
         size: {
-            small: ["text-xs", "py-1", "px-2"],
-            medium: ["text-sm", "py-1.5", "px-3"],
+            small: ["text-xs", "px-2"],
+            medium: ["text-sm", "px-3"],
         },
     },
     defaultVariants: {
@@ -22,7 +22,7 @@ const searchselect = cva("group/combo flex flex-row items-center cursor-pointer 
     },
 });
 
-const searchselectItem = cva("flex flex-row items-center text-gray cursor-pointer rounded-lg hover:bg-dark hover:text-white mx-1 bg-black", {
+const searchselectItem = cva("flex flex-row items-center text-gray cursor-pointer rounded-lg hover:bg-dark-light hover:text-white mx-1 bg-black-light", {
     variants: {
         size: {
             small: ["text-xs", "p-1"],
@@ -60,7 +60,7 @@ const SearchSelectItem: React.FC<SearchSelectItemProps> = ({ highlight, size, ti
     const parts = title.split(new RegExp(`(${highlight})`, 'gi'));
 
     return (
-        <div className={cn(searchselectItem({size}), { "bg-dark text-white" : isSelected })} onClick={onClick}>
+        <div className={cn(searchselectItem({size}), { "bg-dark-light text-white" : isSelected })} onClick={onClick}>
             {isSelected && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
             <span>
                 {parts.map((part, index) => (
@@ -160,7 +160,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
                     <ChevronsUpDown className={"group-hover/combo:text-white text-gray"} size={12} />
                 </div>
                 {isOpen && filteredChildren.length > 0 &&
-                    <div className={"fixed z-50 max-h-48 w-max bg-black rounded-lg border border-edge overflow-hidden"}>
+                    <div className={"fixed z-50 max-h-48 w-max bg-black-light rounded-lg border border-edge overflow-hidden"}>
                         {filteredChildren.length > (size === "medium" ? 4 : 6) ? (
                             <CustomScroll>
                                 <div className={"max-h-48"}>

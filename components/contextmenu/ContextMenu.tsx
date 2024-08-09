@@ -9,7 +9,7 @@ import {useOutsideClick} from "../../utils/clickOutside";
 import {Seperator} from "../seperator/Seperator";
 import {cva, VariantProps} from "class-variance-authority";
 
-const contextMenuContainer = cva("rounded-lg font-normal text-gray", {
+const contextMenuContainer = cva("rounded-lg font-normal text-gray shadow-2xl", {
     variants: {
         size: {
             small: ["text-xs", "p-0.5"],

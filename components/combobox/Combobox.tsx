@@ -8,7 +8,7 @@ import {cva, VariantProps} from "class-variance-authority";
 import {CustomScroll} from "react-custom-scroll";
 
 const combobox = cva("group/combo flex flex-row items-center cursor-pointer text-gray rounded-lg font-normal " +
-    "hover:text-white border border-edge overflow-hidden bg-black", {
+    "hover:text-white border border-edge overflow-hidden bg-black-light hover:bg-dark-light", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],
@@ -20,7 +20,7 @@ const combobox = cva("group/combo flex flex-row items-center cursor-pointer text
     },
 });
 
-const comboboxItem = cva("flex flex-row items-center text-gray cursor-pointer rounded-lg hover:bg-dark hover:text-white bg-black mx-1", {
+const comboboxItem = cva("flex flex-row items-center text-gray cursor-pointer rounded-lg hover:bg-dark-light hover:text-white bg-black-light mx-1", {
     variants: {
         size: {
             small: ["text-xs", "p-1"],
@@ -56,7 +56,7 @@ type ComboboxRef = HTMLDivElement & {
 
 const ComboboxItem: React.FC<ComboboxItemProps> = ({ size, title, isSelected, onClick }) => {
     return (
-        <div className={cn(comboboxItem({size}), { "bg-dark text-white": isSelected })} onClick={onClick}>
+        <div className={cn(comboboxItem({size}), { "bg-dark-light text-white": isSelected })} onClick={onClick}>
             {isSelected && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
             <span>{title}</span>
         </div>
@@ -100,7 +100,7 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
                     <ChevronsUpDown className={"group-hover/combo:text-white ml-2 text-gray"} size={12}/>
                 </div>
                 {isOpen && React.Children.count(children) > 0 &&
-                    <div className={"fixed z-50 max-h-48 w-max bg-black rounded-lg border border-edge overflow-hidden"}>
+                    <div className={"fixed z-50 max-h-48 w-max bg-black-light rounded-lg border border-edge overflow-hidden shadow-2xl"}>
                         {React.Children.count(children) > (size === "medium" ?  4 : 6) ? (
                             <CustomScroll>
                                 <div className={"max-h-48"}>

@@ -10,7 +10,7 @@ interface CloseButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 
 const CloseButton = React.forwardRef<HTMLDivElement, CloseButtonProps>(({ iconSize, className, ...props }) => {
       return (
-          <button className={cn("group/close bg-black hover:bg-dark rounded-lg", className)} {...props} >
+          <button className={cn("group/close bg-black-light hover:bg-dark-light rounded-lg", className)} {...props} >
               <X size={iconSize ? iconSize : 16} className={"text-gray group-hover/close:text-white m-1"}/>
           </button>
       );

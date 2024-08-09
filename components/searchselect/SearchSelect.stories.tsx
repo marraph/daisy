@@ -2,6 +2,7 @@ import React from 'react';
 import {SearchSelect, SearchSelectItem} from './SearchSelect';
 import {Meta, StoryObj} from "@storybook/react";
 import {GitBranch} from "lucide-react";
+import {Combobox, ComboboxItem} from "../combobox/Combobox";
 
 const meta: Meta<typeof SearchSelect> = {
     title: "Components/SearchSelect",
@@ -24,7 +25,8 @@ export const Default: Story = {
         const items = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
         return (
-            <SearchSelect size={"medium"}
+            <div className={"flex flex-row space-x-2"}>
+            <SearchSelect size={"small"}
                           buttonTitle={"Title"}
                           icon={<GitBranch size={12}/>}
                           label={"Label"}
@@ -35,6 +37,10 @@ export const Default: Story = {
                     />
                 ))}
             </SearchSelect>
+                <Combobox buttonTitle={"wgwg"} label={"wugwub"} size={"small"}>
+                    <ComboboxItem title={"Option 1"}/>
+                </Combobox>
+            </div>
         );
     },
 };

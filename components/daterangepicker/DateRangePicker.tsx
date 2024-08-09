@@ -9,7 +9,7 @@ import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
 import {DateRange, DayPicker} from "react-day-picker";
 
-const daterangepicker = cva("flex flex-row items-center bg-black rounded-lg border border-edge text-gray cursor-pointer hover:text-white hover:bg-dark space-x-2", {
+const daterangepicker = cva("flex flex-row items-center bg-black-light rounded-lg border border-edge text-gray cursor-pointer hover:text-white hover:bg-dark-light space-x-2", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],
@@ -117,7 +117,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
                     </div>
                     {range && closeButton &&
                         <CloseButton iconSize={16}
-                                     className={cn("w-min bg-black h-min rounded-l-none border border-edge",
+                                     className={cn("w-min h-min rounded-l-none border border-edge",
                                      (size === "medium" ? "py-1" : ""), className)}
                                      onClick={(e) => {e.stopPropagation(); setRange(undefined); onClose();}}
                         />
@@ -131,7 +131,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
                                    onSelect={setRange}
                                    onDayClick={handleDayClick}
                                    showOutsideDays={true}
-                                   className={cn("p-3 text-white bg-black rounded-lg border border-edge", className)}
+                                   className={cn("p-3 text-white bg-black-light rounded-lg border border-edge", className)}
                                    classNames={{
                                        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
                                        month: "space-y-4",

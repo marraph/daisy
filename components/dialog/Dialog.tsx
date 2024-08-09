@@ -46,7 +46,7 @@ const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton = false, can
     const { dialogRef, onClose } = useDialogContext();
 
     return (
-        <div className={"rounded-b-lg border border-edge bg-dark flex flex-row justify-end items-center p-2 space-x-2"}>
+        <div className={"rounded-b-lg border border-edge bg-black-light flex flex-row justify-end items-center p-2 space-x-2"}>
             {switchButton &&
                 <div className={"flex flex-row items-center space-x-2 text-gray text-xs mr-16"}>
                     <span>{"Create more"}</span>

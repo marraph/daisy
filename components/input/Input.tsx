@@ -4,10 +4,10 @@ import React, {forwardRef, ReactNode, useImperativeHandle, useRef} from "react";
 import { cn } from "../../utils/cn";
 import {cva, VariantProps} from "class-variance-authority";
 
-const input = cva("group/input w-auto rounded-lg font-normal text-gray bg-black focus:text-white placeholder-marcador focus-visible:outline-none focus-visible:ring-0", {
+const input = cva("group/input w-auto rounded-lg font-normal text-gray bg-black-light focus:text-white placeholder-marcador focus-visible:outline-none focus-visible:ring-0", {
     variants: {
         border: {
-            default: ["bg-black", "border", "border-edge", "outline-none", "focus:ring-2", "focus:ring-marcador"],
+            default: ["bg-black-light", "border", "border-edge", "outline-none", "focus:ring-2", "focus:ring-marcador"],
             none: ["border-0"],
         },
         elementSize: {
@@ -71,7 +71,7 @@ const Input = forwardRef<InputRef, InputProps>(({ onChange, preSelectedValue, ic
 
             <div className={"flex flex-row items-center"}>
                 {icon &&
-                    <div className={cn("bg-black border border-edge border-r-0 rounded-l-lg text-gray",
+                    <div className={cn("bg-black-light border border-edge border-r-0 rounded-l-lg text-gray",
                         elementSize === "medium" ? "p-2" : "p-1.5")}>
                         {icon}
                     </div>

@@ -38,7 +38,7 @@ const SwitchButton = forwardRef<SwitchButtonRef, SwitchButtonProps>(({ preSelect
 
     return (
         <div
-            className="relative flex items-center rounded-lg font-normal cursor-pointer text-gray bg-dark border border-white border-opacity-20 text-sm w-max pl-1 py-0.5"
+            className="relative flex items-center rounded-lg font-normal cursor-pointer text-gray bg-dark-light border border-white border-opacity-20 text-sm w-max pl-1 py-0.5"
             onClick={handleClick}
         >
             <motion.div
@@ -48,19 +48,19 @@ const SwitchButton = forwardRef<SwitchButtonRef, SwitchButtonProps>(({ preSelect
                 transition={{ type: 'spring', stiffness: 500, damping: 30, duration: 0.2 }}
                 style={{ width: selectedValue ? firstWidth : secondWidth }}
             >
-                <span className="bg-black text-white rounded-lg px-2 py-0.5">
+                <span className="bg-black-light text-white rounded-lg px-2 py-0.5">
                     {selectedValue ? firstTitle : secondTitle}
                 </span>
             </motion.div>
             <div
                 ref={firstRef}
-                className={selectedValue ? "bg-dark text-gray rounded-lg px-2 py-1 hover:text-white" : "bg-dark text-gray rounded-lg px-2 py-1 hover:text-white"}
+                className={selectedValue ? "bg-dark-light text-gray rounded-lg px-2 py-1 hover:text-white" : "bg-dark-light text-gray rounded-lg px-2 py-1 hover:text-white"}
             >
                 {firstTitle}
             </div>
             <div
                 ref={secondRef}
-                className={selectedValue ? "bg-dark text-gray rounded-lg px-2.5 py-1 hover:text-white" : "bg-dark text-gray rounded-lg px-2.5 py-1 hover:text-white"}
+                className={selectedValue ? "bg-dark-light text-gray rounded-lg px-2.5 py-1 hover:text-white" : "bg-dark-light text-gray rounded-lg px-2.5 py-1 hover:text-white"}
             >
                 {secondTitle}
             </div>

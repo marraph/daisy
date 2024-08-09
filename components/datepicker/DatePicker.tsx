@@ -9,7 +9,7 @@ import {cva, VariantProps} from "class-variance-authority";
 import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
 
-const datepicker = cva("flex flex-row items-center bg-black rounded-lg border border-edge text-gray cursor-pointer hover:text-white hover:bg-dark space-x-2", {
+const datepicker = cva("flex flex-row items-center bg-black-light rounded-lg border border-edge text-gray cursor-pointer hover:text-white hover:bg-dark-light space-x-2", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],
