@@ -9,7 +9,8 @@ import {cva, VariantProps} from "class-variance-authority";
 import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
 
-const datepicker = cva("flex flex-row items-center bg-black-light rounded-lg border border-edge text-gray cursor-pointer hover:text-white hover:bg-dark-light space-x-2", {
+const datepicker = cva("flex flex-row items-center space-x-2 rounded-lg cursor-pointer border border-edge " +
+    "bg-zinc-200 dark:bg-black-light hover:bg-zinc-300 dark:hover:bg-dark-light text-zinc-700 dark:text-gray hover:text-zinc-800 dark:hover:text-white", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],
@@ -82,7 +83,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
     return (
         <div className={"flex flex-col space-y-1"}>
             {label &&
-                <span className={"ml-1 text-marcador text-xs"}>{label}</span>
+                <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>{label}</span>
             }
 
             <div className={cn("relative", className)}
@@ -104,7 +105,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
                     {selectedValue && closeButton &&
                         <CloseButton
                             iconSize={16}
-                            className={cn("w-min bg-black h-min rounded-l-none border border-edge",
+                            className={cn("w-min bg-zinc-200 dark:bg-black-light h-min rounded-l-none border border-zinc-300 dark:border-edge",
                                 (size === "medium" ? "py-1" : ""), className)
                             }
                             onClick={(e) => {

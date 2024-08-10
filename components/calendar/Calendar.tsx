@@ -18,7 +18,7 @@ const Calendar: React.FC<CalendarProps> = ({ selected, className, classNames, ..
             selected={selected}
             onSelect={setSelectedDay}
             showOutsideDays={true}
-            className={"p-3 text-white bg-black-light rounded-lg border border-edge"}
+            className={"p-3 text-zinc-700 dark:text-white bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge"}
             classNames={{
                 months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
                 month: "space-y-4",
@@ -33,11 +33,11 @@ const Calendar: React.FC<CalendarProps> = ({ selected, className, classNames, ..
                 head_cell: "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
                 row: "flex w-full mt-2",
                 cell: "h-9 w-9 text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
-                day: "h-9 w-9 p-0 font-normal cursor-pointer rounded-lg hover:bg-dark",
+                day: "h-9 w-9 p-0 font-normal cursor-pointer rounded-lg hover:bg-zinc-300 dark:hover:bg-dark",
                 day_today: cn("rounded-lg",
-                    selected === isToday ? "bg-white hover:bg-white-dark" : "bg-dark"),
+                    selected === isToday ? "bg-black-light hover:bg-zinc-700 dark:bg-white dark:hover:bg-white-dark" : "bg-zinc-300 dark:bg-dark"),
                 day_outside: "day-outside opacity-50",
-                day_selected: "bg-white text-black hover:bg-white-dark",
+                day_selected: "bg-black-light dark:bg-white text-white dark:text-black hover:bg-black-light dark:hover:bg-white-dark",
                 day_disabled: "text-muted-foreground opacity-50",
                 day_hidden: "invisible",
                 ...classNames,

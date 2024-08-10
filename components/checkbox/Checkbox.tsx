@@ -25,7 +25,7 @@ const Checkbox = forwardRef<CheckboxRef, CheckboxProps>(({ text, textClassname, 
     }), [checkboxRef]);
 
     return (
-        <div className={"w-max font-normal flex items-center p-2 text-white"}>
+        <div className={"w-max font-medium flex items-center p-2 text-black-light dark:text-white"}>
             <input type={"checkbox"}
                    ref={checkboxRef}
                    className={cn("size-4 accent-black border-edge rounded-md mr-2 checked:accent-black", className)}

@@ -32,12 +32,13 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, Varian
     textClassName?: string;
 }
 
-const Badge = forwardRef<HTMLDivElement, BadgeProps>(({ theme, border, size, text, textClassName, className, ...props }, ref) => (
-    <div className={cn(badge({theme, border, size}), className)} ref={ref} {...props}>
-        {props.children}
-        <span className={textClassName}>{text}</span>
-    </div>
-));
-Badge.displayName = "Badge";
+const Badge: React.FC<BadgeProps> = ({ theme, border, size, text, textClassName, className, ...props }) => {
+    return (
+        <div className={cn(badge({theme, border, size}), className)} {...props}>
+            {props.children}
+            <span className={textClassName}>{text}</span>
+        </div>
+    );
+}
 
 export { Badge };

@@ -21,11 +21,6 @@ export const Default: Story = {
     render: () => {
         return (
             <div className={"flex flex-col space-x-2"}>
-                <Combobox buttonTitle={"gwgw"}>
-                    <ComboboxItem title={"Item 1"}></ComboboxItem>
-                    <ComboboxItem title={"Item 2"}></ComboboxItem>
-                    <ComboboxItem title={"Item 3"}></ComboboxItem>
-                </Combobox>
                 <DatePicker text={"Select a date"}
                             size={"small"}
                             dayFormat={"long"}

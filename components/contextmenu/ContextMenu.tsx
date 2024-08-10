@@ -9,7 +9,7 @@ import {useOutsideClick} from "../../utils/clickOutside";
 import {Seperator} from "../seperator/Seperator";
 import {cva, VariantProps} from "class-variance-authority";
 
-const contextMenuContainer = cva("rounded-lg font-normal text-gray shadow-2xl", {
+const contextMenuContainer = cva("rounded-lg font-normal text-zinc-700 dark:text-gray", {
     variants: {
         size: {
             small: ["text-xs", "p-0.5"],
@@ -21,7 +21,8 @@ const contextMenuContainer = cva("rounded-lg font-normal text-gray shadow-2xl", 
     },
 });
 
-const contextMenuItem = cva("w-full bg-black cursor-pointer rounded-lg hover:bg-dark hover:text-white flex flex-row justify-between items-center", {
+const contextMenuItem = cva("w-full flex flex-row justify-between items-center cursor-pointer rounded-lg " +
+    "bg-zinc-100 dark:bg-black hover:bg-zinc-200 dark:hover:bg-dark hover:text-zinc-800 dark:hover:text-white", {
     variants: {
         size: {
             small: ["text-xs", "px-2", "py-1", "space-x-2"],
@@ -91,7 +92,8 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ size, title, icon, sh
 
     return (
         <div ref={menuRef}>
-            <div className={cn(contextMenuItem({size}), open && "bg-dark text-white", className)}
+            <div className={cn(contextMenuItem({size}),
+                 open && "bg-zinc-200 dark:bg-dark text-zinc-800 hover:text-white", className)}
                  onClick={handleClick}
                  ref={itemRef}
                  {...props}
@@ -101,7 +103,7 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ size, title, icon, sh
                     <span>{title}</span>
                 </div>
                 {!selectItems && shortcut &&
-                        <span className={"text-marcador text-xs"}>{shortcut}</span>
+                        <span className={"text-zinc-500 dark:text-marcador text-xs"}>{shortcut}</span>
                 }
                 {selectItems &&
                     <ChevronRight size={16}/>
@@ -110,14 +112,14 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ size, title, icon, sh
 
             {selectItems && open &&
                 <ContextMenuPortal>
-                    <div className={"absolute flex flex-col space-y-1 p-1 bg-black cursor-pointer rounded-lg border border-edge"}
+                    <div className={"absolute flex flex-col space-y-1 p-1 bg-zinc-100 dark:bg-black cursor-pointer rounded-lg border border-zinc-300 dark:border-edge"}
                          style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
                          ref={menuRef}
                     >
                         {items.map((item: any, index: number) =>
                             <div key={index}
-                                 className={cn("flex flex-row items-center text-sm space-x-2 px-2 py-1 rounded-lg text-gray hover:bg-dark",
-                                     item.selected && "bg-dark text-white"
+                                 className={cn("flex flex-row items-center text-sm space-x-2 px-2 py-1 rounded-lg text-zinc-700 dark:text-gray hover:bg-zinc-200 dark:hover:bg-dark",
+                                     item.selected && "bg-zinc-200 dark:bg-dark text-zinc-800 dark:text-white"
                                  )}
                                  onClick={() => {
                                      if (item.selected) setItems(items.map((i) => ({ ...i, selected: false })));
@@ -159,7 +161,7 @@ const ContextMenuContainer: React.FC<ContextMenuContainerProps> = ({ children, s
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ children, xPos, yPos }) => {
     return (
-        <div className={"absolute z-50 w-max rounded-lg bg-black border border-edge"}
+        <div className={"absolute z-50 w-max rounded-lg bg-zinc-100 dark:bg-black border border-zinc-300 dark:border-edge shadow-2xl"}
             style={xPos && yPos && { top: yPos, left: xPos }}
         >
             {children}

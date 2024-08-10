@@ -1,5 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from "tailwindcss";
+import colors = require("tailwindcss/colors");
+
+const config: Config = {
+  darkMode: 'selector',
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,6 +11,7 @@ module.exports = {
   ],
   theme: {
     colors: {
+      ...colors,
       "black": "#090909",
       "black-light": "#111111",
       "dark": "#171717",
@@ -17,6 +21,9 @@ module.exports = {
       "gray": "#A6A6A6",
       "white": "#ECECEC",
       "white-dark": "#C7C7C7",
+
+
+
       "lavender": "#8855BB",
       "lavender-light": "#967BB6",
 
@@ -33,3 +40,5 @@ module.exports = {
   },
   plugins: [],
 };
+
+export default config;

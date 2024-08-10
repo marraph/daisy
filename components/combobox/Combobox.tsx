@@ -7,8 +7,10 @@ import {useOutsideClick} from "../../utils/clickOutside";
 import {cva, VariantProps} from "class-variance-authority";
 import {CustomScroll} from "react-custom-scroll";
 
-const combobox = cva("group/combo flex flex-row items-center cursor-pointer text-gray rounded-lg font-normal " +
-    "hover:text-white border border-edge overflow-hidden bg-black-light hover:bg-dark-light", {
+const combobox = cva(
+    "group/combo flex flex-row items-center cursor-pointer rounded-lg font-normal overflow-hidden " +
+    "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray hover:text-zinc-800 dark:hover:text-white " +
+    "hover:bg-zinc-100 dark:hover:bg-dark-light border border-zinc-300 dark:border-edge", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],
@@ -20,7 +22,9 @@ const combobox = cva("group/combo flex flex-row items-center cursor-pointer text
     },
 });
 
-const comboboxItem = cva("flex flex-row items-center text-gray cursor-pointer rounded-lg hover:bg-dark-light hover:text-white bg-black-light mx-1", {
+const comboboxItem = cva(
+    "flex flex-row items-center cursor-pointer rounded-lg mx-1 bg-zinc-200 dark:bg-black-light " +
+    "text-zinc-700 dark:text-gray hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-dark-light", {
     variants: {
         size: {
             small: ["text-xs", "p-1"],
@@ -56,7 +60,9 @@ type ComboboxRef = HTMLDivElement & {
 
 const ComboboxItem: React.FC<ComboboxItemProps> = ({ size, title, isSelected, onClick }) => {
     return (
-        <div className={cn(comboboxItem({size}), { "bg-dark-light text-white": isSelected })} onClick={onClick}>
+        <div className={cn(comboboxItem({size}), { "bg-zinc-100 dark:bg-dark-light text-zinc-800 dark:text-white": isSelected })}
+             onClick={onClick}
+        >
             {isSelected && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
             <span>{title}</span>
         </div>
@@ -90,21 +96,21 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
     return (
         <div className={"flex flex-col space-y-1"}>
             {label &&
-                <span className={"ml-1 text-marcador text-xs"}>{label}</span>
+                <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>{label}</span>
             }
 
             <div className={"space-y-1"} ref={menuRef}>
                 <div className={cn(combobox({size}))} onClick={() => setIsOpen(!isOpen)}>
                     {icon}
                     <span>{selectedValue ?? buttonTitle}</span>
-                    <ChevronsUpDown className={"group-hover/combo:text-white ml-2 text-gray"} size={12}/>
+                    <ChevronsUpDown className={"group-hover/combo:text-zinc-800 dark:group-hover/combo:text-white ml-2 text-zinc-700 dark:text-gray"} size={12}/>
                 </div>
                 {isOpen && React.Children.count(children) > 0 &&
-                    <div className={"fixed z-50 max-h-48 w-max bg-black-light rounded-lg border border-edge overflow-hidden shadow-2xl"}>
+                    <div className={"fixed z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden shadow-2xl"}>
                         {React.Children.count(children) > (size === "medium" ?  4 : 6) ? (
                             <CustomScroll>
                                 <div className={"max-h-48"}>
-                                    <div className={"flex flex-col text-gray space-y-1 py-1 pr-1"}>
+                                    <div className={"flex flex-col space-y-1 py-1 pr-1"}>
                                         {React.Children.map(children, (child, index) => {
                                             if (React.isValidElement<ComboboxItemProps>(child)) {
                                                 return React.cloneElement(child, {
@@ -123,7 +129,7 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
                                 </div>
                             </CustomScroll>
                         ) : (
-                            <div className={"flex flex-col text-gray space-y-1 py-1"}>
+                            <div className={"flex flex-col space-y-1 py-1"}>
                                 {React.Children.map(children, (child, index) => {
                                     if (React.isValidElement<ComboboxItemProps>(child)) {
                                         return React.cloneElement(child, {
