@@ -76,7 +76,8 @@ const Tooltip: React.FC<TooltipProps> = ({ triggerRef, anchor = "right", delay =
     if (!isVisible) return null;
     
     return (
-        <div className={"absolute z-50 flex flex-row space-x-1 px-2 py-1 rounded-lg bg-dark border border-edge shadow-lg text-white text-xs"}
+        <div className={"absolute z-50 flex flex-row space-x-1 px-2 py-1 rounded-lg shadow-lg text-xs" +
+            "bg-zinc-100 dark:bg-dark border border-zinc-300 dark:border-edge text-zinc-800 dark:text-white"}
              style={{
                  top: position.y,
                  left: position.x,

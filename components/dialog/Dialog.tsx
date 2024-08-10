@@ -31,9 +31,11 @@ const DialogHeader: React.FC<{ title: string }> = ({ title }) => {
     const { dialogRef, onClose } = useDialogContext();
 
     return (
-        <div className={"rounded-t-lg border border-edge flex flex-row justify-between items-center p-4 pr-2"}>
-            <span className={"text-md text-white"}>{title}</span>
-            <CloseButton onClick={() => {
+        <div className={"flex flex-row justify-between items-center p-4 pr-2 rounded-t-lg border border-zinc-300 dark:border-edge"}>
+            <span className={"text-md text-zinc-800 dark:text-white"}>{title}</span>
+            <CloseButton
+                className={"bg-zinc-100 dark:bg-black"}
+                onClick={() => {
                     dialogRef.current.close();
                     onClose();
                 }}
@@ -46,9 +48,9 @@ const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton = false, can
     const { dialogRef, onClose } = useDialogContext();
 
     return (
-        <div className={"rounded-b-lg border border-edge bg-black-light flex flex-row justify-end items-center p-2 space-x-2"}>
+        <div className={"flex flex-row justify-end items-center p-2 space-x-2 rounded-b-lg border border-zinc-300 dark:border-edge bg-zinc-200 dark:bg-black-light "}>
             {switchButton &&
-                <div className={"flex flex-row items-center space-x-2 text-gray text-xs mr-16"}>
+                <div className={"flex flex-row items-center space-x-2 text-zinc-700 dark:text-gray text-xs mr-16"}>
                     <span>{"Create more"}</span>
                     <Switch ref={switchRef}/>
                 </div>
@@ -63,7 +65,7 @@ const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton = false, can
                 />
             }
             <Button text={saveButtonTitle}
-                    theme={"white"}
+                    theme={"primary"}
                     className={"h-8"}
                     onClick={() => onClick()}
                     disabled={disabledButton}
@@ -97,7 +99,7 @@ const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, onClose, 
     return (
         <div className={"flex items-center justify-center"}>
             <dialog
-                className={cn("group backdrop:bg-black/60 backdrop backdrop-opacity-20 backdrop-brightness-0 rounded-lg bg-black overflow-visible", className)}
+                className={cn("group backdrop:bg-black/60 backdrop backdrop-opacity-20 backdrop-brightness-0 rounded-lg bg-zinc-100 dark:bg-black overflow-visible", className)}
                 style={{width: width}}
                 {...props}
                 ref={dialogRef}
