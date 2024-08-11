@@ -112,14 +112,16 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
                 <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>{label}</span>
             }
 
-            <div className={"space-y-1"} ref={menuRef}>
-                <div className={cn(combobox({size}))} onClick={() => setIsOpen(!isOpen)}>
+            <div className={"relative space-y-1"} ref={menuRef}>
+                <div className={cn(combobox({ size }))}
+                     onClick={() => setIsOpen(!isOpen)}
+                >
                     {icon}
                     <span>{selectedValue ?? buttonTitle}</span>
                     <ChevronsUpDown className={"group-hover/combo:text-zinc-800 dark:group-hover/combo:text-white ml-2 text-zinc-700 dark:text-gray"} size={12}/>
                 </div>
                 {isOpen && React.Children.count(children) > 0 &&
-                    <div className={cn("fixed z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden shadow-2xl",
+                    <div className={cn("absolute z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden shadow-2xl",
                         dropdownPosition === "left" ? "left-0" : "right-0")}
                     >
                         {React.Children.count(children) > (size === "medium" ?  4 : 6) ? (

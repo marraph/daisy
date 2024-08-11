@@ -166,7 +166,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
                 <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>{label}</span>
             }
 
-            <div className={"space-y-1"} ref={menuRef}>
+            <div className={"relative space-y-1"} ref={menuRef}>
                 <div className={cn(searchselect({ size }))}
                      onClick={() => setIsOpen(true)}
                 >
@@ -182,7 +182,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
                     <ChevronsUpDown className={"group-hover/combo:text-zinc-800 dark:group-hover/combo:text-white text-zinc-700 dark:text-gray"} size={12} />
                 </div>
                 {isOpen && filteredChildren.length > 0 &&
-                    <div className={cn("fixed z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden",
+                    <div className={cn("absolute z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden",
                         dropdownPosition === "left" ? "left-0" : "right-0")}
                     >
                         {filteredChildren.length > (size === "medium" ? 4 : 6) ? (
