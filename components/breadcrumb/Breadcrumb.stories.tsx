@@ -1,11 +1,11 @@
 import React from 'react';
-import {Breadcrump} from './Breadcrump';
+import {Breadcrumb} from './Breadcrumb';
 import {Meta, StoryObj} from "@storybook/react";
 import {useRouter} from "next/router";
 
-const meta: Meta<typeof Breadcrump> = {
-    title: "Components/Breadcrump",
-    component: Breadcrump,
+const meta: Meta<typeof Breadcrumb> = {
+    title: "Components/Breadcrumb",
+    component: Breadcrumb,
     parameters: {
         layout: "centered",
     },
@@ -14,14 +14,14 @@ const meta: Meta<typeof Breadcrump> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Breadcrump>
+type Story = StoryObj<typeof Breadcrumb>
 
 export const Default: Story = {
     render: () => {
         const router = useRouter();
 
         return (
-            <Breadcrump pastText={"Home"}
+            <Breadcrumb pastText={"Home"}
                         nowText={"About"}
                         onClick={() => router.push('/home')}
             />

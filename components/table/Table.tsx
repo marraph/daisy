@@ -15,7 +15,7 @@ const TableAction: React.FC<TableActionProps> = ({ onClick }) => {
         <td className={cn("px-2")}>
             <Button text={""}
                     size={"medium"}
-                    className={"p-1.5 hover:bg-dark-light hover:text-white"}
+                    className={"p-1.5 bg-zinc-100 hover:bg-zinc-200"}
                     icon={<EllipsisVertical size={16}/>}
                     onClick={(e) => {
                         e.stopPropagation();
@@ -24,66 +24,60 @@ const TableAction: React.FC<TableActionProps> = ({ onClick }) => {
             />
         </td>
     );
-};
-TableAction.displayName = "TableAction";
+}
 
-
-const TableCell = forwardRef<HTMLTableCellElement, TableHTMLAttributes<HTMLTableCellElement>>(({ className, ...props }, ref) => {
+const TableCell: React.FC<TableHTMLAttributes<HTMLTableCellElement>> = ({ className, ...props }) => {
     return (
-        <td className={cn("p-4 align-middle", className)} ref={ref} {...props} />
+        <td className={cn("p-4 align-middle", className)} {...props} />
     );
-});
-TableCell.displayName = "TableCell";
+}
 
-
-const TableRow = forwardRef<HTMLTableRowElement, TableHTMLAttributes<HTMLTableRowElement>>(({ className, ...props }, ref) => {
+const TableRow: React.FC<TableHTMLAttributes<HTMLTableRowElement>> = ({ className, ...props }) => {
     return(
-        <tr className={cn("group/row bg-black-light border-t border-edge hover:bg-dark hover:text-white cursor-pointer", className)}
-            ref={ref} {...props}>
+        <tr className={cn("group/row bg-zinc-100 dark:bg-black-light cursor-pointer border-t border-zinc-300 " +
+            "dark:border-edge hover:bg-zinc-200 dark:hover:bg-dark hover:text-zinc-800 dark:hover:text-white", className)}
+            {...props}
+        >
             {props.children}
         </tr>
     );
-});
-TableRow.displayName = "TableRow";
+}
 
-
-const TableHead = forwardRef<HTMLTableCellElement, TableHTMLAttributes<HTMLTableCellElement>>(({className, ...props}, ref) => {
+const TableHead: React.FC<TableHTMLAttributes<HTMLTableCellElement>> = ({className, ...props}) => {
     return (
-        <th className={cn("h-12 px-4 text-left text-marcador text-sm align-middle font-medium bg-dark", className)} ref={ref} {...props} />
+        <th className={cn("h-12 px-4 text-left text-zinc-500 dark:text-marcador " +
+            "text-sm align-middle font-medium bg-zinc-200 dark:bg-dark", className)}
+            {...props}
+        />
     );
-});
-TableHead.displayName = "TableHead";
+}
 
-
-const TableHeader = forwardRef<HTMLTableSectionElement, TableHTMLAttributes<HTMLTableSectionElement>>(({ className, ...props }, ref) => {
+const TableHeader: React.FC<TableHTMLAttributes<HTMLTableSectionElement>> = ({ className, ...props }) => {
     return (
-        <thead className={cn("", className)} ref={ref} {...props}>
+        <thead className={cn("", className)} {...props}>
             {props.children}
         </thead>
     );
-});
-TableHeader.displayName = "TableHeader";
+}
 
-
-const TableBody = forwardRef<HTMLTableSectionElement, TableHTMLAttributes<HTMLTableSectionElement>>(({ className, ...props }, ref) => {
+const TableBody: React.FC<TableHTMLAttributes<HTMLTableSectionElement>> = ({ className, ...props }) => {
     return (
-        <tbody className={cn("", className)} ref={ref} {...props}>
+        <tbody className={cn("", className)} {...props}>
             {props.children}
         </tbody>
     );
-});
-TableBody.displayName = "TableBody";
+}
 
-
-const Table = forwardRef<HTMLTableElement, TableHTMLAttributes<HTMLTableElement>>(({ className, ...props }, ref) => {
+const Table: React.FC<TableHTMLAttributes<HTMLTableElement>> = ({ className, ...props }) => {
     return (
-        <div className={cn("w-full text-gray cursor-pointer text-base overflow-auto bg-dark rounded-lg border border-edge", className)}>
-            <table className={cn("", className)} ref={ref} {...props}>
+        <div className={cn("w-full text-zinc-700 dark:text-gray cursor-pointer text-base overflow-auto " +
+            "bg-zinc-200 dark:bg-dark rounded-lg border border-zinc-300 dark:border-edge", className)}
+        >
+            <table className={cn("", className)} {...props}>
                 {props.children}
             </table>
         </div>
     );
-});
-Table.displayName = "Table";
+}
 
-export {Table, TableBody, TableHeader, TableHead, TableRow, TableCell, TableAction};
+export { Table, TableBody, TableHeader, TableHead, TableRow, TableCell, TableAction };

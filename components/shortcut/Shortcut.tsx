@@ -1,18 +1,20 @@
-import React, {forwardRef} from "react";
+import React from "react";
 import {cn} from "../../utils/cn";
 
 export interface ShortcutProps extends React.HTMLAttributes<HTMLDivElement> {
     text?: string;
 }
 
-const Shortcut = forwardRef<HTMLDivElement, ShortcutProps>(({ text, className, ...props }, ref) => {
+const Shortcut: React.FC<ShortcutProps> = ({ text, className, ...props }) => {
     return(
-        <div className={cn("flex items-center rounded-md border border-edge shadow-[inset_0_-2px_4px_rgba(0,0,0,0.6)] bg-dark h-min text-marcador text-xs px-1 py-0.5")} ref={ref} {...props}>
+        <div className={cn("h-min flex items-center rounded-md border text-xs px-1 py-0.5 shadow-[inset_0_-2px_4px_rgba(0,0,0,0.6)] " +
+             "bg-zinc-300 dark:bg-dark text-zinc-500 dark:text-marcador border-zinc-400 dark:border-edge")}
+             {...props}
+        >
             {props.children}
             {text && <span>{text}</span>}
         </div>
     );
-});
-Shortcut.displayName = "Shortcut";
+}
 
 export { Shortcut };

@@ -1,6 +1,6 @@
 "use client";
 
-import React, {forwardRef, useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {addDays, format} from "date-fns";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
@@ -9,7 +9,9 @@ import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
 import {DateRange, DayPicker} from "react-day-picker";
 
-const daterangepicker = cva("flex flex-row items-center bg-black-light rounded-lg border border-edge text-gray cursor-pointer hover:text-white hover:bg-dark-light space-x-2", {
+const daterangepicker = cva("flex flex-row items-center space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
+    "bg-zinc-200 dark:bg-black-light hover:bg-zinc-300 dark:hover:bg-dark-light text-zinc-700 dark:text-gray " +
+    "hover:text-zinc-800 dark:hover:text-white", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],
@@ -40,6 +42,19 @@ type DateRangePickerRef = HTMLDivElement & {
 const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({label, onRangeChange, dayFormat, closeButton, onClose, preSelectedRange, text, size, className, ...props}, ref) => {
     const daterangepickerRef = useRef<DateRangePickerRef>(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [dropdownPosition, setDropdownPosition] = useState<"left" | "right">("left");
+
+    useEffect(() => {
+        if (menuRef.current) {
+            const rect = menuRef.current.getBoundingClientRect();
+            const spaceOnRight = window.innerWidth - rect.right;
+            if (spaceOnRight < 300) {
+                setDropdownPosition('right');
+            } else {
+                setDropdownPosition('left');
+            }
+        }
+    }, [isOpen]);
 
     const initialRange: DateRange = {
         from: new Date(),
@@ -91,7 +106,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
     return (
         <div className={"flex flex-col space-y-1"}>
             {label &&
-                <span className={"ml-1 text-marcador text-xs"}>{label}</span>
+                <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>{label}</span>
             }
             <div className={cn("relative inline-block space-y-1", className)} ref={menuRef}>
                 <div className={"flex flex-row items-center"}>
@@ -117,7 +132,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
                     </div>
                     {range && closeButton &&
                         <CloseButton iconSize={16}
-                                     className={cn("w-min h-min rounded-l-none border border-edge",
+                                     className={cn("w-min h-min hover:bg-zinc-300 hover:dark:bg-dark-light rounded-l-none border border-zinc-300 dark:border-edge",
                                      (size === "medium" ? "py-1" : ""), className)}
                                      onClick={(e) => {e.stopPropagation(); setRange(undefined); onClose();}}
                         />
@@ -125,13 +140,16 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
                 </div>
 
                 {isOpen && (
-                    <div className={cn("absolute top-full left-0 overflow-hidden", className)} ref={menuRef}>
+                    <div className={cn("absolute top-full overflow-hidden",
+                         dropdownPosition === "left" ? "left-0" : "right-0")}
+                         ref={menuRef}
+                    >
                         <DayPicker mode={"range"}
                                    selected={range}
                                    onSelect={setRange}
                                    onDayClick={handleDayClick}
                                    showOutsideDays={true}
-                                   className={cn("p-3 text-white bg-black-light rounded-lg border border-edge", className)}
+                                   className={"p-3 text-zinc-700 dark:text-white bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge"}
                                    classNames={{
                                        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
                                        month: "space-y-4",
@@ -146,14 +164,14 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
                                        head_cell: "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
                                        row: "flex w-full mt-2",
                                        cell: "h-9 w-9 text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
-                                       day: cn("h-9 w-9 p-0 font-normal cursor-pointer rounded-lg hover:bg-dark"),
+                                       day: cn("h-9 w-9 p-0 font-normal cursor-pointer rounded-lg hover:bg-zinc-300 dark:hover:bg-dark"),
                                        day_range_end: "day-range-end rounded-r-lg rounded-l-none",
                                        day_range_start: "rounded-l-lg rounded-r-none",
-                                       day_selected: "bg-dark-light text-white hover:bg-dark-light rounded-lg",
-                                       day_today: "bg-dark text-white rounded-lg",
+                                       day_selected: "bg-zinc-300 dark:bg-dark-light text-zinc-800 dark:text-white hover:bg-zinc-300 dark:hover:bg-dark-light rounded-lg",
+                                       day_today: "bg-zinc-300 dark:bg-dark text-zinc-800 dark:text-white rounded-lg",
                                        day_outside: "day-outside opacity-50",
                                        day_disabled: "text-muted-foreground opacity-50",
-                                       day_range_middle: "text-white rounded-none",
+                                       day_range_middle: "text-zinc-800 dark:text-white rounded-none",
                                        day_hidden: "invisible",
                                    }}
                         />

@@ -9,8 +9,10 @@ import {Input, InputRef} from "../input/Input";
 import {handleInternalServerErrorResponse} from "next/dist/server/future/route-modules/helpers/response-handlers";
 import {CustomScroll} from "react-custom-scroll";
 
-const searchselect = cva("group/combo flex flex-row items-center cursor-pointer text-gray rounded-lg font-normal " +
-    "hover:text-white border border-edge overflow-hidden bg-black-light", {
+const searchselect = cva(
+    "group/combo flex flex-row items-center cursor-pointer rounded-lg font-normal overflow-hidden " +
+    "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray hover:text-zinc-800 dark:hover:text-white " +
+    "border border-zinc-300 dark:border-edge", {
     variants: {
         size: {
             small: ["text-xs", "px-2"],
@@ -22,7 +24,9 @@ const searchselect = cva("group/combo flex flex-row items-center cursor-pointer 
     },
 });
 
-const searchselectItem = cva("flex flex-row items-center text-gray cursor-pointer rounded-lg hover:bg-dark-light hover:text-white mx-1 bg-black-light", {
+const searchselectItem = cva(
+    "flex flex-row items-center cursor-pointer rounded-lg mx-1 bg-zinc-200 dark:bg-black-light " +
+    "text-zinc-600 dark:text-gray hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-dark-light", {
     variants: {
         size: {
             small: ["text-xs", "p-1"],
@@ -60,12 +64,12 @@ const SearchSelectItem: React.FC<SearchSelectItemProps> = ({ highlight, size, ti
     const parts = title.split(new RegExp(`(${highlight})`, 'gi'));
 
     return (
-        <div className={cn(searchselectItem({size}), { "bg-dark-light text-white" : isSelected })} onClick={onClick}>
+        <div className={cn(searchselectItem({size}), { "bg-zinc-100 dark:bg-dark-light text-zinc-800 dark:text-white" : isSelected })} onClick={onClick}>
             {isSelected && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
             <span>
                 {parts.map((part, index) => (
                     part.toLowerCase() === highlight?.toLowerCase() ? (
-                        <span key={index} className="text-white">{part}</span>
+                        <span key={index} className="text-zinc-900 dark:text-white">{part}</span>
                     ) : (
                         <span key={index}>{part}</span>
                     )
@@ -130,6 +134,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
         if (filteredChildren.length === 1 && searchTerm.length > previousSearchTerm.current.length) {
             const singleChild = filteredChildren[0];
             if (React.isValidElement<SearchSelectItemProps>(singleChild)) {
+                onValueChange(singleChild.props.title);
                 setSelectedValue(singleChild.props.title);
                 setSearchTerm(singleChild.props.title);
                 inputRef.current?.setValue(singleChild.props.title);
@@ -143,11 +148,13 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
     return (
         <div className={"flex flex-col space-y-1"} ref={menuRef}>
             {label &&
-                <span className={"ml-1 text-marcador text-xs"}>{label}</span>
+                <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>{label}</span>
             }
 
             <div className={"space-y-1"} ref={menuRef}>
-                <div className={cn(searchselect({ size }))} onClick={() => setIsOpen(true)}>
+                <div className={cn(searchselect({ size }))}
+                     onClick={() => setIsOpen(true)}
+                >
                     {icon}
                     <Input placeholder={buttonTitle}
                            value={searchTerm}
@@ -157,14 +164,14 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
                            size={Math.max((searchTerm as string).length/100*90, buttonTitle.length/100*90)}
                            ref={inputRef}
                     />
-                    <ChevronsUpDown className={"group-hover/combo:text-white text-gray"} size={12} />
+                    <ChevronsUpDown className={"group-hover/combo:text-zinc-800 dark:group-hover/combo:text-white text-zinc-700 dark:text-gray"} size={12} />
                 </div>
                 {isOpen && filteredChildren.length > 0 &&
-                    <div className={"fixed z-50 max-h-48 w-max bg-black-light rounded-lg border border-edge overflow-hidden"}>
+                    <div className={"fixed z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden"}>
                         {filteredChildren.length > (size === "medium" ? 4 : 6) ? (
                             <CustomScroll>
                                 <div className={"max-h-48"}>
-                                    <div className={"flex flex-col text-gray space-y-1 pr-1 py-1"}>
+                                    <div className={"flex flex-col text-zinc-500 dark:text-gray space-y-1 pr-1 py-1"}>
                                         {filteredChildren.map((child, index) => {
                                             if (React.isValidElement<SearchSelectItemProps>(child)) {
                                                 return React.cloneElement(child, {
@@ -184,7 +191,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
                                 </div>
                             </CustomScroll>
                         ) : (
-                            <div className={"flex flex-col text-gray space-y-1 py-1"}>
+                            <div className={"flex flex-col text-zinc-500 dark:text-gray space-y-1 py-1"}>
                                 {filteredChildren.map((child, index) => {
                                     if (React.isValidElement<SearchSelectItemProps>(child)) {
                                         return React.cloneElement(child, {

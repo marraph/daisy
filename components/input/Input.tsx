@@ -4,10 +4,12 @@ import React, {forwardRef, ReactNode, useImperativeHandle, useRef} from "react";
 import { cn } from "../../utils/cn";
 import {cva, VariantProps} from "class-variance-authority";
 
-const input = cva("group/input w-auto rounded-lg font-normal text-gray bg-black-light focus:text-white placeholder-marcador focus-visible:outline-none focus-visible:ring-0", {
+const input = cva("group/input w-auto rounded-lg font-normal focus-visible:outline-none focus-visible:ring-0 border " +
+    "text-zinc-700 dark:text-gray bg-zinc-200 dark:bg-black-light focus:text-zinc-800 dark:focus:text-white " +
+    "placeholder-zinc-500 dark:placeholder-marcador", {
     variants: {
         border: {
-            default: ["bg-black-light", "border", "border-edge", "outline-none", "focus:ring-2", "focus:ring-marcador"],
+            default: "border-zinc-300 dark:border-edge outline-none focus:ring-2 focus:ring-zinc-500 dark:focus:ring-marcador",
             none: ["border-0"],
         },
         elementSize: {
@@ -64,14 +66,15 @@ const Input = forwardRef<InputRef, InputProps>(({ onChange, preSelectedValue, ic
     return (
         <div className={"flex flex-col space-y-1"}>
             {label &&
-                <span className={"ml-1 text-marcador text-xs"}>
+                <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>
                     {label}
                 </span>
             }
 
             <div className={"flex flex-row items-center"}>
                 {icon &&
-                    <div className={cn("bg-black-light border border-edge border-r-0 rounded-l-lg text-gray",
+                    <div className={cn("bg-zinc-200 dark:bg-black-light border border-zinc-300 dark:border-edge " +
+                        "border-r-0 rounded-l-lg text-zinc-700 dark:text-gray",
                         elementSize === "medium" ? "p-2" : "p-1.5")}>
                         {icon}
                     </div>

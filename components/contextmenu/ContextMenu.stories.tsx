@@ -3,7 +3,6 @@ import {ContextMenu, ContextMenuContainer, ContextMenuItem} from './ContextMenu'
 import {Meta, StoryObj} from "@storybook/react";
 import {GitBranch} from "lucide-react";
 import {Seperator} from "../seperator/Seperator";
-import {Button} from "../button/Button";
 
 const meta: Meta<typeof ContextMenu> = {
     title: "Components/ContextMenu",
@@ -42,7 +41,7 @@ export const Default: Story = {
         }, []);
 
         return (
-            <div className={"h-40 w-40 bg-white"} onContextMenu={(e) => handleContextMenu(e)}>
+            <div className={"h-screen w-screen bg-red-500"} onContextMenu={(e) => handleContextMenu(e)}>
 
                 {contextMenu.visible &&
                     <ContextMenu xPos={contextMenu.x} yPos={contextMenu.y}>

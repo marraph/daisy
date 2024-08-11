@@ -17,16 +17,34 @@ export default meta;
 type Story = StoryObj<typeof Button>
 
 export const Default: Story = {
-  render: () => {
-    return (
-      <Button theme={"white"}
-              size={"medium"}
-              text={"Open Wallet"}
-              icon={<Wallet size={20} className={"mr-3"}/>}
-              disabled={true}
-      />
-    );
-  },
+    render: () => {
+        return (
+            <div className={"flex flex-row space-x-2"}>
+                <Button theme={"default"}
+                        size={"medium"}
+                        text={"Default"}
+                        icon={<Wallet size={20} className={"mr-3"}/>}
+                />
+                <Button theme={"primary"}
+                        size={"medium"}
+                        text={"Primary"}
+                        icon={<Wallet size={20} className={"mr-3"}/>}
+                />
+                <Button theme={"default"}
+                        disabled={true}
+                        size={"medium"}
+                        text={"Default Disabled"}
+                        icon={<Wallet size={20} className={"mr-3"}/>}
+                />
+                <Button theme={"primary"}
+                        disabled={true}
+                        size={"medium"}
+                        text={"Primary Disabled"}
+                        icon={<Wallet size={20} className={"mr-3"}/>}
+                />
+            </div>
+        );
+    },
 };
 
 
