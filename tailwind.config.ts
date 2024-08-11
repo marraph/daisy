@@ -22,11 +22,6 @@ const config: Config = {
       "white": "#ECECEC",
       "white-dark": "#C7C7C7",
 
-
-
-      "lavender": "#8855BB",
-      "lavender-light": "#967BB6",
-
       "success": "#1AA60E",
       "warning": "#F2CF19",
       "error": "#C51919",

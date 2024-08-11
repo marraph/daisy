@@ -160,9 +160,35 @@ const ContextMenuContainer: React.FC<ContextMenuContainerProps> = ({ children, s
 
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ children, xPos, yPos }) => {
+    const [menuPosition, setMenuPosition] = useState({ top: yPos, left: xPos });
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (menuRef.current) {
+            const rect = menuRef.current.getBoundingClientRect();
+            const buffer = 32;
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+
+            let newLeft = xPos;
+            let newTop = yPos;
+
+            if (xPos + rect.width + buffer > windowWidth) {
+                newLeft = windowWidth - rect.width - buffer;
+            }
+
+            if (yPos + rect.height + buffer > windowHeight) {
+                newTop = windowHeight - rect.height - buffer;
+            }
+
+            setMenuPosition({ top: newTop, left: newLeft });
+        }
+    }, [xPos, yPos]);
+
     return (
         <div className={"absolute z-50 w-max rounded-lg bg-zinc-100 dark:bg-black border border-zinc-300 dark:border-edge shadow-2xl"}
-            style={xPos && yPos && { top: yPos, left: xPos }}
+             style={{ top: menuPosition.top, left: menuPosition.left }}
+             ref={menuRef}
         >
             {children}
         </div>

@@ -41,7 +41,7 @@ export const Default: Story = {
         }, []);
 
         return (
-            <div className={"h-40 w-40 bg-red-500"} onContextMenu={(e) => handleContextMenu(e)}>
+            <div className={"h-screen w-screen bg-red-500"} onContextMenu={(e) => handleContextMenu(e)}>
 
                 {contextMenu.visible &&
                     <ContextMenu xPos={contextMenu.x} yPos={contextMenu.y}>

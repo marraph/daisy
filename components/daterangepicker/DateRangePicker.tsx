@@ -1,6 +1,6 @@
 "use client";
 
-import React, {forwardRef, useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {addDays, format} from "date-fns";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
@@ -42,6 +42,19 @@ type DateRangePickerRef = HTMLDivElement & {
 const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({label, onRangeChange, dayFormat, closeButton, onClose, preSelectedRange, text, size, className, ...props}, ref) => {
     const daterangepickerRef = useRef<DateRangePickerRef>(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [dropdownPosition, setDropdownPosition] = useState<"left" | "right">("left");
+
+    useEffect(() => {
+        if (menuRef.current) {
+            const rect = menuRef.current.getBoundingClientRect();
+            const spaceOnRight = window.innerWidth - rect.right;
+            if (spaceOnRight < 300) {
+                setDropdownPosition('right');
+            } else {
+                setDropdownPosition('left');
+            }
+        }
+    }, [isOpen]);
 
     const initialRange: DateRange = {
         from: new Date(),
@@ -127,7 +140,10 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
                 </div>
 
                 {isOpen && (
-                    <div className={cn("absolute top-full left-0 overflow-hidden", className)} ref={menuRef}>
+                    <div className={cn("absolute top-full overflow-hidden",
+                         dropdownPosition === "left" ? "left-0" : "right-0")}
+                         ref={menuRef}
+                    >
                         <DayPicker mode={"range"}
                                    selected={range}
                                    onSelect={setRange}

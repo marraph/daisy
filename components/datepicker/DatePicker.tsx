@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useImperativeHandle, useRef, useState} from "react";
+import React, {useEffect, useImperativeHandle, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {Calendar} from "../calendar/Calendar";
 import {format} from "date-fns";
@@ -41,9 +41,22 @@ type DatepickerRef = HTMLDivElement & {
 
 const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onValueChange, dayFormat, closeButton, onClose, preSelectedValue, text, size, className, ...props}, ref) => {
     const datepickerRef = useRef<DatepickerRef>(null);
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState<Date | undefined>(preSelectedValue ? preSelectedValue : undefined);
     const menuRef = useRef<HTMLDivElement>(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState<Date | undefined>(preSelectedValue ?? undefined);
+    const [dropdownPosition, setDropdownPosition] = useState<"left" | "right">("left");
+
+    useEffect(() => {
+        if (menuRef.current) {
+            const rect = menuRef.current.getBoundingClientRect();
+            const spaceOnRight = window.innerWidth - rect.right;
+            if (spaceOnRight < 300) {
+                setDropdownPosition("right");
+            } else {
+                setDropdownPosition("left");
+            }
+        }
+    }, [isOpen]);
 
     useOutsideClick((e) => {
         if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -118,7 +131,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
                 </div>
 
                 {isOpen && (
-                    <div className={"absolute z-50 mt-1"}>
+                    <div className={cn("absolute z-50 mt-1", dropdownPosition === "left" ? "left-0" : "right-0")}>
                         <Calendar onDayClick={handleDayClick} selected={selectedValue}/>
                     </div>
                 )}
