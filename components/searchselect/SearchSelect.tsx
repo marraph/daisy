@@ -86,18 +86,31 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
     const [searchTerm, setSearchTerm] = useState<string>(preSelectedValue || "");
+    const [dropdownPosition, setDropdownPosition] = useState<"left" | "right">("left");
     const previousSearchTerm = useRef<string>("");
 
     const menuRef = useOutsideClick(() => {
         setIsOpen(false);
     });
 
+    useEffect(() => {
+        if (menuRef.current) {
+            const rect = menuRef.current.getBoundingClientRect();
+            const spaceOnRight = window.innerWidth - rect.right;
+            if (spaceOnRight < 300) {
+                setDropdownPosition("right");
+            } else {
+                setDropdownPosition("left");
+            }
+        }
+    }, [isOpen, menuRef]);
+
     const handleItemClick = (item: string) => {
         const newValue = (selectedValue === item) ? "" : item;
         setSelectedValue(newValue);
         setSearchTerm(newValue)
         setIsOpen(false);
-        onValueChange && onValueChange(newValue)
+        onValueChange && onValueChange(newValue);
     };
 
     useImperativeHandle(ref, () => ({
@@ -121,6 +134,8 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
         if (value != selectedValue) {
             setSelectedValue(null);
         }
+        onValueChange && onValueChange(value);
+
     };
 
     const filteredChildren = React.Children.toArray(children).filter((child) => {
@@ -134,7 +149,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
         if (filteredChildren.length === 1 && searchTerm.length > previousSearchTerm.current.length) {
             const singleChild = filteredChildren[0];
             if (React.isValidElement<SearchSelectItemProps>(singleChild)) {
-                onValueChange(singleChild.props.title);
+                onValueChange && onValueChange(singleChild.props.title);
                 setSelectedValue(singleChild.props.title);
                 setSearchTerm(singleChild.props.title);
                 inputRef.current?.setValue(singleChild.props.title);
@@ -167,7 +182,9 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
                     <ChevronsUpDown className={"group-hover/combo:text-zinc-800 dark:group-hover/combo:text-white text-zinc-700 dark:text-gray"} size={12} />
                 </div>
                 {isOpen && filteredChildren.length > 0 &&
-                    <div className={"fixed z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden"}>
+                    <div className={cn("fixed z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden",
+                        dropdownPosition === "left" ? "left-0" : "right-0")}
+                    >
                         {filteredChildren.length > (size === "medium" ? 4 : 6) ? (
                             <CustomScroll>
                                 <div className={"max-h-48"}>

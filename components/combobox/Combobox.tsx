@@ -1,6 +1,6 @@
 "use client";
 
-import React, {forwardRef, ReactNode, useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, ReactNode, useEffect, useImperativeHandle, useRef, useState} from "react";
 import { cn } from "../../utils/cn";
 import {Check, ChevronsUpDown} from "lucide-react";
 import {useOutsideClick} from "../../utils/clickOutside";
@@ -74,10 +74,23 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
     const comboRef = useRef<ComboboxRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
+    const [dropdownPosition, setDropdownPosition] = useState<"left" | "right">("left");
 
     const menuRef = useOutsideClick(() => {
         setIsOpen(false);
     });
+
+    useEffect(() => {
+        if (menuRef.current) {
+            const rect = menuRef.current.getBoundingClientRect();
+            const spaceOnRight = window.innerWidth - rect.right;
+            if (spaceOnRight < 300) {
+                setDropdownPosition("right");
+            } else {
+                setDropdownPosition("left");
+            }
+        }
+    }, [isOpen, menuRef]);
 
     const handleItemClick = (item: string) => {
         const newValue = (selectedValue === item) ? null : item;
@@ -106,7 +119,9 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
                     <ChevronsUpDown className={"group-hover/combo:text-zinc-800 dark:group-hover/combo:text-white ml-2 text-zinc-700 dark:text-gray"} size={12}/>
                 </div>
                 {isOpen && React.Children.count(children) > 0 &&
-                    <div className={"fixed z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden shadow-2xl"}>
+                    <div className={cn("fixed z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden shadow-2xl",
+                        dropdownPosition === "left" ? "left-0" : "right-0")}
+                    >
                         {React.Children.count(children) > (size === "medium" ?  4 : 6) ? (
                             <CustomScroll>
                                 <div className={"max-h-48"}>
