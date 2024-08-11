@@ -4,7 +4,6 @@ import React, {forwardRef, HTMLAttributes, MutableRefObject, useCallback, useImp
 import {cn} from "../../utils/cn";
 import {Button} from "../button/Button";
 import {CloseButton} from "../closebutton/CloseButton";
-import {Switch, SwitchRef} from "../switch/Switch";
 import {DialogProvider, useDialogContext} from "./DialogProvider";
 
 type DialogRef = HTMLDialogElement & {
@@ -20,8 +19,6 @@ interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElement> {
 interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
     cancelButton?: boolean;
     saveButtonTitle: string;
-    switchButton?: boolean;
-    switchRef?: MutableRefObject<SwitchRef>;
     onClick?: () => void;
     disabledButton?: boolean;
 }
@@ -44,17 +41,12 @@ const DialogHeader: React.FC<{ title: string }> = ({ title }) => {
     );
 }
 
-const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton = false, cancelButton = true, saveButtonTitle, onClick, switchButton = false, switchRef }) => {
+const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton = false, cancelButton = true, saveButtonTitle, onClick, ...props }) => {
     const { dialogRef, onClose } = useDialogContext();
 
     return (
         <div className={"flex flex-row justify-end items-center p-2 space-x-2 rounded-b-lg border border-zinc-300 dark:border-edge bg-zinc-200 dark:bg-black-light "}>
-            {switchButton &&
-                <div className={"flex flex-row items-center space-x-2 text-zinc-700 dark:text-gray text-xs mr-16"}>
-                    <span>{"Create more"}</span>
-                    <Switch ref={switchRef}/>
-                </div>
-            }
+            {props.children}
             {cancelButton &&
                 <Button text={"Cancel"}
                         className={"h-8"}
