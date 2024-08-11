@@ -21,8 +21,8 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ pastText, nowText, onClick, cla
         >
             {pastText}
         </span>
-            <ChevronRight strokeWidth={2} size={15} className={"text-zinc-700 mx-1"}/>
-            <span className={"text-zinc-700 py-1 pl-1.5 pr-2"}>
+            <ChevronRight strokeWidth={2} size={15} className={"text-zinc-700 dark:text-gray mx-1"}/>
+            <span className={"text-zinc-700 dark:text-gray py-1 pl-1.5 pr-2"}>
             {nowText}
         </span>
         </div>

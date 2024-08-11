@@ -1,12 +1,12 @@
 "use client";
 
-import React, {forwardRef} from "react";
+import React, {forwardRef, HTMLAttributes} from "react";
 import { cn } from "../../utils/cn";
 
-const Seperator: React.FC = ({}) => {
+const Seperator: React.FC<HTMLAttributes<HTMLHRElement>> = ({ className, ...props}) => {
     return (
         <div className={cn("rounded-full")}>
-            <hr className={cn("flex-grow text-zinc-800 dark:text-white text-opacity-20")}></hr>
+            <hr className={cn("flex-grow text-zinc-800 dark:text-white text-opacity-20", className)} {...props}></hr>
         </div>
     );
 }
