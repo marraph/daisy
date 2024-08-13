@@ -1,4 +1,4 @@
-import {Tooltip} from './Tooltip';
+import {Tooltip, TooltipAnchor} from './Tooltip';
 import {Meta, StoryObj} from "@storybook/react";
 import React, {useRef} from "react";
 import {TooltipProvider, useTooltip} from "./TooltipProvider";
@@ -19,17 +19,19 @@ type Story = StoryObj<typeof Tooltip>
 
 const TooltipTemplate = () => {
     const { addTooltip, removeTooltip } = useTooltip();
-    const triggerRef = useRef<HTMLDivElement>(null);
+
+    const tooltipProps = {
+        message: "This is an error",
+        anchor: "right" as TooltipAnchor,
+        shortcut: "⌘ K",
+    };
 
     return (
         <div className={"size-40 bg-error"}
-             ref={triggerRef}
-             onMouseEnter={() => addTooltip({
-                 message: "this is a error",
-                 anchor: "right",
-                 children: <GitBranch size={14} className={"text-white"}/>,
-                 triggerRef: triggerRef,
-             })}
+             onMouseEnter={(e) => {
+                 const triggerElement = e.currentTarget;
+                 addTooltip({ ...tooltipProps, trigger: { current: triggerElement } });
+             }}
              onMouseLeave={() => removeTooltip()}
         />
     );

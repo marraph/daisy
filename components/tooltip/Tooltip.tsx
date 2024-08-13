@@ -9,21 +9,22 @@ interface TooltipProps extends HTMLAttributes<HTMLDivElement>{
     anchor?: TooltipAnchor
     delay?: number;
     color?: string;
-    triggerRef: RefObject<HTMLElement>;
+    offset?: number;
+    shortcut?: string;
+    trigger: RefObject<HTMLElement>;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ triggerRef, anchor = "right", delay = 1000, color, message, ...props }) => {
+const Tooltip: React.FC<TooltipProps> = ({ anchor = "right", delay = 1000, color, message, offset = 8, shortcut, trigger, ...props }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const timeout = useRef<number | null>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
 
-    const calculatePosition = useCallback(() => {
-        if (!triggerRef.current || !tooltipRef.current) return;
+    const calculatePosition = useCallback((triggerElement: HTMLElement) => {
+        if (!triggerElement || !tooltipRef.current) return;
 
-        const triggerRect = triggerRef.current.getBoundingClientRect();
+        const triggerRect = triggerElement.getBoundingClientRect();
         const tooltipRect = tooltipRef.current.getBoundingClientRect();
-        const offset = 8;
 
         let x: number, y: number;
 
@@ -44,51 +45,67 @@ const Tooltip: React.FC<TooltipProps> = ({ triggerRef, anchor = "right", delay =
                 x = triggerRect.right + offset;
                 y = triggerRect.top / 2 + triggerRect.height / 2;
                 break;
+            default:
+                x = triggerRect.left;
+                y = triggerRect.top;
         }
 
         setPosition({ x, y });
-    }, [anchor, triggerRef]);
+    }, [anchor, offset]);
 
     useLayoutEffect(() => {
-        if (isVisible) {
-            calculatePosition();
+        if (isVisible && trigger?.current) {
+            calculatePosition(trigger.current);
         }
-    }, [isVisible, calculatePosition]);
+    }, [isVisible, calculatePosition, trigger]);
+
 
     useEffect(() => {
-        if (delay) {
+        if (delay && trigger?.current) {
             timeout.current = window.setTimeout(() => {
-                calculatePosition();
+                calculatePosition(trigger.current!);
                 setIsVisible(true);
             }, delay);
         }
 
-        window.addEventListener('resize', calculatePosition);
-        window.addEventListener('scroll', calculatePosition);
+        const handleResizeOrScroll = () => {
+            if (trigger?.current) {
+                calculatePosition(trigger.current);
+            }
+        };
+
+        window.addEventListener('resize', handleResizeOrScroll);
+        window.addEventListener('scroll', handleResizeOrScroll);
 
         return () => {
             if (timeout.current) clearTimeout(timeout.current);
-            window.removeEventListener('resize', calculatePosition);
-            window.removeEventListener('scroll', calculatePosition);
-        }
-    }, [delay, triggerRef, tooltipRef, isVisible, calculatePosition]);
+            window.removeEventListener('resize', handleResizeOrScroll);
+            window.removeEventListener('scroll', handleResizeOrScroll);
+        };
+    }, [delay, trigger, tooltipRef, isVisible, calculatePosition]);
 
-    if (!isVisible) return null;
-    
     return (
-        <div className={"absolute z-50 flex flex-row space-x-1 px-2 py-1 rounded-lg shadow-lg text-xs" +
-            "bg-zinc-100 dark:bg-dark border border-zinc-300 dark:border-edge text-zinc-800 dark:text-white"}
-             style={{
-                 top: position.y,
-                 left: position.x,
-             }}
-             ref={tooltipRef}
-        >
-            {props.children}
-            <span className={"items-start"}>{message}</span>
-        </div>
+        <>
+            {isVisible && (
+                <div
+                    className={"absolute z-50 flex flex-row space-x-4 items-center px-2 py-1 rounded-lg shadow-lg text-xs dark:text-xs font-normal " +
+                        "bg-zinc-100 dark:bg-dark border border-zinc-300 dark:border-edge text-zinc-800 dark:text-white"
+                    }
+                    style={{
+                        top: position.y,
+                        left: position.x,
+                    }}
+                    ref={tooltipRef}
+                >
+                    <span>{message}</span>
+                    {shortcut &&
+                        <span className={"text-zinc-600 dark:text-gray"}>{shortcut}</span>
+                    }
+                </div>
+            )}
+        </>
     );
-}
+};
 
 export {Tooltip};
 export type {TooltipProps, TooltipAnchor};
