@@ -88,7 +88,7 @@ const Tooltip: React.FC<TooltipProps> = ({ anchor = "right", delay = 1000, color
         <>
             {isVisible && (
                 <div
-                    className={"absolute z-50 flex flex-row space-x-4 items-center px-2 py-1 rounded-lg shadow-lg text-xs dark:text-xs font-normal " +
+                    className={"isolate absolute z-50 flex flex-row space-x-4 items-center px-2 py-1 rounded-lg shadow-lg text-xs dark:text-xs font-normal " +
                         "bg-zinc-100 dark:bg-dark border border-zinc-300 dark:border-edge text-zinc-800 dark:text-white"
                     }
                     style={{
