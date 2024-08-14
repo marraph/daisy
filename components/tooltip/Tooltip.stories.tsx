@@ -42,7 +42,7 @@ const TooltipTemplate = () => {
 export const Default: Story = {
     render: () => {
         return (
-            <div className={"w-screen h-screen"}>
+            <div className={"left-1/2 w-screen h-screen"}>
                 <TooltipProvider>
                     <TooltipTemplate/>
                 </TooltipProvider>

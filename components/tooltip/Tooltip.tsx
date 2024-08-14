@@ -28,20 +28,20 @@ const Tooltip: React.FC<TooltipProps> = ({ anchor = "right", delay = 1000, color
 
         switch (anchor) {
             case "top":
-                x = trigger.width / 2 - tooltipRect.width / 2;
+                x = trigger.left + (trigger.width / 2) - (tooltipRect.width / 2);
                 y = trigger.top - offset - tooltipRect.height;
                 break;
             case "bottom":
-                x = trigger.width / 2 - tooltipRect.width / 2;
+                x = trigger.left + (trigger.width / 2) - (tooltipRect.width / 2);
                 y = trigger.bottom + offset;
                 break;
             case "left":
                 x = trigger.left - offset - tooltipRect.width;
-                y = trigger.top / 2 + trigger.height / 2;
+                y = trigger.top + (trigger.height / 2) - (tooltipRect.height / 2);
                 break;
             case "right":
                 x = trigger.right + offset;
-                y = trigger.top / 2 + trigger.height / 2;
+                y = trigger.top + (trigger.height / 2) - (tooltipRect.height / 2);
                 break;
             default:
                 x = trigger.left;
