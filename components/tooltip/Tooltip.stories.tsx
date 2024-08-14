@@ -29,8 +29,9 @@ const TooltipTemplate = () => {
     return (
         <div className={"size-40 bg-error"}
              onMouseEnter={(e) => {
-                 const triggerElement = e.currentTarget;
-                 addTooltip({ ...tooltipProps, trigger: { current: triggerElement } });
+                 addTooltip({ ...tooltipProps,
+                     trigger: e.currentTarget.getBoundingClientRect()
+                 });
              }}
              onMouseLeave={() => removeTooltip()}
         />

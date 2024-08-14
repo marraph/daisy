@@ -11,7 +11,7 @@ interface TooltipProps extends HTMLAttributes<HTMLDivElement>{
     color?: string;
     offset?: number;
     shortcut?: string;
-    trigger: RefObject<HTMLElement>;
+    trigger: DOMRect;
 }
 
 const Tooltip: React.FC<TooltipProps> = ({ anchor = "right", delay = 1000, color, message, offset = 8, shortcut, trigger, ...props }) => {
@@ -20,67 +20,59 @@ const Tooltip: React.FC<TooltipProps> = ({ anchor = "right", delay = 1000, color
     const timeout = useRef<number | null>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
 
-    const calculatePosition = useCallback((triggerElement: HTMLElement) => {
-        if (!triggerElement || !tooltipRef.current) return;
-
-        const triggerRect = triggerElement.getBoundingClientRect();
+    const calculatePosition = useCallback(() => {
+        if (!tooltipRef.current) return;
         const tooltipRect = tooltipRef.current.getBoundingClientRect();
 
         let x: number, y: number;
 
         switch (anchor) {
             case "top":
-                x = triggerRect.width / 2 - tooltipRect.width / 2;
-                y = triggerRect.top - offset - tooltipRect.height;
+                x = trigger.width / 2 - tooltipRect.width / 2;
+                y = trigger.top - offset - tooltipRect.height;
                 break;
             case "bottom":
-                x = triggerRect.width / 2 - tooltipRect.width / 2;
-                y = triggerRect.bottom + offset;
+                x = trigger.width / 2 - tooltipRect.width / 2;
+                y = trigger.bottom + offset;
                 break;
             case "left":
-                x = triggerRect.left - offset - tooltipRect.width;
-                y = triggerRect.top / 2 + triggerRect.height / 2;
+                x = trigger.left - offset - tooltipRect.width;
+                y = trigger.top / 2 + trigger.height / 2;
                 break;
             case "right":
-                x = triggerRect.right + offset;
-                y = triggerRect.top / 2 + triggerRect.height / 2;
+                x = trigger.right + offset;
+                y = trigger.top / 2 + trigger.height / 2;
                 break;
             default:
-                x = triggerRect.left;
-                y = triggerRect.top;
+                x = trigger.left;
+                y = trigger.top;
         }
 
         setPosition({ x, y });
-    }, [anchor, offset]);
+    }, [anchor, offset, trigger.bottom, trigger.height, trigger.left, trigger.right, trigger.top, trigger.width]);
 
     useLayoutEffect(() => {
-        if (isVisible && trigger?.current) {
-            calculatePosition(trigger.current);
+        if (isVisible) {
+            calculatePosition();
         }
     }, [isVisible, calculatePosition, trigger]);
 
 
     useEffect(() => {
-        if (delay && trigger?.current) {
+        if (delay) {
             timeout.current = window.setTimeout(() => {
-                calculatePosition(trigger.current!);
+                calculatePosition();
                 setIsVisible(true);
             }, delay);
         }
 
-        const handleResizeOrScroll = () => {
-            if (trigger?.current) {
-                calculatePosition(trigger.current);
-            }
-        };
-
-        window.addEventListener('resize', handleResizeOrScroll);
-        window.addEventListener('scroll', handleResizeOrScroll);
+        window.addEventListener('resize', calculatePosition);
+        window.addEventListener('scroll', calculatePosition);
 
         return () => {
             if (timeout.current) clearTimeout(timeout.current);
-            window.removeEventListener('resize', handleResizeOrScroll);
-            window.removeEventListener('scroll', handleResizeOrScroll);
+            window.removeEventListener('resize', calculatePosition);
+            window.removeEventListener('scroll', calculatePosition);
         };
     }, [delay, trigger, tooltipRef, isVisible, calculatePosition]);
 
