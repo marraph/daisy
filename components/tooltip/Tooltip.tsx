@@ -2,7 +2,7 @@
 
 import React, {HTMLAttributes, RefObject, useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 
-type TooltipAnchor = "top" | "bottom" | "left" | "right";
+type TooltipAnchor = "tl" | "tc" | "tr" | "bl" | "bc" | "br" | "lt" | "lc" | "lb" | "rt" | "rc" | "rb"
 
 interface TooltipProps extends HTMLAttributes<HTMLDivElement>{
     message: string;
@@ -14,7 +14,7 @@ interface TooltipProps extends HTMLAttributes<HTMLDivElement>{
     trigger: DOMRect;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ anchor = "right", delay = 1000, color, message, offset = 8, shortcut, trigger, ...props }) => {
+const Tooltip: React.FC<TooltipProps> = ({ anchor = "rc", delay = 1000, color, message, offset = 8, shortcut, trigger, ...props }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const timeout = useRef<number | null>(null);
@@ -27,22 +27,62 @@ const Tooltip: React.FC<TooltipProps> = ({ anchor = "right", delay = 1000, color
         let x: number, y: number;
 
         switch (anchor) {
-            case "top":
+            //Top
+            case "tl":
+                x = trigger.left;
+                y = trigger.top - offset - tooltipRect.height;
+                break;
+            case "tc":
                 x = trigger.left + (trigger.width / 2) - (tooltipRect.width / 2);
                 y = trigger.top - offset - tooltipRect.height;
                 break;
-            case "bottom":
+            case "tr":
+                x = trigger.right - tooltipRect.width;
+                y = trigger.top - offset - tooltipRect.height;
+                break;
+
+            // Bottom
+            case "bl":
+                x = trigger.left;
+                y = trigger.bottom + offset;
+                break;
+            case "bc":
                 x = trigger.left + (trigger.width / 2) - (tooltipRect.width / 2);
                 y = trigger.bottom + offset;
                 break;
-            case "left":
+            case "br":
+                x = trigger.right - tooltipRect.width;
+                y = trigger.bottom + offset;
+                break;
+
+            // Left
+            case "lt":
+                x = trigger.left - offset - tooltipRect.width;
+                y = trigger.top;
+                break;
+            case "lc":
                 x = trigger.left - offset - tooltipRect.width;
                 y = trigger.top + (trigger.height / 2) - (tooltipRect.height / 2);
                 break;
-            case "right":
+            case "lb":
+                x = trigger.left - offset - tooltipRect.width;
+                y = trigger.bottom - tooltipRect.height;
+                break;
+
+            // Right
+            case "rt":
+                x = trigger.right + offset;
+                y = trigger.top;
+                break;
+            case "rc":
                 x = trigger.right + offset;
                 y = trigger.top + (trigger.height / 2) - (tooltipRect.height / 2);
                 break;
+            case "rb":
+                x = trigger.right + offset;
+                y = trigger.bottom - tooltipRect.height;
+                break;
+
             default:
                 x = trigger.left;
                 y = trigger.top;
@@ -80,7 +120,7 @@ const Tooltip: React.FC<TooltipProps> = ({ anchor = "right", delay = 1000, color
         <>
             {isVisible && (
                 <div
-                    className={"isolate absolute z-50 flex flex-row space-x-4 items-center px-2 py-1 rounded-lg shadow-lg text-xs dark:text-xs font-normal " +
+                    className={"absolute z-50 flex flex-row space-x-4 items-center px-2 py-1 rounded-lg shadow-lg text-xs dark:text-xs font-normal " +
                         "bg-zinc-100 dark:bg-dark border border-zinc-300 dark:border-edge text-zinc-800 dark:text-white"
                     }
                     style={{

@@ -22,8 +22,8 @@ const TooltipTemplate = () => {
 
     const tooltipProps = {
         message: "This is an error",
-        anchor: "right" as TooltipAnchor,
         shortcut: "⌘ K",
+        anchor: "bc" as TooltipAnchor
     };
 
     return (
@@ -42,7 +42,7 @@ const TooltipTemplate = () => {
 export const Default: Story = {
     render: () => {
         return (
-            <div className={"left-1/2 w-screen h-screen"}>
+            <div className={"w-screen h-screen"}>
                 <TooltipProvider>
                     <TooltipTemplate/>
                 </TooltipProvider>
