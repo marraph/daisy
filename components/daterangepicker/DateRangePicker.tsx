@@ -114,7 +114,9 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
                         `${range === undefined ? "px-2 rounded-lg" : "px-2 rounded-l-lg border-r-0"}`,
                         `${closeButton ? "rounded-r-none" : "rounded-r-lg border-r"}`,
                         `${closeButton && range === undefined && "rounded-r-lg"}`, className)}
-                         onClick={() => setIsOpen(!isOpen)} {...props}>
+                         onClick={() => setIsOpen(!isOpen)}
+                         {...props}
+                    >
                         <CalendarDays size={size === "small" ? 12 : 16} className={"mr-1"}/>
                         <div className={"flex flex-row space-x-2"}>
                             {range === undefined &&

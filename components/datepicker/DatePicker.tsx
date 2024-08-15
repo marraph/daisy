@@ -104,6 +104,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
             >
                 <div className={"flex flex-row items-center"}
                      onClick={() => setIsOpen(!isOpen)}
+                     {...props}
                 >
                     <div className={cn(datepicker({size}),
                         `${!selectedValue ? "px-2 rounded-lg" : "px-2 rounded-l-lg border-r-0"}`,

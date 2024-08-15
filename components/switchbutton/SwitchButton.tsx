@@ -41,6 +41,7 @@ const SwitchButton = forwardRef<SwitchButtonRef, SwitchButtonProps>(({ preSelect
             className={"relative w-max flex items-center rounded-lg font-normal cursor-pointer text-sm pl-1 py-0.5" +
                 "text-zinc-500 dark:text-gray bg-zinc-300 dark:bg-dark-light border border-zinc-300 dark:border-edge"}
             onClick={handleClick}
+            {...props}
         >
             <motion.div
                 className="absolute w-max h-full flex flex-row items-center"
