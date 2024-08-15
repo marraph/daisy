@@ -5,14 +5,9 @@ import { cn } from "../../utils/cn";
 import {Button} from "../button/Button";
 import {EllipsisVertical} from "lucide-react";
 
-type TableActionProps = {
-    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-    className?: string;
-}
-
-const TableAction: React.FC<TableActionProps> = ({ onClick }) => {
+const TableAction: React.FC<HTMLAttributes<HTMLTableCellElement> & { onClick: (e: React.MouseEvent<HTMLButtonElement>) => void }> = ({ onClick, ...props }) => {
     return (
-        <td className={cn("px-2")}>
+        <td className={cn("px-2")} {...props}>
             <Button text={""}
                     size={"medium"}
                     className={"p-1.5 bg-zinc-100 hover:bg-zinc-200"}

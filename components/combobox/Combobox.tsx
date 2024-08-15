@@ -70,7 +70,7 @@ const ComboboxItem: React.FC<ComboboxItemProps> = ({ size, title, isSelected, on
 }
 
 
-const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange, icon, size, buttonTitle, preSelectedValue, children }, ref) => {
+const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange, icon, size, buttonTitle, preSelectedValue, children, ...props }, ref) => {
     const comboRef = useRef<ComboboxRef>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
@@ -115,6 +115,7 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
             <div className={"relative space-y-1"} ref={menuRef}>
                 <div className={cn(combobox({ size }))}
                      onClick={() => setIsOpen(!isOpen)}
+                     {...props}
                 >
                     {icon}
                     <span>{selectedValue ?? buttonTitle}</span>

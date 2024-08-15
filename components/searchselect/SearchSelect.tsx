@@ -80,7 +80,7 @@ const SearchSelectItem: React.FC<SearchSelectItemProps> = ({ highlight, size, ti
 }
 
 
-const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onValueChange, icon, size,  buttonTitle, preSelectedValue, children}, ref) => {
+const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({ label, onValueChange, icon, size,  buttonTitle, preSelectedValue, children, ...props }, ref) => {
     const inputRef = useRef<InputRef>(null);
     const searchselectRef = useRef<SearchSelectRef>(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -169,6 +169,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({label, onV
             <div className={"relative space-y-1"} ref={menuRef}>
                 <div className={cn(searchselect({ size }))}
                      onClick={() => setIsOpen(true)}
+                     {...props}
                 >
                     {icon}
                     <Input placeholder={buttonTitle}
