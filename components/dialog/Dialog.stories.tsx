@@ -3,7 +3,7 @@ import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogRef} from './Di
 import {Meta, StoryObj} from "@storybook/react";
 import { Button } from '../button/Button';
 import { Input } from '../input/Input';
-import {SwitchRef} from "../switch/Switch";
+import {Switch, SwitchRef} from "../switch/Switch";
 
 const meta: Meta<typeof Dialog> = {
     title: "Components/Dialog",
@@ -35,7 +35,12 @@ export const Default = () => {
                 </DialogContent>
                 <DialogFooter saveButtonTitle={"Save"}
                               disabledButton={false}
-                />
+                >
+                    <div className={"flex flex-row items-center space-x-2 text-zinc-700 dark:text-gray text-xs mr-16"}>
+                        <span>{"Create more"}</span>
+                        <Switch/>
+                    </div>
+                </DialogFooter>
             </Dialog>
 
             <button className={"bg-black text-white p-2 text-base rounded-lg border border-edge"}
@@ -43,5 +48,5 @@ export const Default = () => {
             </button>
 
         </>
-    );
+);
 };
