@@ -115,7 +115,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
                         `${closeButton && !selectedValue && "rounded-r-lg"}`, className)}
                          {...props}
                     >
-                        <div className={"flex flex-row space-x-2"}>
+                        <div className={"flex flex-row space-x-2 items-center"}>
                             <CalendarDays size={size === "small" ? 12 : 16}/>
                             <span>{!selectedValue ? text : formatDate()}</span>
                         </div>
