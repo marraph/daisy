@@ -3,6 +3,7 @@ import {ContextMenu, ContextMenuContainer, ContextMenuItem} from './ContextMenu'
 import {Meta, StoryObj} from "@storybook/react";
 import {GitBranch} from "lucide-react";
 import {Seperator} from "../seperator/Seperator";
+import {useOutsideClick} from "@/utils/clickOutside";
 
 const meta: Meta<typeof ContextMenu> = {
     title: "Components/ContextMenu",
@@ -40,11 +41,15 @@ export const Default: Story = {
             }
         }, []);
 
+        const contextRef = useOutsideClick(() => {
+            setContextMenu({ x: 0, y: 0, visible: false });
+        });
+
         return (
             <div className={"h-screen w-screen bg-red-500"} onContextMenu={(e) => handleContextMenu(e)}>
 
                 {contextMenu.visible &&
-                    <ContextMenu xPos={contextMenu.x} yPos={contextMenu.y}>
+                    <ContextMenu xPos={contextMenu.x} yPos={contextMenu.y} ref={contextRef}>
                         <ContextMenuContainer>
                             <ContextMenuItem title="Item 1"
                                              icon={<GitBranch size={14}/>}

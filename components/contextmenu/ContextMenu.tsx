@@ -1,6 +1,6 @@
 "use client";
 
-import React, {forwardRef, ReactNode, useEffect, useRef, useState} from "react";
+import React, {forwardRef, ReactNode, useCallback, useEffect, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {Check, ChevronRight} from "lucide-react";
 import { Shortcut } from "../shortcut/Shortcut";
@@ -159,13 +159,12 @@ const ContextMenuContainer: React.FC<ContextMenuContainerProps> = ({ children, s
 }
 
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ children, xPos, yPos }) => {
+const ContextMenu = forwardRef<HTMLDivElement, ContextMenuProps>(({ children, xPos, yPos }, ref) => {
     const [menuPosition, setMenuPosition] = useState({ top: yPos, left: xPos });
-    const menuRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        if (menuRef.current) {
-            const rect = menuRef.current.getBoundingClientRect();
+    const updatePosition = useCallback(() => {
+        if (ref && 'current' in ref && ref.current) {
+            const rect = ref.current.getBoundingClientRect();
             const buffer = 32;
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
@@ -183,17 +182,22 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ children, xPos, yPos }) => {
 
             setMenuPosition({ top: newTop, left: newLeft });
         }
-    }, [xPos, yPos]);
+    }, [xPos, yPos, ref]);
+
+    useEffect(() => {
+        updatePosition();
+    }, [updatePosition]);
 
     return (
         <div className={"absolute z-50 w-max rounded-lg bg-zinc-100 dark:bg-black border border-zinc-300 dark:border-edge shadow-2xl"}
              style={{ top: menuPosition.top, left: menuPosition.left }}
-             ref={menuRef}
+             ref={ref}
         >
             {children}
         </div>
     );
-}
+});
+ContextMenu.displayName = "ContextMenu";
 
 
 export {ContextMenu, ContextMenuItem, ContextMenuContainer};
