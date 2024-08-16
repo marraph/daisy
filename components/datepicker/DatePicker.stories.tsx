@@ -1,8 +1,6 @@
 import React from 'react';
 import {Meta, StoryObj} from "@storybook/react";
 import {DatePicker} from "./DatePicker";
-import {Button} from "../button/Button";
-import {Combobox, ComboboxItem} from "../combobox/Combobox";
 
 const meta: Meta<typeof DatePicker> = {
     title: "Components/DatePicker",
@@ -23,6 +21,7 @@ export const Default: Story = {
             <div className={"flex flex-col space-x-2"}>
                 <DatePicker text={"Select a date"}
                             size={"small"}
+                            className={"w-60"}
                             dayFormat={"long"}
                             closeButton={true}
                             onValueChange={(value) => console.log(value)}

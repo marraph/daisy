@@ -1,15 +1,16 @@
 "use client";
 
 import React, {useEffect, useImperativeHandle, useRef, useState} from "react";
-import {cn} from "../../utils/cn";
+import {cn} from "@/utils/cn";
 import {Calendar} from "../calendar/Calendar";
 import {format} from "date-fns";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
-import {useOutsideClick} from "../../utils/clickOutside";
+import {useOutsideClick} from "@/utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
+import moment from "moment";
 
-const datepicker = cva("flex flex-row items-center space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
+const datepicker = cva("flex flex-row items-center justify-between space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
     "bg-zinc-200 dark:bg-black-light hover:bg-zinc-300 dark:hover:bg-dark-light text-zinc-700 dark:text-gray hover:text-zinc-800 dark:hover:text-white", {
     variants: {
         size: {
@@ -67,16 +68,19 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
     const formatDate = () => {
         if (!selectedValue) return;
 
+        const momentDate = moment(selectedValue);
+
         if (dayFormat === "long") {
-            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            const dayOfWeek = daysOfWeek[selectedValue.getDay()];
-            const month = (selectedValue.getMonth() + 1).toString().padStart(2, '0');
-            const day = selectedValue.getDate().toString().padStart(2, '0');
-            const year = selectedValue.getFullYear();
+            const dayOfWeek = momentDate.format('dddd');
+            const month = momentDate.format('MM');
+            const day = momentDate.format('DD');
+            const year = momentDate.format('YYYY');
             return `${dayOfWeek}, ${month}-${day}-${year}`;
         }
 
-        if (dayFormat === "short") return format(selectedValue, "MM-dd-yyyy");
+        if (dayFormat === "short") {
+            return momentDate.format('MM-DD-YYYY');
+        }
     }
 
     const handleDayClick = (day: Date | undefined) => {
@@ -112,8 +116,10 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
                         `${closeButton && !selectedValue && "rounded-r-lg"}`, className)}
                          {...props}
                     >
-                        <CalendarDays size={size === "small" ? 12 : 16}/>
-                        <span>{!selectedValue ? text : formatDate()}</span>
+                        <div className={"flex flex-row space-x-2"}>
+                            <CalendarDays size={size === "small" ? 12 : 16}/>
+                            <span>{!selectedValue ? text : formatDate()}</span>
+                        </div>
                         <ChevronsUpDown size={12}/>
                     </div>
                     {selectedValue && closeButton &&

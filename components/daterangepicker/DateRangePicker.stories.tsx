@@ -20,7 +20,7 @@ export const Default: Story = {
         return (
             <DateRangePicker text={"Select a range"}
                              size={"medium"}
-                             dayFormat={"short"}
+                             dayFormat={"long"}
                              closeButton={true}
             />
         );

@@ -1,13 +1,14 @@
 "use client";
 
 import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
-import {cn} from "../../utils/cn";
-import {addDays, format} from "date-fns";
+import {cn} from "@/utils/cn";
+import {addDays} from "date-fns";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
-import {useOutsideClick} from "../../utils/clickOutside";
+import {useOutsideClick} from "@/utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
 import {DateRange, DayPicker} from "react-day-picker";
+import moment from "moment/moment";
 
 const daterangepicker = cva("flex flex-row items-center space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
     "bg-zinc-200 dark:bg-black-light hover:bg-zinc-300 dark:hover:bg-dark-light text-zinc-700 dark:text-gray " +
@@ -70,16 +71,19 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
     const formatDate = (date: Date | undefined) => {
         if (!date) return;
 
+        const momentDate = moment(date);
+
         if (dayFormat === "long") {
-            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            const dayOfWeek = daysOfWeek[date.getDay()];
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const day = date.getDate().toString().padStart(2, '0');
-            const year = date.getFullYear();
+            const dayOfWeek = momentDate.format('dddd');
+            const month = momentDate.format('MM');
+            const day = momentDate.format('DD');
+            const year = momentDate.format('YYYY');
             return `${dayOfWeek}, ${month}-${day}-${year}`;
         }
 
-        if (dayFormat === "short") return format(date, "MM-dd-yyyy");
+        if (dayFormat === "short") {
+            return momentDate.format('MM-DD-YYYY');
+        }
     };
 
     useImperativeHandle(ref, () => ({
