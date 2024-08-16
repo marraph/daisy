@@ -1,11 +1,11 @@
 "use client";
 
 import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 import {addDays} from "date-fns";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
-import {useOutsideClick} from "@/utils/clickOutside";
+import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
 import {DateRange, DayPicker} from "react-day-picker";
 import moment from "moment/moment";
