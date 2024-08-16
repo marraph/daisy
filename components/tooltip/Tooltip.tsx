@@ -131,7 +131,7 @@ const Tooltip: React.FC<TooltipProps> = ({ anchor = "rc", delay = 1000, color, m
                 >
                     <span>{message}</span>
                     {shortcut &&
-                        <span className={"text-zinc-600 dark:text-gray"}>{shortcut}</span>
+                        <span className={"px-1 rounded-sm bg-zinc-200 dark:bg-dark-light text-zinc-600 dark:text-gray"}>{shortcut}</span>
                     }
                 </div>
             )}

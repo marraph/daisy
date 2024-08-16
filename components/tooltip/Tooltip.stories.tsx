@@ -22,7 +22,7 @@ const TooltipTemplate = () => {
 
     const tooltipProps = {
         message: "This is an error",
-        shortcut: "⌘ K",
+        shortcut: "T",
         anchor: "bc" as TooltipAnchor
     };
 
