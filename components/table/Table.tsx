@@ -1,7 +1,7 @@
 "use client";
 
-import React, {forwardRef, HTMLAttributes, TableHTMLAttributes} from "react";
-import { cn } from "../../utils/cn";
+import React, {HTMLAttributes, TableHTMLAttributes} from "react";
+import {cn} from "../../utils/cn";
 import {Button} from "../button/Button";
 import {EllipsisVertical} from "lucide-react";
 
@@ -13,7 +13,6 @@ const TableAction: React.FC<HTMLAttributes<HTMLTableCellElement> & { onClick: (e
                     className={"p-1.5 bg-zinc-100 hover:bg-zinc-200"}
                     icon={<EllipsisVertical size={16}/>}
                     onClick={(e) => {
-                        e.stopPropagation();
                         onClick(e);
                     }}
             />
