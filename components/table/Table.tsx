@@ -14,6 +14,7 @@ const TableAction: React.FC<HTMLAttributes<HTMLTableCellElement> & { onClick: (e
                     icon={<EllipsisVertical size={16}/>}
                     onClick={(e) => {
                         e.preventDefault();
+                        e.stopPropagation();
                         onClick(e);
                     }}
             />
