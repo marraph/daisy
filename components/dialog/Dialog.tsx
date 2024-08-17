@@ -1,6 +1,14 @@
 "use client";
 
-import React, {forwardRef, HTMLAttributes, MutableRefObject, useCallback, useImperativeHandle, useRef} from "react";
+import React, {
+    forwardRef,
+    HTMLAttributes,
+    MutableRefObject,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useRef
+} from "react";
 import {cn} from "../../utils/cn";
 import {Button} from "../button/Button";
 import {CloseButton} from "../closebutton/CloseButton";
@@ -80,11 +88,33 @@ const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, onClose, 
     const handleClose = useCallback(() => {
         onClose && onClose();
         dialogRef.current?.close();
-    }, []);
+    }, [onClose]);
+
+    useEffect(() => {
+        const dialogElement = dialogRef.current;
+
+        const handleCancel = (event: Event) => {
+            event.preventDefault();
+            handleClose();
+        };
+
+        if (dialogElement) {
+            dialogElement.addEventListener('cancel', handleCancel);
+        }
+
+        return () => {
+            if (dialogElement) {
+                dialogElement.removeEventListener('cancel', handleCancel);
+            }
+        };
+    }, [handleClose]);
 
     useImperativeHandle(ref, () => ({
         show: () => dialogRef.current?.showModal(),
-        close: () => dialogRef.current?.close(),
+        close: () => {
+            dialogRef.current?.close();
+            onClose && onClose();
+        },
         ...dialogRef.current,
     }));
 
