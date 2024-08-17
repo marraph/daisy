@@ -13,6 +13,7 @@ const TableAction: React.FC<HTMLAttributes<HTMLTableCellElement> & { onClick: (e
                     className={"p-1.5 bg-zinc-100 hover:bg-zinc-200"}
                     icon={<EllipsisVertical size={16}/>}
                     onClick={(e) => {
+                        e.preventDefault();
                         onClick(e);
                     }}
             />
