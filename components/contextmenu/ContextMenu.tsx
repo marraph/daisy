@@ -160,37 +160,40 @@ const ContextMenuContainer: React.FC<ContextMenuContainerProps> = ({ children, s
 
 
 const ContextMenu = forwardRef<HTMLDivElement, ContextMenuProps>(({ children, xPos, yPos }, ref) => {
-    const [menuPosition, setMenuPosition] = useState({ top: yPos, left: xPos });
+    const [menuPosition, setMenuPosition] = useState<{top: number | null, left: number | null}>({ top: null, left: null });
 
-    const updatePosition = useCallback(() => {
+    const getPosition = useCallback(() => {
         if (ref && 'current' in ref && ref.current) {
             const rect = ref.current.getBoundingClientRect();
             const buffer = 32;
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
 
-            let newLeft = xPos;
-            let newTop = yPos;
+            let left = xPos;
+            let top = yPos;
 
             if (xPos + rect.width + buffer > windowWidth) {
-                newLeft = windowWidth - rect.width - buffer;
+                left = windowWidth - rect.width - buffer;
             }
 
             if (yPos + rect.height + buffer > windowHeight) {
-                newTop = windowHeight - rect.height - buffer;
+                top = windowHeight - rect.height - buffer;
             }
 
-            setMenuPosition({ top: newTop, left: newLeft });
+            setMenuPosition({ top, left });
         }
     }, [xPos, yPos, ref]);
 
     useEffect(() => {
-        updatePosition();
-    }, [updatePosition]);
+        getPosition();
+    }, [getPosition]);
+
 
     return (
         <div className={"absolute z-50 w-max rounded-lg bg-zinc-100 dark:bg-black border border-zinc-300 dark:border-edge shadow-2xl"}
-             style={{ top: menuPosition.top, left: menuPosition.left }}
+             style={{ top: menuPosition.top !== null ? menuPosition.top : -9999,
+                 left: menuPosition.left !== null ? menuPosition.left : -9999
+             }}
              ref={ref}
         >
             {children}
