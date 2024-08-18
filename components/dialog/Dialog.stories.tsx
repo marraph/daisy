@@ -35,6 +35,7 @@ export const Default = () => {
                 </DialogContent>
                 <DialogFooter saveButtonTitle={"Save"}
                               disabledButton={false}
+                              cancelButtonTitle={"No"}
                 >
                     <div className={"flex flex-row items-center space-x-2 text-zinc-700 dark:text-gray text-xs mr-16"}>
                         <span>{"Create more"}</span>

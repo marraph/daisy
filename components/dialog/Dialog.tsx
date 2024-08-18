@@ -27,6 +27,7 @@ interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElement> {
 interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
     cancelButton?: boolean;
     saveButtonTitle: string;
+    cancelButtonTitle?: string;
     onClick?: () => void;
     disabledButton?: boolean;
 }
@@ -49,14 +50,14 @@ const DialogHeader: React.FC<{ title: string }> = ({ title }) => {
     );
 }
 
-const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton = false, cancelButton = true, saveButtonTitle, onClick, ...props }) => {
+const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton = false, cancelButton = true, cancelButtonTitle = "Cancel", saveButtonTitle, onClick, ...props }) => {
     const { dialogRef, onClose } = useDialogContext();
 
     return (
         <div className={"flex flex-row justify-end items-center p-2 space-x-2 rounded-b-lg border border-zinc-300 dark:border-edge bg-zinc-200 dark:bg-black-light "}>
             {props.children}
             {cancelButton &&
-                <Button text={"Cancel"}
+                <Button text={cancelButtonTitle}
                         className={"h-8"}
                         onClick={() => {
                             dialogRef.current.close();
