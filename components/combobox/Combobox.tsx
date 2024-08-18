@@ -9,8 +9,7 @@ import {CustomScroll} from "react-custom-scroll";
 
 const combobox = cva(
     "group/combo flex flex-row items-center cursor-pointer rounded-lg font-normal overflow-hidden " +
-    "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray hover:text-zinc-800 dark:hover:text-white " +
-    "hover:bg-zinc-100 dark:hover:bg-dark-light border border-zinc-300 dark:border-edge", {
+    "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray border border-zinc-300 dark:border-edge", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],
@@ -119,7 +118,7 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
                 >
                     {icon}
                     <span>{selectedValue ?? buttonTitle}</span>
-                    <ChevronsUpDown className={"group-hover/combo:text-zinc-800 dark:group-hover/combo:text-white ml-2 text-zinc-700 dark:text-gray"} size={12}/>
+                    <ChevronsUpDown className={"ml-2 text-zinc-700 dark:text-gray"} size={12}/>
                 </div>
                 {isOpen && React.Children.count(children) > 0 &&
                     <div className={cn("absolute z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden shadow-2xl",

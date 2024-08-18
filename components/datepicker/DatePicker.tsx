@@ -10,7 +10,7 @@ import {CloseButton} from "../closebutton/CloseButton";
 import moment from "moment";
 
 const datepicker = cva("flex flex-row items-center justify-between space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
-    "bg-zinc-200 dark:bg-black-light hover:bg-zinc-300 dark:hover:bg-dark-light text-zinc-700 dark:text-gray hover:text-zinc-800 dark:hover:text-white", {
+    "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],

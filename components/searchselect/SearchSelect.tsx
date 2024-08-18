@@ -11,8 +11,7 @@ import {CustomScroll} from "react-custom-scroll";
 
 const searchselect = cva(
     "group/combo flex flex-row items-center cursor-pointer rounded-lg font-normal overflow-hidden " +
-    "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray hover:text-zinc-800 dark:hover:text-white " +
-    "border border-zinc-300 dark:border-edge", {
+    "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray border border-zinc-300 dark:border-edge", {
     variants: {
         size: {
             small: ["text-xs", "px-2"],
@@ -180,7 +179,7 @@ const SearchSelect = forwardRef<SearchSelectRef, SearchSelectProps>(({ label, on
                            size={Math.max((searchTerm as string).length/100*90, buttonTitle.length/100*90)}
                            ref={inputRef}
                     />
-                    <ChevronsUpDown className={"group-hover/combo:text-zinc-800 dark:group-hover/combo:text-white text-zinc-700 dark:text-gray"} size={12} />
+                    <ChevronsUpDown className={"text-zinc-700 dark:text-gray"} size={12} />
                 </div>
                 {isOpen && filteredChildren.length > 0 &&
                     <div className={cn("absolute z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden",
