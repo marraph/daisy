@@ -41,6 +41,8 @@ export const Default = () => {
             <RegionChart data={data}
                          xAxis_dataKey={"name"}
                          yAxis_dataKey={"value"}
+                         color={"#355E3B"}
+                         gradient={true}
             />
 
         </div>

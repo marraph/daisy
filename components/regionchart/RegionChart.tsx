@@ -6,9 +6,10 @@ interface AreaChartProps {
     xAxis_dataKey: string;
     yAxis_dataKey: string;
     color?: string;
+    gradient?: boolean;
 }
 
-const RegionChart: React.FC<AreaChartProps> = ({ data, xAxis_dataKey, yAxis_dataKey, color = "#8884d8" }) => {
+const RegionChart: React.FC<AreaChartProps> = ({ data, xAxis_dataKey, yAxis_dataKey, color = "#8884d8", gradient = false }) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -23,22 +24,25 @@ const RegionChart: React.FC<AreaChartProps> = ({ data, xAxis_dataKey, yAxis_data
                     bottom: 0,
                 }}
             >
-                <defs>
-                    <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="2%" stopColor={color} stopOpacity={0.8}/>
-                        <stop offset="98%" stopColor={color} stopOpacity={0.1}/>
-                    </linearGradient>
-                </defs>
+                {gradient &&
+                    <defs>
+                        <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="2%" stopColor={color} stopOpacity={0.8}/>
+                            <stop offset="98%" stopColor={color} stopOpacity={0.1}/>
+                        </linearGradient>
+                    </defs>
+                }
 
                 <CartesianGrid vertical={false}
-                               stroke={"text-zinc-600 dark:text-zinc-400"}
+                               opacity={0.5}
                                horizontalCoordinatesGenerator={(props) => props.height > 250 ? [75, 150, 225] : [100, 200]}
                 />
+
                 <XAxis dataKey={xAxis_dataKey}
                        tickMargin={8}
                        axisLine={false}
                        tickLine={false}
-                       tick={<CustomTick x={undefined} y={undefined} stroke={undefined} payload={undefined}/>}
+                       tick={<CustomTick x={undefined} y={undefined} payload={undefined}/>}
                 />
                 <YAxis tickLine={false}
                        tick={false}
@@ -51,7 +55,8 @@ const RegionChart: React.FC<AreaChartProps> = ({ data, xAxis_dataKey, yAxis_data
                       dataKey={yAxis_dataKey}
                       stroke={color}
                       fillOpacity={1}
-                      fill="url(#colorUv)"
+                      fill={gradient ? "url(#colorUv)" : color}
+                      opacity={!gradient && 0.7}
 
                 />
             </AreaChart>
@@ -71,7 +76,7 @@ const CustomTooltip = ({ active, payload, label }) => {
     return null;
 };
 
-const CustomTick = ({ x, y, stroke, payload}) => {
+const CustomTick = ({ x, y, payload}) => {
 
 
     return (
