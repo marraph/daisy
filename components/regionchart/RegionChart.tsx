@@ -1,0 +1,94 @@
+import React from "react";
+import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+
+interface AreaChartProps {
+    data: any;
+    xAxis_dataKey: string;
+    yAxis_dataKey: string;
+    color?: string;
+    gradient?: boolean;
+}
+
+const RegionChart: React.FC<AreaChartProps> = ({ data, xAxis_dataKey, yAxis_dataKey, color = "#8884d8", gradient = false }) => {
+
+    return (
+        <ResponsiveContainer width="100%" height="100%">
+            <AreaChart
+                width={800}
+                height={400}
+                data={data}
+                margin={{
+                    top: 10,
+                    right: 30,
+                    left: 0,
+                    bottom: 0,
+                }}
+            >
+                {gradient &&
+                    <defs>
+                        <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="2%" stopColor={color} stopOpacity={0.8}/>
+                            <stop offset="98%" stopColor={color} stopOpacity={0.1}/>
+                        </linearGradient>
+                    </defs>
+                }
+
+                <CartesianGrid vertical={false}
+                               opacity={0.5}
+                               horizontalCoordinatesGenerator={(props) => props.height > 250 ? [75, 150, 225] : [100, 200]}
+                />
+
+                <XAxis dataKey={xAxis_dataKey}
+                       tickMargin={8}
+                       axisLine={false}
+                       tickLine={false}
+                       tick={<CustomTick x={undefined} y={undefined} payload={undefined}/>}
+                />
+                <YAxis tickLine={false}
+                       tick={false}
+                       axisLine={false}
+                />
+                <Tooltip content={<CustomTooltip active={undefined} payload={undefined} label={undefined}/>}
+                         cursor={false}
+                />
+                <Area type="monotone"
+                      dataKey={yAxis_dataKey}
+                      stroke={color}
+                      fillOpacity={1}
+                      fill={gradient ? "url(#colorUv)" : color}
+                      opacity={!gradient && 0.7}
+
+                />
+            </AreaChart>
+        </ResponsiveContainer>
+    );
+}
+
+const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className={"rounded-lg bg-black-light dark:bg-zinc-100 border border-edge dark:border-zinc-300 p-2"}>
+                <p className={"text-white dark:text-zinc-800"}>{`${label} : ${payload[0].value}`}</p>
+            </div>
+        );
+    }
+
+    return null;
+};
+
+const CustomTick = ({ x, y, payload}) => {
+
+
+    return (
+        <g transform={`translate(${x},${y})`}>
+            <text x={0} y={0} dy={10}
+                  textAnchor={"middle"}
+                  className={"fill-zinc-800 dark:fill-zinc-400 text-sm"}
+            >
+                {payload.value}
+            </text>
+        </g>
+    );
+}
+
+export {RegionChart};
