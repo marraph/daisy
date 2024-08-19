@@ -1,6 +1,15 @@
 "use client";
 
-import React, {forwardRef, ReactNode, useEffect, useImperativeHandle, useRef, useState} from "react";
+import React, {
+    ForwardedRef,
+    forwardRef,
+    HTMLAttributes,
+    ReactNode,
+    useEffect,
+    useImperativeHandle,
+    useRef,
+    useState
+} from "react";
 import { cn } from "../../utils/cn";
 import {Check, ChevronsUpDown} from "lucide-react";
 import {useOutsideClick} from "../../utils/clickOutside";
@@ -35,29 +44,31 @@ const comboboxItem = cva(
     },
 });
 
-interface ComboboxItemProps extends VariantProps<typeof comboboxItem> {
+interface ComboboxItemProps<T> extends VariantProps<typeof comboboxItem> {
     title: string;
+    value: T;
     isSelected?: boolean;
     onClick?: () => void;
 }
 
-interface ComboboxProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof combobox> {
+interface ComboboxProps<T> extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof combobox> {
     buttonTitle: string;
-    preSelectedValue?: string | null | undefined;
-    icon?: ReactNode;
-    onValueChange?: (value: string | null) => void;
-    label?: string;
+    preSelectedValue?: T;
     children: ReactNode;
+    icon?: ReactNode;
+    label?: string;
+    getItemTitle: (item: T) => string;
+    onValueChange?: (value: T | null) => void;
 }
 
-type ComboboxRef = HTMLDivElement & {
+type ComboboxRef<T> = HTMLDivElement & {
     reset: () => void;
-    getValue: () => string | null;
-    setValue: (value: string | null | undefined) => void;
+    getValue: () => T | null;
+    setValue: (value: T | null) => void;
 };
 
 
-const ComboboxItem: React.FC<ComboboxItemProps> = ({ size, title, isSelected, onClick }) => {
+const ComboboxItem = <T,>({ size, title, value, isSelected, onClick }: ComboboxItemProps<T>) => {
     return (
         <div className={cn(comboboxItem({size}), { "bg-zinc-100 dark:bg-dark-light text-zinc-800 dark:text-white": isSelected })}
              onClick={onClick}
@@ -69,10 +80,10 @@ const ComboboxItem: React.FC<ComboboxItemProps> = ({ size, title, isSelected, on
 }
 
 
-const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange, icon, size, buttonTitle, preSelectedValue, children, ...props }, ref) => {
-    const comboRef = useRef<ComboboxRef>(null);
+const Combobox = forwardRef(<T,>({ label, onValueChange, icon, size, buttonTitle, preSelectedValue, children, getItemTitle, ...props }: ComboboxProps<T>, ref: ForwardedRef<ComboboxRef<T>>) => {
+    const comboRef = useRef<ComboboxRef<T>>(null);
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState<null | string>(preSelectedValue || null);
+    const [selectedValue, setSelectedValue] = useState<T | null>(preSelectedValue || null);
     const [dropdownPosition, setDropdownPosition] = useState<"left" | "right">("left");
 
     const menuRef = useOutsideClick(() => {
@@ -91,7 +102,7 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
         }
     }, [isOpen, menuRef]);
 
-    const handleItemClick = (item: string) => {
+    const handleItemClick = (item: T) => {
         const newValue = (selectedValue === item) ? null : item;
         setSelectedValue(newValue);
         setIsOpen(false);
@@ -101,7 +112,7 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
     useImperativeHandle(ref, () => ({
         reset: () => setSelectedValue(null),
         getValue: () => selectedValue,
-        setValue: (value: string) => setSelectedValue(value),
+        setValue: (value: T | null) => setSelectedValue(value),
         ...comboRef.current,
     }));
 
@@ -117,7 +128,7 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
                      {...props}
                 >
                     {icon}
-                    <span>{selectedValue ?? buttonTitle}</span>
+                    <span>{selectedValue ? getItemTitle(selectedValue) : buttonTitle}</span>
                     <ChevronsUpDown className={"ml-2 text-zinc-700 dark:text-gray"} size={12}/>
                 </div>
                 {isOpen && React.Children.count(children) > 0 &&
@@ -129,13 +140,13 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
                                 <div className={"max-h-48"}>
                                     <div className={"flex flex-col space-y-1 py-1 pr-1"}>
                                         {React.Children.map(children, (child, index) => {
-                                            if (React.isValidElement<ComboboxItemProps>(child)) {
+                                            if (React.isValidElement<ComboboxItemProps<T>>(child)) {
                                                 return React.cloneElement(child, {
                                                     onClick: () => {
                                                         child.props.onClick && child.props.onClick();
-                                                        handleItemClick(child.props.title);
+                                                        handleItemClick(child.props.value);
                                                     },
-                                                    isSelected: selectedValue === child.props.title,
+                                                    isSelected: selectedValue === child.props.value,
                                                     key: index,
                                                     size: size
                                                 });
@@ -148,13 +159,13 @@ const Combobox = forwardRef<ComboboxRef, ComboboxProps>(({ label, onValueChange,
                         ) : (
                             <div className={"flex flex-col space-y-1 py-1"}>
                                 {React.Children.map(children, (child, index) => {
-                                    if (React.isValidElement<ComboboxItemProps>(child)) {
+                                    if (React.isValidElement<ComboboxItemProps<T>>(child)) {
                                         return React.cloneElement(child, {
                                             onClick: () => {
                                                 child.props.onClick && child.props.onClick();
-                                                handleItemClick(child.props.title);
+                                                handleItemClick(child.props.value);
                                             },
-                                            isSelected: selectedValue === child.props.title,
+                                            isSelected: selectedValue === child.props.value,
                                             key: index,
                                             size: size
                                         });

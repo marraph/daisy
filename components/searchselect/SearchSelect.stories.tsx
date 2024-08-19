@@ -18,29 +18,34 @@ export default meta;
 
 type Story = StoryObj<typeof SearchSelect>
 
+type Project = {
+    id: number;
+    name: string;
+    user: string;
+    description: string | null;
+}
+
+const items: Project[] = [
+    {id: 1, name: "Project 1", user: "User 1", description: "Description 1"},
+    {id: 2, name: "Project 2", user: "User 2", description: "Description 2"},
+    {id: 3, name: "Project 3", user: "User 3", description: "Description 3"},
+];
 
 export const Default: Story = {
     render: () => {
 
-        const items = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
         return (
-            <div className={"flex flex-row space-x-2"}>
-            <SearchSelect size={"small"}
-                          buttonTitle={"Title"}
-                          icon={<GitBranch size={12}/>}
-                          label={"Label"}
+            <SearchSelect
+                buttonTitle={"Title"}
+                icon={<GitBranch size={12} className={"mr-2"}/>}
+                onValueChange={(value) => console.log(value)}
+                getItemTitle={(item: Project) => item.name}
             >
                 {items.map((item, index) => (
-                    <SearchSelectItem key={index}
-                                      title={item}
-                    />
+                    <SearchSelectItem key={index} title={item.name} value={item}/>
                 ))}
             </SearchSelect>
-                <Combobox buttonTitle={"wgwg"} label={"wugwub"} size={"small"}>
-                    <ComboboxItem title={"Option 1"}/>
-                </Combobox>
-            </div>
         );
     },
 };
