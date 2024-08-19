@@ -1,14 +1,15 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {Pie, PieChart, ResponsiveContainer, Tooltip} from "recharts";
 
 interface CircleChartProps {
     data: any;
     dataKey: string;
     nameKey: string;
+    customTooltip?: ReactNode;
     color?: string;
 }
 
-const CircleChart: React.FC<CircleChartProps> = ({data, dataKey, nameKey, color = "#8884d8" }) => {
+const CircleChart: React.FC<CircleChartProps> = ({data, dataKey, nameKey, customTooltip, color = "#8884d8" }) => {
     return (
         <ResponsiveContainer width="100%"
                              height="100%"
@@ -16,7 +17,7 @@ const CircleChart: React.FC<CircleChartProps> = ({data, dataKey, nameKey, color 
             <PieChart width={600}
                       height={600}
             >
-                <Tooltip content={<CustomTooltip active={undefined} payload={undefined}/>}
+                <Tooltip content={<CustomTooltip active={undefined} payload={undefined} customTooltip={customTooltip}/>}
                          cursor={false}
                 />
                 <Pie data={data}
@@ -29,11 +30,15 @@ const CircleChart: React.FC<CircleChartProps> = ({data, dataKey, nameKey, color 
     );
 }
 
-const CustomTooltip = ({ active, payload }) => {
+const CustomTooltip = ({ active, payload, customTooltip }) => {
     if (active && payload && payload.length) {
         return (
             <div className={"rounded-lg bg-black-light dark:bg-zinc-100 border border-edge dark:border-zinc-300 p-2"}>
-                <p className={"text-white dark:text-zinc-800"}>{`${payload[0].name} : ${payload[0].value}`}</p>
+                {customTooltip ?
+                    customTooltip
+                    :
+                    <p className={"text-white dark:text-zinc-800"}>{`${payload[0].name} : ${payload[0].value}`}</p>
+                }
             </div>
         );
     }

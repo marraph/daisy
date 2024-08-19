@@ -1,15 +1,16 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 
 interface ColumnChartProps {
     data: any;
     xAxis_dataKey: string;
     yAxis_dataKey: string;
+    customTooltip?: ReactNode;
     color?: string;
 }
 
 
-const ColumnChart: React.FC<ColumnChartProps> = ({data, xAxis_dataKey, yAxis_dataKey, color = "#8884d8" }) => {
+const ColumnChart: React.FC<ColumnChartProps> = ({data, xAxis_dataKey, yAxis_dataKey, customTooltip, color = "#8884d8" }) => {
     return (
         <ResponsiveContainer width="100%" height="100%">
             <BarChart width={800}
@@ -31,7 +32,7 @@ const ColumnChart: React.FC<ColumnChartProps> = ({data, xAxis_dataKey, yAxis_dat
                        tick={false}
                        axisLine={false}
                 />
-                <Tooltip content={<CustomTooltip active={undefined} payload={undefined} label={undefined}/>}
+                <Tooltip content={<CustomTooltip active={undefined} payload={undefined} label={undefined} customTooltip={customTooltip}/>}
                          cursor={false}
                 />
                 <Bar dataKey={yAxis_dataKey}
@@ -42,11 +43,15 @@ const ColumnChart: React.FC<ColumnChartProps> = ({data, xAxis_dataKey, yAxis_dat
     );
 }
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label, customTooltip }) => {
     if (active && payload && payload.length) {
         return (
             <div className={"rounded-lg bg-black-light dark:bg-zinc-100 border border-edge dark:border-zinc-300 p-2"}>
-                <p className={"text-white dark:text-zinc-800"}>{`${label} : ${payload[0].value}`}</p>
+                {customTooltip ?
+                    customTooltip
+                    :
+                    <p className={"text-white dark:text-zinc-800"}>{`${label} : ${payload[0].value}`}</p>
+                }
             </div>
         );
     }
@@ -54,7 +59,7 @@ const CustomTooltip = ({ active, payload, label }) => {
     return null;
 };
 
-const CustomTick = ({ x, y, payload}) => {
+const CustomTick = ({x, y, payload}) => {
     return (
         <g transform={`translate(${x},${y})`}>
             <text x={0} y={0} dy={10}

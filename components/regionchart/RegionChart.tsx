@@ -1,17 +1,18 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 
 interface AreaChartProps {
     data: any;
     xAxis_dataKey: string;
     yAxis_dataKey: string;
+    customTooltip?: ReactNode;
     color?: string;
     gradient?: boolean;
     margin?: { top: number, right: number, left: number, bottom: number };
     type?: 'basis' | 'basisClosed' | 'basisOpen' | 'bumpX' | 'bumpY' | 'bump' | 'linear' | 'linearClosed' | 'natural' | 'monotoneX' | 'monotoneY' | 'monotone' | 'step' | 'stepBefore' | 'stepAfter';
 }
 
-const RegionChart: React.FC<AreaChartProps> = ({ data, xAxis_dataKey, yAxis_dataKey, color = "#8884d8", gradient = false, type = "monotone", margin = { top: 10, right: 50, left: 0, bottom: 0 } }) => {
+const RegionChart: React.FC<AreaChartProps> = ({ data, xAxis_dataKey, yAxis_dataKey, customTooltip, color = "#8884d8", gradient = false, type = "monotone", margin = { top: 10, right: 50, left: 0, bottom: 0 } }) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -45,7 +46,7 @@ const RegionChart: React.FC<AreaChartProps> = ({ data, xAxis_dataKey, yAxis_data
                        tick={false}
                        axisLine={false}
                 />
-                <Tooltip content={<CustomTooltip active={undefined} payload={undefined} label={undefined}/>}
+                <Tooltip content={<CustomTooltip active={undefined} payload={undefined} label={undefined} customTooltip={customTooltip}/>}
                          cursor={false}
                 />
                 <Area type={type}
@@ -61,11 +62,15 @@ const RegionChart: React.FC<AreaChartProps> = ({ data, xAxis_dataKey, yAxis_data
     );
 }
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label, customTooltip }) => {
     if (active && payload && payload.length) {
         return (
             <div className={"rounded-lg bg-black-light dark:bg-zinc-100 border border-edge dark:border-zinc-300 p-2"}>
-                <p className={"text-white dark:text-zinc-800"}>{`${label} : ${payload[0].value}`}</p>
+                {customTooltip ?
+                    customTooltip
+                    :
+                    <p className={"text-white dark:text-zinc-800"}>{`${label} : ${payload[0].value}`}</p>
+                }
             </div>
         );
     }

@@ -43,6 +43,7 @@ export const Default = () => {
                          yAxis_dataKey={"value"}
                          color={"#355E3B"}
                          gradient={true}
+                         customTooltip={<p className={"text-white dark:text-zinc-800"}>Custom Tooltip</p>}
             />
 
         </div>
