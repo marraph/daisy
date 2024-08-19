@@ -1,10 +1,10 @@
 import React from 'react';
 import {Meta, StoryObj} from "@storybook/react";
-import {Calendar} from "./Calendar";
+import {CalendarSingle} from "./Calendar";
 
-const meta: Meta<typeof Calendar> = {
+const meta: Meta<typeof CalendarSingle> = {
     title: "Components/Calendar",
-    component: Calendar,
+    component: CalendarSingle,
     parameters: {
         layout: "centered",
     },
@@ -13,14 +13,12 @@ const meta: Meta<typeof Calendar> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Calendar>;
+type Story = StoryObj<typeof CalendarSingle>;
 
 export const Default: Story = {
     render: () => {
         return (
-            <Calendar>
-
-            </Calendar>
+            <CalendarSingle/>
         );
     },
 };

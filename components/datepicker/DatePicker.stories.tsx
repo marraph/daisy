@@ -21,7 +21,6 @@ export const Default: Story = {
             <div className={"flex flex-col space-x-2"}>
                 <DatePicker text={"Select a date"}
                             size={"small"}
-                            className={"w-60"}
                             dayFormat={"long"}
                             closeButton={true}
                             onValueChange={(value) => console.log(value)}

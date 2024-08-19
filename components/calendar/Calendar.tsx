@@ -2,49 +2,99 @@
 
 import React, {useEffect, useState} from "react";
 import { cn } from "../../utils/cn";
-import {DayPicker} from "react-day-picker";
-import {isToday} from "date-fns";
+import {DateRange, DayPicker, DayPickerRangeProps, DayPickerSingleProps} from "react-day-picker";
+import {isToday, isWithinInterval, startOfDay} from "date-fns";
 
-type CalendarProps = React.ComponentProps<typeof DayPicker> & {
+type CalendarSingleProps = Omit<DayPickerSingleProps, 'mode'> & {
     selected?: Date;
+    onSelect?: (date: Date | undefined) => void;
 };
 
-const Calendar: React.FC<CalendarProps> = ({ selected, className, classNames, ...props }) => {
-    const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
+type CalendarRangeProps = Omit<DayPickerRangeProps, 'mode'> & {
+    selected?: DateRange;
+    onSelect?: (range: DateRange | undefined) => void;
+};
 
+const menuClassNames = "p-3 text-zinc-700 dark:text-white bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge";
+
+const commonClassNames = {
+    months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+    month: "space-y-4",
+    caption: "flex justify-center pt-1 relative items-center",
+    caption_label: "text-sm font-medium",
+    nav: "space-x-1 flex items-center",
+    nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+    nav_button_previous: "absolute left-1",
+    nav_button_next: "absolute right-1",
+    table: "w-full border-collapse space-y-1",
+    head_row: "flex",
+    head_cell: "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
+    row: "flex w-full mt-2",
+    cell: "h-9 w-9 hover:bg-zinc-300 dark:hover:bg-dark rounded-lg text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
+    day: "h-9 w-9 p-0 font-normal cursor-pointer rounded-lg",
+    day_outside: "day-outside opacity-50",
+    day_range_end: "day-range-end rounded-r-lg rounded-l-none",
+    day_range_start: "day-range-start rounded-l-lg rounded-r-none",
+    day_range_middle: "rounded-none"
+};
+
+const CalendarSingle: React.FC<CalendarSingleProps> = ({ selected, onSelect, className, classNames, ...props }) => {
     return (
-        <DayPicker {...props}
-            mode={"single"}
+        <DayPicker
+            mode="single"
             selected={selected}
-            onSelect={setSelectedDay}
+            onSelect={onSelect}
             showOutsideDays={true}
-            className={"p-3 text-zinc-700 dark:text-white bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge"}
+            className={menuClassNames}
             classNames={{
-                months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-                month: "space-y-4",
-                caption: "flex justify-center pt-1 relative items-center",
-                caption_label: "text-sm font-medium",
-                nav: "space-x-1 flex items-center",
-                nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
-                nav_button_previous: "absolute left-1",
-                nav_button_next: "absolute right-1",
-                table: "w-full border-collapse space-y-1",
-                head_row: "flex",
-                head_cell: "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
-                row: "flex w-full mt-2",
-                cell: "h-9 w-9 text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
-                day: "h-9 w-9 p-0 font-normal cursor-pointer rounded-lg hover:bg-zinc-300 dark:hover:bg-dark",
-                day_today: cn("rounded-lg",
-                    selected === isToday ? "bg-black-light hover:bg-zinc-700 dark:bg-white dark:hover:bg-white-dark" : "bg-zinc-300 dark:bg-dark"),
-                day_outside: "day-outside opacity-50",
-                day_selected: "bg-black-light dark:bg-white text-white dark:text-black hover:bg-black-light dark:hover:bg-white-dark",
-                day_disabled: "text-muted-foreground opacity-50",
-                day_hidden: "invisible",
+                ...commonClassNames,
+                day_today:
+                    cn("rounded-lg",
+                    selected && isToday(selected)
+                        ? "bg-black-light dark:bg-white"
+                        : "bg-zinc-300 dark:bg-dark"
+                    ),
+                day_selected: "bg-black-light text-white dark:text-black",
                 ...classNames,
             }}
+            {...props}
         />
-    )
+    );
 };
-Calendar.displayName = "Calendar";
 
-export { Calendar };
+const CalendarRange: React.FC<CalendarRangeProps> = ({ selected, onSelect, className, classNames, ...props }) => {
+    const isTodaySelected = React.useMemo(() => {
+        if (selected?.from && selected?.to) {
+            const today = startOfDay(new Date());
+            return isWithinInterval(today, { start: selected.from, end: selected.to });
+        }
+        return false;
+    }, [selected]);
+
+    return (
+        <DayPicker
+            mode="range"
+            selected={selected}
+            onSelect={onSelect}
+            showOutsideDays={true}
+            className={menuClassNames}
+            classNames={{
+                ...commonClassNames,
+                day_today:
+                    cn("rounded-lg",
+                    isTodaySelected
+                        ? "bg-black-light text-white dark:bg-white dark:text-black"
+                        : "bg-zinc-300 dark:bg-dark"
+                ),
+                day_selected: "bg-black-light dark:bg-white text-white dark:text-black",
+                ...classNames,
+            }}
+            {...props}
+        />
+    );
+};
+
+CalendarSingle.displayName = "CalendarSingle";
+CalendarRange.displayName = "CalendarRange";
+
+export { CalendarSingle, CalendarRange };

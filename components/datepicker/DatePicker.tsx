@@ -2,7 +2,7 @@
 
 import React, {useEffect, useImperativeHandle, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
-import {Calendar} from "../calendar/Calendar";
+import {CalendarSingle} from "../calendar/Calendar";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {useOutsideClick} from "../../utils/clickOutside";
@@ -138,7 +138,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
 
                 {isOpen && (
                     <div className={cn("absolute z-50 mt-1", dropdownPosition === "left" ? "left-0" : "right-0")}>
-                        <Calendar onDayClick={handleDayClick} selected={selectedValue}/>
+                        <CalendarSingle onSelect={setSelectedValue} selected={selectedValue}/>
                     </div>
                 )}
             </div>

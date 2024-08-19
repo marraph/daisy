@@ -7,8 +7,9 @@ import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
-import {DateRange, DayPicker} from "react-day-picker";
+import {DateRange} from "react-day-picker";
 import moment from "moment/moment";
+import {CalendarRange} from "@/components/calendar/Calendar";
 
 const daterangepicker = cva("flex flex-row items-center space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
     "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray", {
@@ -149,37 +150,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
                          dropdownPosition === "left" ? "left-0" : "right-0")}
                          ref={menuRef}
                     >
-                        <DayPicker mode={"range"}
-                                   selected={range}
-                                   onSelect={setRange}
-                                   onDayClick={handleDayClick}
-                                   showOutsideDays={true}
-                                   className={"p-3 text-zinc-700 dark:text-white bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge"}
-                                   classNames={{
-                                       months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-                                       month: "space-y-4",
-                                       caption: "flex justify-center pt-1 relative items-center",
-                                       caption_label: "text-sm font-medium",
-                                       nav: "space-x-1 flex items-center",
-                                       nav_button: cn("h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"),
-                                       nav_button_previous: "absolute left-1",
-                                       nav_button_next: "absolute right-1",
-                                       table: "w-full border-collapse space-y-1",
-                                       head_row: "flex",
-                                       head_cell: "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
-                                       row: "flex w-full mt-2",
-                                       cell: "h-9 w-9 text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
-                                       day: cn("h-9 w-9 p-0 font-normal cursor-pointer rounded-lg hover:bg-zinc-300 dark:hover:bg-dark"),
-                                       day_range_end: "day-range-end rounded-r-lg rounded-l-none",
-                                       day_range_start: "rounded-l-lg rounded-r-none",
-                                       day_selected: "bg-zinc-300 dark:bg-dark-light text-zinc-800 dark:text-white hover:bg-zinc-300 dark:hover:bg-dark-light rounded-lg",
-                                       day_today: "bg-zinc-300 dark:bg-dark text-zinc-800 dark:text-white rounded-lg",
-                                       day_outside: "day-outside opacity-50",
-                                       day_disabled: "text-muted-foreground opacity-50",
-                                       day_range_middle: "text-zinc-800 dark:text-white rounded-none",
-                                       day_hidden: "invisible",
-                                   }}
-                        />
+                        <CalendarRange onSelect={setRange} selected={range}/>
                     </div>
                 )}
             </div>
