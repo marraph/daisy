@@ -12,7 +12,7 @@ import moment from "moment/moment";
 import {CalendarRange} from "../calendar/Calendar";
 
 const daterangepicker = cva("flex flex-row items-center space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
-    "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray", {
+    "bg-zinc-100 dark:bg-black-light text-zinc-700 dark:text-gray", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],
@@ -110,7 +110,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
     return (
         <div className={"flex flex-col space-y-1"}>
             {label &&
-                <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>{label}</span>
+                <span className={"ml-1 text-zinc-400 dark:text-marcador text-xs"}>{label}</span>
             }
             <div className={cn("relative inline-block space-y-1", className)} ref={menuRef}>
                 <div className={"flex flex-row items-center"}>
@@ -138,7 +138,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
                     </div>
                     {range && closeButton &&
                         <CloseButton iconSize={16}
-                                     className={cn("w-min h-min hover:bg-zinc-300 hover:dark:bg-dark-light rounded-l-none border border-zinc-300 dark:border-edge",
+                                     className={cn("w-min h-min hover:bg-zinc-200 hover:dark:bg-dark-light rounded-l-none border border-zinc-300 dark:border-edge",
                                      (size === "medium" ? "py-1" : ""), className)}
                                      onClick={(e) => {e.stopPropagation(); setRange(undefined); onClose();}}
                         />

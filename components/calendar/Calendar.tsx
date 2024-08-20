@@ -15,7 +15,7 @@ type CalendarRangeProps = Omit<DayPickerRangeProps, 'mode'> & {
     onSelect?: (range: DateRange | undefined) => void;
 };
 
-const menuClassNames = "p-3 text-zinc-700 dark:text-white bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge";
+const menuClassNames = "p-3 text-zinc-700 dark:text-white bg-zinc-100 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge";
 
 const commonClassNames = {
     months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
@@ -30,7 +30,7 @@ const commonClassNames = {
     head_row: "flex",
     head_cell: "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
     row: "flex w-full mt-2",
-    cell: "h-9 w-9 hover:bg-zinc-300 dark:hover:bg-dark rounded-lg text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
+    cell: "h-9 w-9 hover:bg-zinc-200 dark:hover:bg-dark rounded-lg text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
     day: "h-9 w-9 p-0 font-normal cursor-pointer rounded-lg",
     day_outside: "day-outside opacity-50",
     day_range_end: "day-range-end rounded-r-lg rounded-l-none",
@@ -52,7 +52,7 @@ const CalendarSingle: React.FC<CalendarSingleProps> = ({ selected, onSelect, cla
                     cn("rounded-lg",
                     selected && isToday(selected)
                         ? "bg-black-light dark:bg-white"
-                        : "bg-zinc-300 dark:bg-dark"
+                        : "bg-zinc-200 dark:bg-dark"
                     ),
                 day_selected: "bg-black-light text-white dark:text-black",
                 ...classNames,

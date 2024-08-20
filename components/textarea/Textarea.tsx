@@ -34,11 +34,11 @@ const Textarea = forwardRef<TextareaRef, TextareaProps>(({ label, placeholder, c
     return (
         <div className={"flex flex-col space-y-1"}>
             {label &&
-                <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>{label}</span>
+                <span className={"ml-1 text-zinc-400 dark:text-marcador text-xs"}>{label}</span>
             }
             <textarea placeholder={placeholder}
                       value={textValue}
-                      className={cn("p-2 text-sm placeholder-zinc-500 dark:placeholder-marcador bg-zinc-300 dark:bg-dark " +
+                      className={cn("p-2 text-sm placeholder-zinc-400 dark:placeholder-marcador bg-zinc-200 dark:bg-dark " +
                           "rounded-lg border-none text-zinc-700 dark:text-gray focus:text-zinc-700 dark:focus:text-gray " +
                           "focus:outline-none overflow-hidden resize-none", className)
                       }
