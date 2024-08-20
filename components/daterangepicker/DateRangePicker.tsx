@@ -9,7 +9,7 @@ import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
 import {DateRange} from "react-day-picker";
 import moment from "moment/moment";
-import {CalendarRange} from "@/components/calendar/Calendar";
+import {CalendarRange} from "../calendar/Calendar";
 
 const daterangepicker = cva("flex flex-row items-center space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
     "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray", {
