@@ -4,11 +4,9 @@ import React, {ForwardedRef, forwardRef, ReactNode, useEffect, useImperativeHand
 import {cn} from "../../utils/cn";
 import {Check, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
-import {useOutsideClick} from "../../utils/clickOutside";
 import {Input, InputRef} from "../input/Input";
-import {handleInternalServerErrorResponse} from "next/dist/server/future/route-modules/helpers/response-handlers";
 import {CustomScroll} from "react-custom-scroll";
-import {ComboboxRef} from "@/components/combobox/Combobox";
+import {useOutsideClick} from "@/hooks/useOutsideCliick";
 
 const searchselect = cva(
     "group/combo flex flex-row items-center cursor-pointer rounded-lg font-normal overflow-hidden " +
@@ -91,9 +89,7 @@ const SearchSelect = forwardRef(<T,>({ label, onValueChange, icon, size, buttonT
     const [dropdownPosition, setDropdownPosition] = useState<"left" | "right">("left");
     const previousSearchTerm = useRef<string>("");
 
-    const menuRef = useOutsideClick(() => {
-        setIsOpen(false);
-    });
+    const menuRef = useOutsideClick(() => setIsOpen(false));
 
     useEffect(() => {
         if (menuRef.current) {

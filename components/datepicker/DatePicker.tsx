@@ -5,9 +5,9 @@ import {cn} from "../../utils/cn";
 import {CalendarSingle} from "../calendar/Calendar";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
-import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
 import moment from "moment";
+import {useOutsideClick} from "@/hooks/useOutsideCliick";
 
 const datepicker = cva("flex flex-row items-center justify-between space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
     "bg-zinc-100 dark:bg-black-light text-zinc-700 dark:text-gray", {

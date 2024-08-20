@@ -5,11 +5,11 @@ import {cn} from "../../utils/cn";
 import {addDays} from "date-fns";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
-import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
 import {DateRange} from "react-day-picker";
 import moment from "moment/moment";
 import {CalendarRange} from "../calendar/Calendar";
+import {useOutsideClick} from "@/hooks/useOutsideCliick";
 
 const daterangepicker = cva("flex flex-row items-center space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
     "bg-zinc-100 dark:bg-black-light text-zinc-700 dark:text-gray", {
@@ -64,9 +64,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
 
     const [range, setRange] = useState<DateRange | undefined>(preSelectedRange ? preSelectedRange : initialRange);
 
-    const menuRef = useOutsideClick(() => {
-        setIsOpen(false);
-    });
+    const menuRef = useOutsideClick(() => setIsOpen(false));
 
     const formatDate = (date: Date | undefined) => {
         if (!date) return;

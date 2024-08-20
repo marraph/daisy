@@ -3,7 +3,7 @@ import {ContextMenu, ContextMenuContainer, ContextMenuItem} from './ContextMenu'
 import {Meta, StoryObj} from "@storybook/react";
 import {GitBranch} from "lucide-react";
 import {Seperator} from "../seperator/Seperator";
-import {useOutsideClick} from "@/utils/clickOutside";
+import {useOutsideClick} from "@/hooks/useOutsideCliick";
 
 const meta: Meta<typeof ContextMenu> = {
     title: "Components/ContextMenu",
