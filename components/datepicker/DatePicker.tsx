@@ -10,7 +10,7 @@ import {CloseButton} from "../closebutton/CloseButton";
 import moment from "moment";
 
 const datepicker = cva("flex flex-row items-center justify-between space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
-    "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray", {
+    "bg-zinc-100 dark:bg-black-light text-zinc-700 dark:text-gray", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],
@@ -99,7 +99,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
     return (
         <div className={"flex flex-col space-y-1"}>
             {label &&
-                <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>{label}</span>
+                <span className={"ml-1 text-zinc-400 dark:text-marcador text-xs"}>{label}</span>
             }
 
             <div className={cn("relative", className)}
@@ -124,7 +124,7 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
                     {selectedValue && closeButton &&
                         <CloseButton
                             iconSize={16}
-                            className={cn("w-min hover:bg-zinc-300 hover:dark:bg-dark-light h-min rounded-l-none border border-zinc-300 dark:border-edge",
+                            className={cn("w-min hover:bg-zinc-200 hover:dark:bg-dark-light h-min rounded-l-none border border-zinc-300 dark:border-edge",
                                 (size === "medium" ? "py-1" : ""), className)
                             }
                             onClick={(e) => {

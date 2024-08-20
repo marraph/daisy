@@ -18,7 +18,7 @@ import {CustomScroll} from "react-custom-scroll";
 
 const combobox = cva(
     "group/combo flex flex-row items-center cursor-pointer rounded-lg font-normal overflow-hidden " +
-    "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray border border-zinc-300 dark:border-edge", {
+    "bg-zinc-100 dark:bg-black-light text-zinc-700 dark:text-gray border border-zinc-300 dark:border-edge", {
     variants: {
         size: {
             small: ["text-xs", "py-1", "px-2"],
@@ -31,8 +31,8 @@ const combobox = cva(
 });
 
 const comboboxItem = cva(
-    "flex flex-row items-center cursor-pointer rounded-lg mx-1 bg-zinc-200 dark:bg-black-light " +
-    "text-zinc-700 dark:text-gray hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-dark-light", {
+    "flex flex-row items-center cursor-pointer rounded-lg mx-1 bg-zinc-100 dark:bg-black-light " +
+    "text-zinc-700 dark:text-gray hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-dark-light", {
     variants: {
         size: {
             small: ["text-xs", "p-1"],
@@ -70,7 +70,7 @@ type ComboboxRef<T> = HTMLDivElement & {
 
 const ComboboxItem = <T,>({ size, title, value, isSelected, onClick }: ComboboxItemProps<T>) => {
     return (
-        <div className={cn(comboboxItem({size}), { "bg-zinc-100 dark:bg-dark-light text-zinc-800 dark:text-white": isSelected })}
+        <div className={cn(comboboxItem({size}), { "bg-zinc-200 dark:bg-dark-light text-zinc-800 dark:text-white": isSelected })}
              onClick={onClick}
         >
             {isSelected && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
@@ -119,7 +119,7 @@ const Combobox = forwardRef(<T,>({ label, onValueChange, icon, size, buttonTitle
     return (
         <div className={"flex flex-col space-y-1"}>
             {label &&
-                <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>{label}</span>
+                <span className={"ml-1 text-zinc-400 dark:text-marcador text-xs"}>{label}</span>
             }
 
             <div className={"relative space-y-1"} ref={menuRef}>
@@ -132,7 +132,7 @@ const Combobox = forwardRef(<T,>({ label, onValueChange, icon, size, buttonTitle
                     <ChevronsUpDown className={"ml-2 text-zinc-700 dark:text-gray"} size={12}/>
                 </div>
                 {isOpen && React.Children.count(children) > 0 &&
-                    <div className={cn("absolute z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden shadow-2xl",
+                    <div className={cn("absolute z-50 max-h-48 w-max bg-zinc-100 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden shadow-2xl",
                         dropdownPosition === "left" ? "left-0" : "right-0")}
                     >
                         {React.Children.count(children) > (size === "medium" ?  4 : 6) ? (

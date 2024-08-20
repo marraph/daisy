@@ -77,7 +77,7 @@ const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton = false, can
 
 const DialogContent: React.FC<HTMLAttributes<HTMLDivElement>> = ({ ...props }) => {
     return (
-        <div className={"border-x border-edge items-center p-4"} {...props}>
+        <div className={"border-x border-zinc-300 dark:border-edge items-center p-4"} {...props}>
             {props.children}
         </div>
     );

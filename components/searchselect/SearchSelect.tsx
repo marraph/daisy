@@ -12,7 +12,7 @@ import {ComboboxRef} from "@/components/combobox/Combobox";
 
 const searchselect = cva(
     "group/combo flex flex-row items-center cursor-pointer rounded-lg font-normal overflow-hidden " +
-    "bg-zinc-200 dark:bg-black-light text-zinc-700 dark:text-gray border border-zinc-300 dark:border-edge", {
+    "bg-zinc-100 dark:bg-black-light text-zinc-700 dark:text-gray border border-zinc-300 dark:border-edge", {
     variants: {
         size: {
             small: ["text-xs", "px-2"],
@@ -25,8 +25,8 @@ const searchselect = cva(
 });
 
 const searchselectItem = cva(
-    "flex flex-row items-center cursor-pointer rounded-lg mx-1 bg-zinc-200 dark:bg-black-light " +
-    "text-zinc-600 dark:text-gray hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-dark-light", {
+    "flex flex-row items-center cursor-pointer rounded-lg mx-1 bg-zinc-100 dark:bg-black-light " +
+    "text-zinc-600 dark:text-gray hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-dark-light", {
     variants: {
         size: {
             small: ["text-xs", "p-1"],
@@ -66,7 +66,7 @@ const SearchSelectItem = <T,>({ size, title, value, highlight, isSelected, onCli
     const parts = title.split(new RegExp(`(${highlight})`, 'gi'));
 
     return (
-        <div className={cn(searchselectItem({size}), { "bg-zinc-100 dark:bg-dark-light text-zinc-800 dark:text-white" : isSelected })} onClick={onClick}>
+        <div className={cn(searchselectItem({size}), { "bg-zinc-200 dark:bg-dark-light text-zinc-800 dark:text-white" : isSelected })} onClick={onClick}>
             {isSelected && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
             <span>
                 {parts.map((part, index) => (
@@ -165,7 +165,7 @@ const SearchSelect = forwardRef(<T,>({ label, onValueChange, icon, size, buttonT
     return (
         <div className={"flex flex-col space-y-1"} ref={menuRef}>
             {label &&
-                <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>{label}</span>
+                <span className={"ml-1 text-zinc-400 dark:text-marcador text-xs"}>{label}</span>
             }
 
             <div className={"relative space-y-1"} ref={menuRef}>
@@ -185,7 +185,7 @@ const SearchSelect = forwardRef(<T,>({ label, onValueChange, icon, size, buttonT
                     <ChevronsUpDown className={"text-zinc-700 dark:text-gray"} size={12} />
                 </div>
                 {isOpen && filteredChildren.length > 0 &&
-                    <div className={cn("absolute z-50 max-h-48 w-max bg-zinc-200 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden",
+                    <div className={cn("absolute z-50 max-h-48 w-max bg-zinc-100 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden",
                         dropdownPosition === "left" ? "left-0" : "right-0")}
                     >
                         {filteredChildren.length > (size === "medium" ? 4 : 6) ? (

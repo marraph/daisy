@@ -5,7 +5,7 @@ import { cn } from "../../utils/cn";
 import {cva, VariantProps} from "class-variance-authority";
 
 const input = cva("group/input w-auto rounded-lg font-normal focus-visible:outline-none focus-visible:ring-0 border " +
-    "text-zinc-700 dark:text-gray bg-zinc-200 dark:bg-black-light focus:text-zinc-800 dark:focus:text-white " +
+    "text-zinc-700 dark:text-gray bg-zinc-100 dark:bg-black-light focus:text-zinc-800 dark:focus:text-white " +
     "placeholder-zinc-500 dark:placeholder-marcador", {
     variants: {
         border: {
@@ -66,14 +66,14 @@ const Input = forwardRef<InputRef, InputProps>(({ onChange, preSelectedValue, ic
     return (
         <div className={"flex flex-col space-y-1"}>
             {label &&
-                <span className={"ml-1 text-zinc-500 dark:text-marcador text-xs"}>
+                <span className={"ml-1 text-zinc-400 dark:text-marcador text-xs"}>
                     {label}
                 </span>
             }
 
             <div className={"flex flex-row items-center"}>
                 {icon &&
-                    <div className={cn("bg-zinc-200 dark:bg-black-light border border-zinc-300 dark:border-edge " +
+                    <div className={cn("bg-zinc-100 dark:bg-black-light border border-zinc-300 dark:border-edge " +
                         "border-r-0 rounded-l-lg text-zinc-700 dark:text-gray",
                         elementSize === "medium" ? "p-2" : "p-1.5")}>
                         {icon}
