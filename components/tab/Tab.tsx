@@ -1,6 +1,6 @@
 "use client";
 
-import React, {ReactNode, useState} from "react";
+import React, {ReactNode, RefObject, useCallback, useEffect, useRef, useState} from "react";
 import {Seperator} from "@/components/seperator/Seperator";
 import {cn} from "@/utils/cn";
 
@@ -23,15 +23,45 @@ const Tab: React.FC<TabProps> = ({children}) => {
 
 const TabHeader: React.FC<TabHeaderProps> = ({ children, titles }) => {
     const [activeTab, setActiveTab] = useState(0);
+    const tabRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+    const [indicatorStyle, setIndicatorStyle] = useState({});
+
+    const setTabRef = useCallback((el: HTMLDivElement | null, index: number) => {
+        if (el) {
+            tabRefs.current.set(index, el);
+        } else {
+            tabRefs.current.delete(index);
+        }
+    }, []);
+
+    useEffect(() => {
+        const updateIndicator = () => {
+            const activeTabElement = tabRefs.current.get(activeTab);
+            if (activeTabElement) {
+                const { offsetLeft, offsetWidth } = activeTabElement;
+                setIndicatorStyle({
+                    left: `${offsetLeft}px`,
+                    width: `${offsetWidth}px`,
+                    top: `${activeTabElement.offsetTop + activeTabElement.offsetHeight}px`
+                });
+            }
+        };
+
+        updateIndicator();
+        window.addEventListener('resize', updateIndicator);
+        return () => window.removeEventListener('resize', updateIndicator);
+    }, [activeTab]);
 
     return (
         <div className={"flex flex-col"}>
 
-            <div className={"flex flex-row space-x-2 p-2"}>
+            <div className={"flex flex-row space-x-2"}>
                 {titles.map((title: string, index: number) => (
                     <div key={index}
-                         className={cn("px-2 py-1 border-b-0 cursor-pointer text-zinc-600 dark:text-gray",
-                             ({"text-zinc-800 dark:text-white border-b border-zinc-800 dark:border-white": activeTab === index})
+                         ref={(el) => setTabRef(el, index)}
+                         className={cn("px-2 py-1  cursor-pointer text-zinc-500 dark:text-gray",
+                             ({"text-zinc-800 dark:text-white": activeTab === index}),
+                             ({"pl-0": index === 0}),
                          )}
                          onClick={() => setActiveTab(index)}
                     >
@@ -39,6 +69,11 @@ const TabHeader: React.FC<TabHeaderProps> = ({ children, titles }) => {
                     </div>
                 ))}
             </div>
+            <div className={"h-[2px] w-full rounded-full bg-zinc-300 dark:bg-edge"}></div>
+            <div
+                className="h-[2px] absolute rounded-full bg-zinc-800 dark:bg-white transition-all duration-300 ease-in-out"
+                style={indicatorStyle}
+            />
             <div className={"w-full h-full"}>
                 {React.Children.toArray(children)[activeTab]}
             </div>
