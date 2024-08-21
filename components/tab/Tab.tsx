@@ -1,8 +1,7 @@
 "use client";
 
-import React, {ReactNode, RefObject, useCallback, useEffect, useRef, useState} from "react";
-import {Seperator} from "@/components/seperator/Seperator";
-import {cn} from "@/utils/cn";
+import React, {ReactNode, useCallback, useEffect, useRef, useState} from "react";
+import {cn} from "../../utils/cn";
 
 interface TabProps {
     children: ReactNode;
