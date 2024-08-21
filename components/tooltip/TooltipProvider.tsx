@@ -6,6 +6,7 @@ import {Tooltip, TooltipProps} from "./Tooltip";
 interface TooltipContextType {
     addTooltip: (props: TooltipProps) => void;
     removeTooltip: () => void;
+    lastTooltipTimestamp: number | null;
 }
 
 const TooltipContext = createContext<TooltipContextType | undefined>(undefined);
@@ -20,8 +21,10 @@ const useTooltip = () => {
 
 export const TooltipProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [tooltip, setTooltip] = useState<TooltipProps | null>(null);
+    const [lastTooltipTimestamp, setLastTooltipTimestamp] = useState<number | null>(null);
 
     const addTooltip = useCallback((props: Omit<TooltipProps, 'x' | 'y'>) => {
+        setLastTooltipTimestamp(Date.now());
         setTooltip(props);
     }, []);
 
@@ -30,10 +33,10 @@ export const TooltipProvider: React.FC<{ children: ReactNode }> = ({ children })
     }, []);
 
     return (
-        <TooltipContext.Provider value={{ addTooltip, removeTooltip }}>
+        <TooltipContext.Provider value={{ addTooltip, removeTooltip, lastTooltipTimestamp }}>
             {children}
             {tooltip &&
-                <Tooltip {...tooltip}/>
+                <Tooltip lastTooltipTimestamp={lastTooltipTimestamp} {...tooltip}/>
             }
         </TooltipContext.Provider>
     );

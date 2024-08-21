@@ -27,15 +27,28 @@ const TooltipTemplate = () => {
     };
 
     return (
-        <div className={"size-40 bg-error"}
-             onMouseEnter={(e) => {
-                 addTooltip({ ...tooltipProps,
-                     trigger: e.currentTarget.getBoundingClientRect()
-                 });
-             }}
-             onMouseLeave={() => removeTooltip()}
-        />
-    );
+        <div className={"flex flex-col space-y-2"}>
+            <div className={"size-20 bg-error"}
+                 onMouseEnter={(e) => {
+                     addTooltip({
+                         ...tooltipProps,
+                         trigger: e.currentTarget.getBoundingClientRect()
+                     });
+                 }}
+                 onMouseLeave={() => removeTooltip()}
+            />
+            <div className={"size-20 bg-error"}
+                 onMouseEnter={(e) => {
+                     addTooltip({
+                         ...tooltipProps,
+                         trigger: e.currentTarget.getBoundingClientRect()
+                     });
+                 }}
+                 onMouseLeave={() => removeTooltip()}
+            />
+        </div>
+)
+    ;
 
 }
 
