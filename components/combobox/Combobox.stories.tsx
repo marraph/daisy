@@ -41,6 +41,7 @@ export const Default: Story = {
         return (
             <Combobox
                 buttonTitle={"Title"}
+                size={"medium"}
                 icon={<GitBranch size={12}/>}
                 onValueChange={(value) => console.log(value)}
                 getItemTitle={(item: Project) => item.name}

@@ -8,8 +8,8 @@ import {CloseButton} from "../closebutton/CloseButton";
 import {DateRange} from "react-day-picker";
 import moment from "moment/moment";
 import {CalendarRange} from "../calendar/Calendar";
-import {useOutsideClick} from "@/hooks/useOutsideCliick";
-import {useDropdownPosition} from "@/hooks/useDropdownPosition";
+import {useOutsideClick} from "../../hooks/useOutsideClick";
+import {useDropdownPosition} from "../../hooks/useDropdownPosition";
 import {useHotkeys} from "react-hotkeys-hook";
 
 const daterangepicker = cva("flex flex-row items-center space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +

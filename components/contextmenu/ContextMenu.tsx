@@ -3,9 +3,9 @@
 import React, {forwardRef, ReactNode, useCallback, useEffect, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {Check, ChevronRight} from "lucide-react";
-import ReactDOM from "react-dom";
 import {cva, VariantProps} from "class-variance-authority";
-import {useOutsideClick} from "@/hooks/useOutsideCliick";
+import {useOutsideClick} from "../../hooks/useOutsideClick";
+import ReactDOM from "react-dom";
 
 const contextMenuContainer = cva("rounded-lg font-normal text-zinc-700 dark:text-gray", {
     variants: {
@@ -54,10 +54,7 @@ interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement>, Var
 
 
 const ContextMenuPortal: React.FC<{ children: ReactNode }> = ({ children }) => {
-    return ReactDOM.createPortal(
-        children,
-        document.body
-    );
+    return ReactDOM.createPortal(children, document.body);
 }
 
 
