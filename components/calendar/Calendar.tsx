@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, {useMemo, useState} from "react";
 import {cn} from "../../utils/cn";
 import {DateRange, DayPicker, DayPickerRangeProps, DayPickerSingleProps} from "react-day-picker";
-import {isToday, isWithinInterval, startOfDay} from "date-fns";
+import {addMonths, isToday, isWithinInterval, startOfDay} from "date-fns";
+import moment from "moment";
 
 type CalendarSingleProps = Omit<DayPickerSingleProps, 'mode'> & {
     selected?: Date;
@@ -39,11 +40,17 @@ const commonClassNames = {
 };
 
 const CalendarSingle: React.FC<CalendarSingleProps> = ({ selected, onSelect, className, classNames, ...props }) => {
+    const today = new Date();
+    const nextMonth = addMonths(today, 1);
+    const [month, setMonth] = useState(nextMonth);
+
     return (
         <DayPicker
             mode="single"
             selected={selected}
             onSelect={onSelect}
+            month={month}
+            onMonthChange={setMonth}
             showOutsideDays={true}
             className={menuClassNames}
             classNames={{
@@ -63,7 +70,11 @@ const CalendarSingle: React.FC<CalendarSingleProps> = ({ selected, onSelect, cla
 };
 
 const CalendarRange: React.FC<CalendarRangeProps> = ({ selected, onSelect, className, classNames, ...props }) => {
-    const isTodaySelected = React.useMemo(() => {
+    const today = new Date();
+    const nextMonth = addMonths(today, 1);
+    const [month, setMonth] = useState(nextMonth);
+
+    const isTodaySelected = useMemo(() => {
         if (selected?.from && selected?.to) {
             const today = startOfDay(new Date());
             return isWithinInterval(today, { start: selected.from, end: selected.to });
@@ -76,6 +87,8 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({ selected, onSelect, class
             mode="range"
             selected={selected}
             onSelect={onSelect}
+            month={month}
+            onMonthChange={setMonth}
             showOutsideDays={true}
             className={menuClassNames}
             classNames={{

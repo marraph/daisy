@@ -108,14 +108,14 @@ const Combobox = forwardRef(<T, >({
     const [selectedValue, setSelectedValue] = useState<T | null>(preSelectedValue || null);
     const [searchQuery, setSearchQuery] = useState('');
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
-    const menuRef: MutableRefObject<HTMLDivElement> = useOutsideClick(() => setIsOpen(false));
+    const menuRef: MutableRefObject<HTMLDivElement> = useOutsideClick(() => handleClose);
     const searchInputRef = useRef<HTMLInputElement>(null);
     const itemRefs = useRef<HTMLDivElement[]>([]);
     const dropdownPosition = useDropdownPosition(menuRef);
 
     useHotkeys("up", () => setHighlightedIndex((prev) => (prev === 0 ? React.Children.count(children) - 1 : prev - 1)));
     useHotkeys("down", () => setHighlightedIndex((prev) => (prev === React.Children.count(children) - 1 ? 0 : prev + 1)));
-    useHotkeys("esc", () => setIsOpen(false));
+    useHotkeys("esc", () => handleClose());
     useHotkeys("mod+f", () => {
         searchInputRef.current?.focus();
         setHighlightedIndex(-1);
@@ -143,6 +143,11 @@ const Combobox = forwardRef(<T, >({
             setHighlightedIndex(-1);
         }
     }, [children, isOpen, selectedValue]);
+
+    const handleClose = useCallback(() => {
+        setIsOpen(false);
+        setSearchQuery('');
+    }, []);
 
     const handleItemClick = useCallback((item: T) => {
         const newValue = (selectedValue === item) ? null : item;

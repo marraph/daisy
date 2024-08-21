@@ -22,6 +22,7 @@ export const Default: Story = {
                              size={"medium"}
                              dayFormat={"long"}
                              closeButton={true}
+                             onRangeChange={(range) => console.log(range)}
             />
         );
     },
