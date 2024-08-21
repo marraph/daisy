@@ -1,9 +1,9 @@
 "use client";
 
-import React, {ReactNode, useCallback, useEffect, useRef, useState} from "react";
+import React, {HTMLAttributes, ReactNode, useCallback, useEffect, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 
-interface TabProps {
+interface TabProps extends HTMLAttributes<HTMLDivElement> {
     children: ReactNode;
 }
 
@@ -12,9 +12,9 @@ interface TabHeaderProps {
     titles: string[];
 }
 
-const Tab: React.FC<TabProps> = ({children}) => {
+const Tab: React.FC<TabProps> = ({children, className, ...props}) => {
     return (
-        <div>
+        <div className={className} {...props}>
             {children}
         </div>
     );
@@ -53,7 +53,6 @@ const TabHeader: React.FC<TabHeaderProps> = ({ children, titles }) => {
 
     return (
         <div className={"flex flex-col"}>
-
             <div className={"flex flex-row space-x-2"}>
                 {titles.map((title: string, index: number) => (
                     <div key={index}
