@@ -14,8 +14,8 @@ import {cn} from "../../utils/cn";
 import {Check, ChevronsUpDown, Search} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {CustomScroll} from "react-custom-scroll";
-import {useDropdownPosition} from "@/hooks/useDropdownPosition";
-import {useOutsideClick} from "@/hooks/useOutsideCliick";
+import {useDropdownPosition} from "../../hooks/useDropdownPosition";
+import {useOutsideClick} from "../../hooks/useOutsideClick";
 import {useHotkeys} from "react-hotkeys-hook";
 
 const combobox = cva(
@@ -179,8 +179,9 @@ const Combobox = forwardRef(<T, >({
             <div className={"max-h-48"}>
                 {searchField &&
                     <div
-                        className={"w-full flex flex-row items-center space-x-2 py-1 border-b border-zinc-300 dark:border-edge rounded-t-lg"}>
-                        <Search size={16} className={"text-zinc-500 dark:text-gray ml-2"}/>
+                        className={cn("w-full flex flex-row items-center space-x-2 border-b border-zinc-300 dark:border-edge rounded-t-lg",
+                            size === "medium" ? "py-1" : "py-0.5" )}>
+                        <Search size={size === "medium" ? 16 : 14} className={"text-zinc-500 dark:text-gray ml-2"}/>
                         <input placeholder={"Search"}
                                ref={searchInputRef}
                                value={searchQuery}
@@ -191,8 +192,8 @@ const Combobox = forwardRef(<T, >({
                                        setHighlightedIndex(0);
                                    }
                                }}
-                               className={"w-full bg-zinc-100 dark:bg-black-light text-zinc-800 dark:text-white p-1 focus:outline-0 " +
-                                   "placeholder-zinc-400 dark:placeholder-marcador text-sm"}
+                               className={cn("w-full bg-zinc-100 dark:bg-black-light text-zinc-800 dark:text-white focus:outline-0 placeholder-zinc-400 dark:placeholder-marcador",
+                                   size === "medium" ? "text-sm p-1" : "text-xs p-0.5")}
                         />
                     </div>
                 }
@@ -224,7 +225,7 @@ const Combobox = forwardRef(<T, >({
                     })}
                 </div>
             </div>
-    ), [filteredChildren, handleItemClick, handleSearchChange, highlightedIndex, searchField, searchQuery, selectedValue, size]);
+    ), [filteredChildren, handleItemClick, handleSearchChange, highlightQuery, highlightedIndex, searchField, searchQuery, selectedValue, size]);
 
     return (
         <div className={"flex flex-col space-y-1"}>
