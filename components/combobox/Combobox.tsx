@@ -1,20 +1,22 @@
 "use client";
 
 import React, {
-    ForwardedRef,
+    ChangeEvent,
     forwardRef,
     HTMLAttributes,
-    ReactNode,
-    useEffect,
-    useImperativeHandle,
-    useRef,
+    MutableRefObject,
+    ReactNode, Ref,
+    useCallback, useEffect,
+    useMemo, useRef,
     useState
 } from "react";
-import { cn } from "../../utils/cn";
-import {Check, ChevronsUpDown} from "lucide-react";
-import {useOutsideClick} from "../../utils/clickOutside";
+import {cn} from "../../utils/cn";
+import {Check, ChevronsUpDown, Search} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {CustomScroll} from "react-custom-scroll";
+import {useDropdownPosition} from "@/hooks/useDropdownPosition";
+import {useOutsideClick} from "@/hooks/useOutsideCliick";
+import {useHotkeys} from "react-hotkeys-hook";
 
 const combobox = cva(
     "group/combo flex flex-row items-center cursor-pointer rounded-lg font-normal overflow-hidden " +
@@ -44,10 +46,12 @@ const comboboxItem = cva(
     },
 });
 
-interface ComboboxItemProps<T> extends VariantProps<typeof comboboxItem> {
+interface ComboboxItemProps<T> extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof comboboxItem> {
     title: string;
     value: T;
+    query?: string;
     isSelected?: boolean;
+    isHighlighted?: boolean;
     onClick?: () => void;
 }
 
@@ -55,66 +59,172 @@ interface ComboboxProps<T> extends HTMLAttributes<HTMLDivElement>, VariantProps<
     buttonTitle: string;
     preSelectedValue?: T;
     children: ReactNode;
+    highlightQuery?: boolean;
     icon?: ReactNode;
     label?: string;
+    searchField?: boolean;
     getItemTitle: (item: T) => string;
     onValueChange?: (value: T | null) => void;
 }
 
-type ComboboxRef<T> = HTMLDivElement & {
-    reset: () => void;
-    getValue: () => T | null;
-    setValue: (value: T | null) => void;
-};
 
+const ComboboxItem = forwardRef(<T,>({size, title, value, query, isSelected, isHighlighted, onClick}: ComboboxItemProps<T>, ref: Ref<HTMLDivElement>) => {
+    const parts = title.split(new RegExp(`(${query})`, 'gi'));
 
-const ComboboxItem = <T,>({ size, title, value, isSelected, onClick }: ComboboxItemProps<T>) => {
     return (
-        <div className={cn(comboboxItem({size}), { "bg-zinc-200 dark:bg-dark-light text-zinc-800 dark:text-white": isSelected })}
+        <div className={cn(comboboxItem({size}), { "bg-zinc-200 dark:bg-dark-light text-zinc-800 dark:text-white": isSelected || isHighlighted })}
+             ref={ref}
              onClick={onClick}
         >
-            {isSelected && <Check size={12} strokeWidth={3} className={"mr-2"}/>}
-            <span>{title}</span>
+            {isSelected && <Check size={12} strokeWidth={3} className={"mr-1.5"}/>}
+            <span>
+                {parts.map((part, index) => (
+                    part.toLowerCase() === query?.toLowerCase() ?
+                        <span key={index} className="text-zinc-900 dark:text-white">{part}</span>
+                    :
+                        <span key={index}>{part}</span>
+                    )
+                )}
+            </span>
         </div>
     );
-}
+});
+ComboboxItem.displayName = "ComboboxItem";
 
-
-const Combobox = forwardRef(<T,>({ label, onValueChange, icon, size, buttonTitle, preSelectedValue, children, getItemTitle, ...props }: ComboboxProps<T>, ref: ForwardedRef<ComboboxRef<T>>) => {
-    const comboRef = useRef<ComboboxRef<T>>(null);
+const Combobox = forwardRef(<T, >({
+                                      label,
+                                      onValueChange,
+                                      icon,
+                                      size,
+                                      buttonTitle,
+                                      preSelectedValue,
+                                      children,
+                                      highlightQuery = false,
+                                      searchField = false,
+                                      getItemTitle,
+                                      ...props
+                                  }: ComboboxProps<T>) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<T | null>(preSelectedValue || null);
-    const [dropdownPosition, setDropdownPosition] = useState<"left" | "right">("left");
+    const [searchQuery, setSearchQuery] = useState('');
+    const [highlightedIndex, setHighlightedIndex] = useState(-1);
+    const menuRef: MutableRefObject<HTMLDivElement> = useOutsideClick(() => handleClose);
+    const searchInputRef = useRef<HTMLInputElement>(null);
+    const itemRefs = useRef<HTMLDivElement[]>([]);
+    const dropdownPosition = useDropdownPosition(menuRef);
 
-    const menuRef = useOutsideClick(() => {
-        setIsOpen(false);
-    });
+    useHotkeys("up", () => setHighlightedIndex((prev) => (prev === 0 ? React.Children.count(children) - 1 : prev - 1)));
+    useHotkeys("down", () => setHighlightedIndex((prev) => (prev === React.Children.count(children) - 1 ? 0 : prev + 1)));
+    useHotkeys("esc", () => handleClose());
+    useHotkeys("mod+f", () => {
+        searchInputRef.current?.focus();
+        setHighlightedIndex(-1);
+    }, { preventDefault: true });
+    useHotkeys("enter", () => {
+        if (highlightedIndex !== -1) {
+            const item = React.Children.toArray(children)[highlightedIndex] as React.ReactElement<ComboboxItemProps<T>>;
+            handleItemClick(item.props.value);
+        }
+    }, [highlightedIndex]);
 
     useEffect(() => {
-        if (menuRef.current) {
-            const rect = menuRef.current.getBoundingClientRect();
-            const spaceOnRight = window.innerWidth - rect.right;
-            if (spaceOnRight < 300) {
-                setDropdownPosition("right");
-            } else {
-                setDropdownPosition("left");
-            }
+        if (highlightedIndex >= 0 && itemRefs.current[highlightedIndex]) {
+            itemRefs.current[highlightedIndex]?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+            });
         }
-    }, [isOpen, menuRef]);
+    }, [highlightedIndex]);
 
-    const handleItemClick = (item: T) => {
+    useEffect(() => {
+        if (isOpen && selectedValue) {
+            setHighlightedIndex(React.Children.toArray(children).findIndex((child) => (child as React.ReactElement<ComboboxItemProps<T>>).props.value === selectedValue));
+        } else {
+            setHighlightedIndex(-1);
+        }
+    }, [children, isOpen, selectedValue]);
+
+    const handleClose = useCallback(() => {
+        setIsOpen(false);
+        setSearchQuery('');
+    }, []);
+
+    const handleItemClick = useCallback((item: T) => {
         const newValue = (selectedValue === item) ? null : item;
         setSelectedValue(newValue);
         setIsOpen(false);
-        onValueChange && onValueChange(newValue);
-    };
+        setSearchQuery('');
+        onValueChange?.(newValue);
+    }, [onValueChange, selectedValue]);
 
-    useImperativeHandle(ref, () => ({
-        reset: () => setSelectedValue(null),
-        getValue: () => selectedValue,
-        setValue: (value: T | null) => setSelectedValue(value),
-        ...comboRef.current,
-    }));
+    const handleSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(event.target.value);
+    }, []);
+
+    const filteredChildren = useMemo(() => {
+        if (!searchField) return children;
+
+        return React.Children.map(children, (child) => {
+            if (React.isValidElement<ComboboxItemProps<T>>(child)) {
+                const title = getItemTitle(child.props.value);
+                if (title.toLowerCase().includes(searchQuery.toLowerCase())) {
+                    return child;
+                }
+            }
+            return null;
+        });
+    }, [children, searchQuery, searchField, getItemTitle]);
+
+    const loadComboboxContent = useCallback((scroll: boolean) => (
+            <div className={"max-h-48"}>
+                {searchField &&
+                    <div
+                        className={"w-full flex flex-row items-center space-x-2 py-1 border-b border-zinc-300 dark:border-edge rounded-t-lg"}>
+                        <Search size={16} className={"text-zinc-500 dark:text-gray ml-2"}/>
+                        <input placeholder={"Search"}
+                               ref={searchInputRef}
+                               value={searchQuery}
+                               onChange={handleSearchChange}
+                               onKeyDown={(e) => {
+                                   if (React.Children.count(filteredChildren) > 0 && e.key === "ArrowDown") {
+                                       searchInputRef.current.blur();
+                                       setHighlightedIndex(0);
+                                   }
+                               }}
+                               className={"w-full bg-zinc-100 dark:bg-black-light text-zinc-800 dark:text-white p-1 focus:outline-0 " +
+                                   "placeholder-zinc-400 dark:placeholder-marcador text-sm"}
+                        />
+                    </div>
+                }
+                {React.Children.count(filteredChildren) === 0 &&
+                    <div className={"text-center text-sm text-zinc-400 dark:text-marcador pt-2"}>
+                        No results found
+                    </div>
+                }
+                <div className={cn("flex flex-col space-y-1 py-1", ({"pr-1": scroll}))}>
+                    {React.Children.map(filteredChildren, (child, index) => {
+                        if (React.isValidElement<ComboboxItemProps<T>>(child)) {
+                            return (
+                                <ComboboxItem
+                                    {...child.props}
+                                    onClick={() => {
+                                        child.props.onClick && child.props.onClick();
+                                        handleItemClick(child.props.value);
+                                    }}
+                                    isSelected={selectedValue === child.props.value}
+                                    isHighlighted={highlightedIndex === index}
+                                    key={index}
+                                    size={size}
+                                    query={highlightQuery ? searchQuery : undefined}
+                                    ref={(el) => {itemRefs.current[index] = el as HTMLDivElement}}
+                                />
+                            );
+                        }
+                        return child;
+                    })}
+                </div>
+            </div>
+    ), [filteredChildren, handleItemClick, handleSearchChange, highlightedIndex, searchField, searchQuery, selectedValue, size]);
 
     return (
         <div className={"flex flex-col space-y-1"}>
@@ -123,57 +233,28 @@ const Combobox = forwardRef(<T,>({ label, onValueChange, icon, size, buttonTitle
             }
 
             <div className={"relative space-y-1"} ref={menuRef}>
-                <div className={cn(combobox({ size }))}
+                <div className={cn(combobox({size}))}
                      onClick={() => setIsOpen(!isOpen)}
                      {...props}
                 >
-                    {icon}
+                    <div className={"mr-2"}>{icon}</div>
                     <span>{selectedValue ? getItemTitle(selectedValue) : buttonTitle}</span>
                     <ChevronsUpDown className={"ml-2 text-zinc-700 dark:text-gray"} size={12}/>
                 </div>
-                {isOpen && React.Children.count(children) > 0 &&
-                    <div className={cn("absolute z-50 max-h-48 w-max bg-zinc-100 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden shadow-2xl",
+                {isOpen &&
+                    <div className={cn(
+                        "absolute z-50 max-h-48 w-max bg-zinc-100 dark:bg-black-light rounded-lg border border-zinc-300 dark:border-edge overflow-hidden shadow-2xl",
                         dropdownPosition === "left" ? "left-0" : "right-0")}
                     >
-                        {React.Children.count(children) > (size === "medium" ?  4 : 6) ? (
+                        {React.Children.count(filteredChildren) > (size === "medium" ? 4 : 6) ?
                             <CustomScroll>
-                                <div className={"max-h-48"}>
-                                    <div className={"flex flex-col space-y-1 py-1 pr-1"}>
-                                        {React.Children.map(children, (child, index) => {
-                                            if (React.isValidElement<ComboboxItemProps<T>>(child)) {
-                                                return React.cloneElement(child, {
-                                                    onClick: () => {
-                                                        child.props.onClick && child.props.onClick();
-                                                        handleItemClick(child.props.value);
-                                                    },
-                                                    isSelected: selectedValue === child.props.value,
-                                                    key: index,
-                                                    size: size
-                                                });
-                                            }
-                                            return child;
-                                        })}
-                                    </div>
-                                </div>
+                                {loadComboboxContent(true)}
                             </CustomScroll>
-                        ) : (
-                            <div className={"flex flex-col space-y-1 py-1"}>
-                                {React.Children.map(children, (child, index) => {
-                                    if (React.isValidElement<ComboboxItemProps<T>>(child)) {
-                                        return React.cloneElement(child, {
-                                            onClick: () => {
-                                                child.props.onClick && child.props.onClick();
-                                                handleItemClick(child.props.value);
-                                            },
-                                            isSelected: selectedValue === child.props.value,
-                                            key: index,
-                                            size: size
-                                        });
-                                    }
-                                    return child;
-                                })}
+                            :
+                            <div>
+                                {loadComboboxContent(false)}
                             </div>
-                        )}
+                        }
                     </div>
                 }
             </div>
@@ -182,4 +263,4 @@ const Combobox = forwardRef(<T,>({ label, onValueChange, icon, size, buttonTitle
 });
 Combobox.displayName = "Combobox";
 
-export {Combobox, ComboboxItem, ComboboxRef};
+export {Combobox, ComboboxItem};

@@ -1,13 +1,15 @@
 "use client";
 
-import React, {useEffect, useImperativeHandle, useRef, useState} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {CalendarSingle} from "../calendar/Calendar";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
-import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
 import moment from "moment";
+import {useOutsideClick} from "@/hooks/useOutsideCliick";
+import {useDropdownPosition} from "@/hooks/useDropdownPosition";
+import {useHotkeys} from "react-hotkeys-hook";
 
 const datepicker = cva("flex flex-row items-center justify-between space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
     "bg-zinc-100 dark:bg-black-light text-zinc-700 dark:text-gray", {
@@ -33,38 +35,33 @@ interface DatePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantP
     dayFormat: "long" | "short";
 }
 
-type DatepickerRef = HTMLDivElement & {
-    reset: () => void;
-    getSelectedValue: () => Date | null;
-    setValue: (value: Date | null | undefined) => void;
-};
-
-const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onValueChange, dayFormat, closeButton, onClose, preSelectedValue, text, size, className, ...props}, ref) => {
-    const datepickerRef = useRef<DatepickerRef>(null);
+const DatePicker: React.FC<DatePickerProps> = ({label, onValueChange, dayFormat, closeButton, onClose, preSelectedValue, text, size, className, ...props}) => {
     const menuRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<Date | undefined>(preSelectedValue ?? undefined);
-    const [dropdownPosition, setDropdownPosition] = useState<"left" | "right">("left");
-
-    useEffect(() => {
-        if (menuRef.current) {
-            const rect = menuRef.current.getBoundingClientRect();
-            const spaceOnRight = window.innerWidth - rect.right;
-            if (spaceOnRight < 300) {
-                setDropdownPosition("right");
-            } else {
-                setDropdownPosition("left");
-            }
-        }
-    }, [isOpen]);
+    const [month, setMonth] = useState(new Date());
+    const dropdownPosition = useDropdownPosition(menuRef);
 
     useOutsideClick((e) => {
         if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
             setIsOpen(false);
+            !selectedValue && setMonth(new Date());
         }
     });
 
-    const formatDate = () => {
+    useHotkeys("esc", () => {
+        setIsOpen(false);
+        !selectedValue && setMonth(new Date());
+        onClose?.();
+    });
+    useHotkeys("right", () => {
+        setMonth(moment(month).add(1, "month").toDate());
+    });
+    useHotkeys("left", () => {
+        setMonth(moment(month).subtract(1, "month").toDate());
+    });
+
+    const formatDate = useCallback(() => {
         if (!selectedValue) return;
 
         const momentDate = moment(selectedValue);
@@ -80,21 +77,15 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
         if (dayFormat === "short") {
             return momentDate.format('MM-DD-YYYY');
         }
-    }
+    }, [dayFormat, selectedValue]);
 
-    const handleDayClick = (day: Date | undefined) => {
+    const handleDayClick = useCallback((day: Date | undefined) => {
         const newValue = (selectedValue === day) ? null : day;
         setSelectedValue(newValue);
         setIsOpen(false);
-        onValueChange && onValueChange(newValue)
-    };
-
-    useImperativeHandle(ref, () => ({
-        reset: () => setSelectedValue(null),
-        getSelectedValue: () => selectedValue,
-        setValue: (value: Date) => setSelectedValue(value),
-        ...datepickerRef.current,
-    }));
+        !selectedValue && setMonth(new Date());
+        onValueChange?.(newValue);
+    }, [onValueChange, selectedValue]);
 
     return (
         <div className={"flex flex-col space-y-1"}>
@@ -138,14 +129,15 @@ const DatePicker = React.forwardRef<DatepickerRef, DatePickerProps>(({label, onV
 
                 {isOpen && (
                     <div className={cn("absolute z-50 mt-1", dropdownPosition === "left" ? "left-0" : "right-0")}>
-                        <CalendarSingle onSelect={setSelectedValue} selected={selectedValue}/>
+                        <CalendarSingle onSelect={setSelectedValue}
+                                        selected={selectedValue}
+                                        month={month}
+                        />
                     </div>
                 )}
             </div>
         </div>
     );
-})
-DatePicker.displayName = "DatePicker";
+}
 
-
-export {DatePicker, DatepickerRef};
+export {DatePicker};

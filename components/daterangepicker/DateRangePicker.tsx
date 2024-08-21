@@ -1,15 +1,16 @@
 "use client";
 
-import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
-import {addDays} from "date-fns";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
-import {useOutsideClick} from "../../utils/clickOutside";
 import {CloseButton} from "../closebutton/CloseButton";
 import {DateRange} from "react-day-picker";
 import moment from "moment/moment";
 import {CalendarRange} from "../calendar/Calendar";
+import {useOutsideClick} from "@/hooks/useOutsideCliick";
+import {useDropdownPosition} from "@/hooks/useDropdownPosition";
+import {useHotkeys} from "react-hotkeys-hook";
 
 const daterangepicker = cva("flex flex-row items-center space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +
     "bg-zinc-100 dark:bg-black-light text-zinc-700 dark:text-gray", {
@@ -34,41 +35,33 @@ interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement>, Var
     dayFormat: "short" | "long";
 }
 
-type DateRangePickerRef = HTMLDivElement & {
-    reset: () => void;
-    getSelectedValue: () => DateRange | undefined;
-    setValue: (range: DateRange) => void;
-};
-
-const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({label, onRangeChange, dayFormat, closeButton, onClose, preSelectedRange, text, size, className, ...props}, ref) => {
-    const daterangepickerRef = useRef<DateRangePickerRef>(null);
+const DateRangePicker: React.FC<DateRangePickerProps> = ({label, onRangeChange, dayFormat, closeButton, onClose, preSelectedRange, text, size, className, ...props}) => {
+    const menuRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(false);
-    const [dropdownPosition, setDropdownPosition] = useState<"left" | "right">("left");
+    const [range, setRange] = useState<DateRange>(preSelectedRange || {from: undefined, to: undefined});
+    const [month, setMonth] = useState(new Date());
+    const dropdownPosition = useDropdownPosition(menuRef);
 
-    useEffect(() => {
-        if (menuRef.current) {
-            const rect = menuRef.current.getBoundingClientRect();
-            const spaceOnRight = window.innerWidth - rect.right;
-            if (spaceOnRight < 300) {
-                setDropdownPosition('right');
-            } else {
-                setDropdownPosition('left');
-            }
+    useOutsideClick((e) => {
+        if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+            setIsOpen(false);
+            !range.from && !range.to && setMonth(new Date());
         }
-    }, [isOpen]);
-
-    const initialRange: DateRange = {
-        from: new Date(),
-        to: addDays(new Date(), 1)
-    };
-
-    const [range, setRange] = useState<DateRange | undefined>(preSelectedRange ? preSelectedRange : initialRange);
-
-    const menuRef = useOutsideClick(() => {
-        setIsOpen(false);
     });
 
-    const formatDate = (date: Date | undefined) => {
+    useHotkeys("esc", () => {
+        setIsOpen(false);
+        !range.from && !range.to && setMonth(new Date());
+        onClose?.();
+    });
+    useHotkeys("right", () => {
+        setMonth(moment(month).add(1, "month").toDate());
+    });
+    useHotkeys("left", () => {
+        setMonth(moment(month).subtract(1, "month").toDate());
+    });
+    
+    const formatDate = useCallback((date: Date | undefined) => {
         if (!date) return;
 
         const momentDate = moment(date);
@@ -84,28 +77,7 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
         if (dayFormat === "short") {
             return momentDate.format('MM-DD-YYYY');
         }
-    };
-
-    useImperativeHandle(ref, () => ({
-        reset: () => setRange(undefined),
-        getSelectedValue: () => range,
-        setValue: (range: DateRange | undefined) => setRange(range),
-        ...daterangepickerRef.current,
-    }));
-
-    const handleDayClick = (day: Date | undefined) => {
-        if (range === undefined) {
-            setRange({from: day, to: addDays(day, 1)});
-        } else {
-            if (day === undefined) return;
-            if (day < range.from) {
-                setRange({from: day, to: range.to});
-            } else {
-                setRange({from: range.from, to: day});
-            }
-        }
-        onRangeChange && onRangeChange(range);
-    }
+    }, [dayFormat]);
 
     return (
         <div className={"flex flex-col space-y-1"}>
@@ -123,14 +95,13 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
                     >
                         <CalendarDays size={size === "small" ? 12 : 16} className={"mr-1"}/>
                         <div className={"flex flex-row space-x-2"}>
-                            {range === undefined &&
+                            {range.from === undefined && range.to === undefined ?
                                 <span>{text}</span>
-                            }
-                            {range !== undefined &&
+                            :
                                 <>
-                                    <span>{range.from ? formatDate(range.from) : "Select start"}</span>
-                                    <span>{"-"}</span>
-                                    <span>{range.to ? formatDate(range.to) : "Select end"}</span>
+                                    <span>{range.from ? formatDate(range.from) : ""}</span>
+                                    <span>{" - "}</span>
+                                    <span>{range.to ? formatDate(range.to) : ""}</span>
                                 </>
                             }
                         </div>
@@ -140,7 +111,13 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
                         <CloseButton iconSize={16}
                                      className={cn("w-min h-min hover:bg-zinc-200 hover:dark:bg-dark-light rounded-l-none border border-zinc-300 dark:border-edge",
                                      (size === "medium" ? "py-1" : ""), className)}
-                                     onClick={(e) => {e.stopPropagation(); setRange(undefined); onClose();}}
+                                     onClick={(e) => {
+                                         e.stopPropagation();
+                                         setIsOpen(false);
+                                         setRange({from: undefined, to: undefined});
+                                         setMonth(new Date());
+                                         onClose?.();
+                                     }}
                         />
                     }
                 </div>
@@ -150,14 +127,19 @@ const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerProps>(({l
                          dropdownPosition === "left" ? "left-0" : "right-0")}
                          ref={menuRef}
                     >
-                        <CalendarRange onSelect={setRange} selected={range}/>
+                        <CalendarRange
+                            selected={range}
+                            onSelect={(range: DateRange) => {
+                                setRange(range);
+                                onRangeChange?.(range);
+                            }}
+                            month={month}
+                        />
                     </div>
                 )}
             </div>
         </div>
     );
-})
-DateRangePicker.displayName = "DateRangePicker";
+}
 
-
-export {DateRangePicker, DateRangePickerRef};
+export {DateRangePicker};

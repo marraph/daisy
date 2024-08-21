@@ -3,11 +3,9 @@
 import React, {forwardRef, ReactNode, useCallback, useEffect, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {Check, ChevronRight} from "lucide-react";
-import { Shortcut } from "../shortcut/Shortcut";
 import ReactDOM from "react-dom";
-import {useOutsideClick} from "../../utils/clickOutside";
-import {Seperator} from "../seperator/Seperator";
 import {cva, VariantProps} from "class-variance-authority";
+import {useOutsideClick} from "@/hooks/useOutsideCliick";
 
 const contextMenuContainer = cva("rounded-lg font-normal text-zinc-700 dark:text-gray", {
     variants: {
@@ -69,9 +67,7 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ size, title, icon, sh
     const [items, setItems] = useState<{ id: number, title: string, icon: ReactNode, selected: boolean }[]>(selectItems || []);
     const itemRef = useRef<HTMLDivElement>(null);
 
-    const menuRef = useOutsideClick(() => {
-        setOpen(false);
-    });
+    const menuRef = useOutsideClick(() => setOpen(false));
 
     useEffect(() => {
         if (open && itemRef.current) {

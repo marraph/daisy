@@ -1,6 +1,6 @@
 "use client";
 
-import React, {HTMLAttributes, RefObject, useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {HTMLAttributes, useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 
 type TooltipAnchor = "tl" | "tc" | "tr" | "bl" | "bc" | "br" | "lt" | "lc" | "lb" | "rt" | "rc" | "rb"
 
@@ -14,7 +14,7 @@ interface TooltipProps extends HTMLAttributes<HTMLDivElement>{
     trigger: DOMRect;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ anchor = "rc", delay = 1000, color, message, offset = 8, shortcut, trigger, ...props }) => {
+const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> = ({ anchor = "rc", delay = 1000, color, message, offset = 8, shortcut, trigger, lastTooltipTimestamp, ...props }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const timeout = useRef<number | null>(null);
@@ -99,22 +99,29 @@ const Tooltip: React.FC<TooltipProps> = ({ anchor = "rc", delay = 1000, color, m
 
 
     useEffect(() => {
+        const currentTimestamp = Date.now();
+        const lastTooltipVisible = lastTooltipTimestamp !== null && currentTimestamp - lastTooltipTimestamp < 500;
+
         if (delay) {
-            timeout.current = window.setTimeout(() => {
+            if (lastTooltipVisible) {
                 calculatePosition();
                 setIsVisible(true);
-            }, delay);
+            } else {
+                timeout.current = window.setTimeout(() => {
+                    calculatePosition();
+                    setIsVisible(true);
+                }, delay);
+            }
+        } else {
+            if (timeout.current) clearTimeout(timeout.current);
         }
-
-        window.addEventListener('resize', calculatePosition);
-        window.addEventListener('scroll', calculatePosition);
 
         return () => {
             if (timeout.current) clearTimeout(timeout.current);
             window.removeEventListener('resize', calculatePosition);
             window.removeEventListener('scroll', calculatePosition);
         };
-    }, [delay, trigger, tooltipRef, isVisible, calculatePosition]);
+    }, [delay, trigger, tooltipRef, isVisible, calculatePosition, lastTooltipTimestamp]);
 
     return (
         <>
