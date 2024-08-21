@@ -52,7 +52,7 @@ const TabHeader: React.FC<TabHeaderProps> = ({ children, titles }) => {
     }, [activeTab]);
 
     return (
-        <div className={"flex flex-col"}>
+        <div className={"h-full flex flex-col"}>
             <div className={"flex flex-row space-x-2"}>
                 {titles.map((title: string, index: number) => (
                     <div key={index}
