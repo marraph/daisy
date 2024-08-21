@@ -102,7 +102,7 @@ const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> 
         const currentTimestamp = Date.now();
         const lastTooltipVisible = lastTooltipTimestamp !== null && currentTimestamp - lastTooltipTimestamp < 500;
 
-        if (isVisible) {
+        if (delay) {
             if (lastTooltipVisible) {
                 calculatePosition();
                 setIsVisible(true);
@@ -121,7 +121,7 @@ const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> 
             window.removeEventListener('resize', calculatePosition);
             window.removeEventListener('scroll', calculatePosition);
         };
-    }, [delay, trigger, tooltipRef, isVisible, calculatePosition]);
+    }, [delay, trigger, tooltipRef, isVisible, calculatePosition, lastTooltipTimestamp]);
 
     return (
         <>

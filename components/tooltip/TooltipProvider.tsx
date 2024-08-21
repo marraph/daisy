@@ -24,12 +24,12 @@ export const TooltipProvider: React.FC<{ children: ReactNode }> = ({ children })
     const [lastTooltipTimestamp, setLastTooltipTimestamp] = useState<number | null>(null);
 
     const addTooltip = useCallback((props: Omit<TooltipProps, 'x' | 'y'>) => {
-        setLastTooltipTimestamp(Date.now());
         setTooltip(props);
     }, []);
 
     const removeTooltip = useCallback(() => {
         setTooltip(null);
+        setLastTooltipTimestamp(Date.now());
     }, []);
 
     return (

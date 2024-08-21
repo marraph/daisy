@@ -23,7 +23,7 @@ const TooltipTemplate = () => {
     const tooltipProps = {
         message: "This is an error",
         shortcut: "T",
-        anchor: "bc" as TooltipAnchor
+        anchor: "rc" as TooltipAnchor
     };
 
     return (
@@ -47,9 +47,7 @@ const TooltipTemplate = () => {
                  onMouseLeave={() => removeTooltip()}
             />
         </div>
-)
-    ;
-
+    );
 }
 
 export const Default: Story = {
