@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button} from './Button';
 import {Meta, StoryObj} from "@storybook/react";
 import {Wallet} from "lucide-react";
@@ -18,30 +18,48 @@ type Story = StoryObj<typeof Button>
 
 export const Default: Story = {
     render: () => {
+        const [isLoading, setIsLoading] = useState(false);
+
+        const handleSave = async () => {
+            setIsLoading(true);
+            try {
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            } catch (error) {
+                console.error('Error saving data:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
         return (
-            <div className={"flex flex-row space-x-2"}>
-                <Button theme={"default"}
-                        size={"medium"}
-                        text={"Default"}
-                        icon={<Wallet size={20} className={"mr-3"}/>}
-                />
-                <Button theme={"primary"}
-                        size={"medium"}
-                        text={"Primary"}
-                        icon={<Wallet size={20} className={"mr-3"}/>}
-                />
-                <Button theme={"default"}
-                        disabled={true}
-                        size={"medium"}
-                        text={"Default Disabled"}
-                        icon={<Wallet size={20} className={"mr-3"}/>}
-                />
-                <Button theme={"primary"}
-                        disabled={true}
-                        size={"medium"}
-                        text={"Primary Disabled"}
-                        icon={<Wallet size={20} className={"mr-3"}/>}
-                />
+            <div className={"flex flex-col space-y-2"}>
+
+                <div className={"flex flex-row space-x-2"}>
+
+                    <Button theme={"primary"}
+                            size={"medium"}
+                            text={"Primary"}
+                            icon={<Wallet size={20}/>}
+                            onClick={handleSave}
+                            isLoading={isLoading}
+                    />
+                </div>
+                <div className={"flex flex-row space-x-2"}>
+                    <Button theme={"default"}
+                            size={"small"}
+                            text={"Default"}
+                            icon={<Wallet size={16}/>}
+                            onClick={handleSave}
+                            isLoading={isLoading}
+                    />
+                    <Button theme={"primary"}
+                            size={"small"}
+                            text={"Primary"}
+                            icon={<Wallet size={16}/>}
+                            onClick={handleSave}
+                            isLoading={isLoading}
+                    />
+                </div>
             </div>
         );
     },
