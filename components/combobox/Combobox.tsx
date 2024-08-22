@@ -113,15 +113,17 @@ const Combobox = forwardRef(<T, >({
     const itemRefs = useRef<HTMLDivElement[]>([]);
     const dropdownPosition = useDropdownPosition(menuRef);
 
-    useHotkeys("up", () => setHighlightedIndex((prev) => (prev === 0 ? React.Children.count(children) - 1 : prev - 1)));
-    useHotkeys("down", () => setHighlightedIndex((prev) => (prev === React.Children.count(children) - 1 ? 0 : prev + 1)));
+    useHotkeys("up", () => isOpen && setHighlightedIndex((prev) => (prev === 0 ? React.Children.count(children) - 1 : prev - 1)));
+    useHotkeys("down", () => isOpen && setHighlightedIndex((prev) => (prev === React.Children.count(children) - 1 ? 0 : prev + 1)));
     useHotkeys("esc", () => handleClose());
     useHotkeys("mod+f", () => {
-        searchInputRef.current?.focus();
-        setHighlightedIndex(-1);
+        if (isOpen) {
+            searchInputRef.current?.focus();
+            setHighlightedIndex(-1);
+        }
     }, { preventDefault: true });
     useHotkeys("enter", () => {
-        if (highlightedIndex !== -1) {
+        if (highlightedIndex !== -1 && isOpen) {
             const item = React.Children.toArray(children)[highlightedIndex] as React.ReactElement<ComboboxItemProps<T>>;
             handleItemClick(item.props.value);
         }

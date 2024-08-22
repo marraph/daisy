@@ -23,7 +23,8 @@ const Tab: React.FC<TabProps> = ({children, className, ...props}) => {
 const TabHeader: React.FC<TabHeaderProps> = ({ children, titles }) => {
     const [activeTab, setActiveTab] = useState(0);
     const tabRefs = useRef<Map<number, HTMLDivElement>>(new Map());
-    const [indicatorStyle, setIndicatorStyle] = useState({});
+    const [indicatorStyle, setIndicatorStyle] = useState({ left: "0", width: "0", top: "0", opacity: 0 });
+    const [isMounted, setIsMounted] = useState(false);
 
     const setTabRef = useCallback((el: HTMLDivElement | null, index: number) => {
         if (el) {
@@ -34,14 +35,21 @@ const TabHeader: React.FC<TabHeaderProps> = ({ children, titles }) => {
     }, []);
 
     useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
         const updateIndicator = () => {
+            if (!isMounted) return;
+            
             const activeTabElement = tabRefs.current.get(activeTab);
             if (activeTabElement) {
                 const { offsetLeft, offsetWidth } = activeTabElement;
                 setIndicatorStyle({
                     left: `${offsetLeft}px`,
                     width: `${offsetWidth}px`,
-                    top: `${activeTabElement.offsetTop + activeTabElement.offsetHeight}px`
+                    top: `${activeTabElement.offsetTop + activeTabElement.offsetHeight}px`,
+                    opacity: 1,
                 });
             }
         };
@@ -49,7 +57,7 @@ const TabHeader: React.FC<TabHeaderProps> = ({ children, titles }) => {
         updateIndicator();
         window.addEventListener('resize', updateIndicator);
         return () => window.removeEventListener('resize', updateIndicator);
-    }, [activeTab]);
+    }, [activeTab, isMounted]);
 
     return (
         <div className={"h-full flex flex-col"}>

@@ -7,10 +7,10 @@ import {EllipsisVertical} from "lucide-react";
 
 const TableAction: React.FC<HTMLAttributes<HTMLTableCellElement> & { onClick: (e: React.MouseEvent<HTMLButtonElement>) => void }> = ({ onClick, ...props }) => {
     return (
-        <td className={cn("px-2")} {...props}>
+        <td className={cn("pl-2 pr-4")} {...props}>
             <Button text={""}
                     size={"medium"}
-                    className={"p-1.5 bg-zinc-100 hover:bg-zinc-200"}
+                    className={"p-1.5 bg-zinc-100 hover:bg-zinc-200 float-right"}
                     icon={<EllipsisVertical size={16}/>}
                     onClick={(e) => {
                         e.preventDefault();
