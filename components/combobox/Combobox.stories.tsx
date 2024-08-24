@@ -39,19 +39,35 @@ export const Default: Story = {
 
 
         return (
-            <Combobox
-                buttonTitle={"Title"}
-                size={"medium"}
-                icon={<GitBranch size={12}/>}
-                onValueChange={(value) => console.log(value)}
-                getItemTitle={(item: Project) => item.name}
-                highlightQuery={true}
-                searchField={true}
-            >
-                {items.map((item, index) => (
-                    <ComboboxItem key={index} title={item.name} value={item}/>
-                ))}
-            </Combobox>
+            <div className={"flex flex-row space-x-2"}>
+                <Combobox
+                    buttonTitle={"Title"}
+                    size={"small"}
+                    icon={<GitBranch size={12}/>}
+                    onValueChange={(value) => console.log(value)}
+                    getItemTitle={(item: Project) => item.name}
+                    highlightQuery={true}
+                    searchField={true}
+                >
+                    {items.map((item, index) => (
+                        <ComboboxItem key={index} title={item.name} value={item}/>
+                    ))}
+                </Combobox>
+
+                <Combobox
+                    buttonTitle={"Title"}
+                    size={"small"}
+                    icon={<GitBranch size={12}/>}
+                    onValueChange={(value) => console.log(value)}
+                    getItemTitle={(item: Project) => item.name}
+                    highlightQuery={true}
+                    searchField={true}
+                >
+                    {items.map((item, index) => (
+                        <ComboboxItem key={index} title={item.name} value={item}/>
+                    ))}
+                </Combobox>
+            </div>
         );
     },
 };

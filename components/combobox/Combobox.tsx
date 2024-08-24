@@ -11,7 +11,7 @@ import React, {
     useState
 } from "react";
 import {cn} from "../../utils/cn";
-import {Check, ChevronsUpDown, Search} from "lucide-react";
+import {Check, ChevronDown, ChevronsUpDown, ChevronUp, Search} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {CustomScroll} from "react-custom-scroll";
 import {useDropdownPosition} from "../../hooks/useDropdownPosition";
@@ -108,7 +108,7 @@ const Combobox = forwardRef(<T, >({
     const [selectedValue, setSelectedValue] = useState<T | null>(preSelectedValue || null);
     const [searchQuery, setSearchQuery] = useState('');
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
-    const menuRef: MutableRefObject<HTMLDivElement> = useOutsideClick(() => handleClose);
+    const menuRef = useOutsideClick(() => handleClose());
     const searchInputRef = useRef<HTMLInputElement>(null);
     const itemRefs = useRef<HTMLDivElement[]>([]);
     const dropdownPosition = useDropdownPosition(menuRef);
@@ -242,7 +242,11 @@ const Combobox = forwardRef(<T, >({
                 >
                     <div className={"mr-2"}>{icon}</div>
                     <span>{selectedValue ? getItemTitle(selectedValue) : buttonTitle}</span>
-                    <ChevronsUpDown className={"ml-2 text-zinc-700 dark:text-gray"} size={12}/>
+                    {isOpen ?
+                        <ChevronDown className={"ml-2 text-zinc-700 dark:text-gray"} size={12}/>
+                        :
+                        <ChevronUp className={"ml-2 text-zinc-700 dark:text-gray"} size={12}/>
+                    }
                 </div>
                 {isOpen &&
                     <div className={cn(

@@ -10,7 +10,7 @@ interface SkeletonElementProps extends HTMLAttributes<HTMLDivElement> {
 
 const SkeletonElement: React.FC<SkeletonElementProps> = ({ width, height, className, ...props }) => {
     return (
-        <div className={cn("bg-dark-light rounded-full", className)}
+        <div className={cn("bg-zinc-400 dark:bg-dark-light rounded-full", className)}
              style={{width: `${width}px`, height: `${height}px`}}
              {...props}
         />

@@ -2,7 +2,7 @@ import {Tooltip, TooltipAnchor} from './Tooltip';
 import {Meta, StoryObj} from "@storybook/react";
 import React, {useRef} from "react";
 import {TooltipProvider, useTooltip} from "./TooltipProvider";
-import {GitBranch} from "lucide-react";
+import {GitBranch, Wrench} from "lucide-react";
 
 const meta: Meta<typeof Tooltip> = {
     title: "Components/Tooltip",
@@ -32,6 +32,7 @@ const TooltipTemplate = () => {
                  onMouseEnter={(e) => {
                      addTooltip({
                          ...tooltipProps,
+                         icon: <Wrench size={10}/>,
                          trigger: e.currentTarget.getBoundingClientRect()
                      });
                  }}

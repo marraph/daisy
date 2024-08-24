@@ -1,20 +1,21 @@
 "use client";
 
-import React, {HTMLAttributes, useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {HTMLAttributes, ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 
 type TooltipAnchor = "tl" | "tc" | "tr" | "bl" | "bc" | "br" | "lt" | "lc" | "lb" | "rt" | "rc" | "rb"
 
 interface TooltipProps extends HTMLAttributes<HTMLDivElement>{
     message: string;
+    trigger: DOMRect;
+    icon?: ReactNode;
     anchor?: TooltipAnchor
     delay?: number;
     color?: string;
     offset?: number;
     shortcut?: string;
-    trigger: DOMRect;
 }
 
-const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> = ({ anchor = "rc", delay = 1000, color, message, offset = 8, shortcut, trigger, lastTooltipTimestamp, ...props }) => {
+const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> = ({ anchor = "rc", delay = 1000, icon, color, message, offset = 8, shortcut, trigger, lastTooltipTimestamp, ...props }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const timeout = useRef<number | null>(null);
@@ -127,8 +128,8 @@ const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> 
         <>
             {isVisible && (
                 <div
-                    className={"absolute z-50 flex flex-row space-x-4 items-center px-2 py-1 rounded-lg shadow-lg text-xs dark:text-xs font-normal " +
-                        "bg-zinc-100 dark:bg-dark border border-zinc-300 dark:border-edge text-zinc-800 dark:text-white"
+                    className={"absolute z-50 w-max flex flex-row space-x-4 items-center px-2 py-1 rounded-lg shadow-lg text-xs dark:text-xs font-normal " +
+                        "bg-zinc-100 dark:bg-dark border border-zinc-300 dark:border-edge"
                     }
                     style={{
                         top: position.y,
@@ -136,7 +137,10 @@ const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> 
                     }}
                     ref={tooltipRef}
                 >
-                    <span>{message}</span>
+                    <div className={"flex flex-row space-x-2 items-center text-xs dark:text-xs text-zinc-800 dark:text-white"}>
+                        {icon}
+                        <span>{message}</span>
+                    </div>
                     {shortcut &&
                         <span className={"px-1 rounded-sm bg-zinc-200 dark:bg-dark-light text-zinc-600 dark:text-gray"}>{shortcut}</span>
                     }
