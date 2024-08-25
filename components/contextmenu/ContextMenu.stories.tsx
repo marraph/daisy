@@ -4,7 +4,7 @@ import {
     ContextMenuItem,
     ContextMenuDropDownItem,
     ContextMenuSelectItem,
-    ContextMenuHeader, ContextMenuSeperator, ContextMenuFooter
+    ContextMenuHeader, ContextMenuSeperator, ContextMenuFooter, ContextMenuLabel
 } from './ContextMenu';
 import {Meta, StoryObj} from "@storybook/react";
 import {GitBranch, Wrench} from "lucide-react";
@@ -64,6 +64,7 @@ export const Default: Story = {
                                          icon={<GitBranch size={14}/>}
                         />
                         <ContextMenuSeperator/>
+                        <ContextMenuLabel title={"Label"}/>
                         <ContextMenuItem title="Item 2"/>
                         <ContextMenuItem title="Item 3" shortcut={"⌘S"}/>
                         <ContextMenuSeperator/>
