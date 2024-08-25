@@ -26,6 +26,7 @@ export const Default = () => {
         <>
             <Dialog ref={dialogRef} width={600} onClose={() => console.log("close")}>
                 <DialogHeader title={"Example Dialog"}
+                              description={"This is a example dialog"}
                 />
                 <DialogContent className={"space-y-2"}>
                     <div className={"space-y-2"}>
