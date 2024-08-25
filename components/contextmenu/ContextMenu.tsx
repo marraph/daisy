@@ -7,7 +7,9 @@ import {cva, VariantProps} from "class-variance-authority";
 import {useOutsideClick} from "../../hooks/useOutsideClick";
 import ReactDOM from "react-dom";
 
-const contextMenuContainer = cva("rounded-lg font-normal text-zinc-700 dark:text-gray", {
+const contextMenu = cva(
+    "absolute z-50 w-max rounded-lg font-normal text-zinc-700 dark:text-gray " +
+    "bg-zinc-100 dark:bg-black border border-zinc-300 dark:border-edge shadow-2xl", {
     variants: {
         size: {
             small: ["text-xs", "p-0.5"],
@@ -19,7 +21,8 @@ const contextMenuContainer = cva("rounded-lg font-normal text-zinc-700 dark:text
     },
 });
 
-const contextMenuItem = cva("w-full flex flex-row justify-between items-center cursor-pointer rounded-lg " +
+const contextMenuItem = cva(
+    "w-full flex flex-row justify-between items-center cursor-pointer rounded-lg " +
     "bg-zinc-100 dark:bg-black hover:bg-zinc-200 dark:hover:bg-dark hover:text-zinc-800 dark:hover:text-white", {
     variants: {
         size: {
@@ -33,14 +36,10 @@ const contextMenuItem = cva("w-full flex flex-row justify-between items-center c
 });
 
 
-interface ContextMenuProps {
+interface ContextMenuProps extends VariantProps<typeof contextMenu>{
     children: ReactNode;
     xPos?: number;
     yPos?: number;
-}
-
-interface ContextMenuContainerProps extends VariantProps<typeof contextMenuContainer>{
-    children: ReactNode;
 }
 
 interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof contextMenuItem>  {
@@ -53,7 +52,7 @@ interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElement>, Var
 }
 
 
-const ContextMenuPortal: React.FC<{ children: ReactNode }> = ({ children }) => {
+const ContextMenuDropDownItemPortal: React.FC<{ children: ReactNode }> = ({ children }) => {
     return ReactDOM.createPortal(children, document.body);
 }
 
@@ -132,27 +131,38 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ size, title, icon, sh
     );
 }
 
-
-const ContextMenuContainer: React.FC<ContextMenuContainerProps> = ({ children, size }) => {
+const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({}) => {
     return (
-        <div className={cn(contextMenuContainer({size}))}>
-            {React.Children.map(children, (child) => {
-                if (React.isValidElement<ContextMenuItemProps>(child)) {
-                    return React.cloneElement(child, {
-                        size: size,
-                        onClick: () => {
-                            child.props.onClick && child.props.onClick();
-                        },
-                    });
-                }
-                return child;
-            })}
-        </div>
+
+    );
+}
+
+const ContextMenuSelectItem: React.FC<ContextMenuSelectItemProps> = ({}) => {
+    return (
+
+    );
+}
+
+const ContextMenuHeader: React.FC<ContextMenuHeaderProps> = ({}) => {
+    return (
+
+    );
+}
+
+const ContextMenuFooter: React.FC<ContextMenuFooterProps> = ({}) => {
+    return (
+
+    );
+}
+
+const ContextMenuLabel: React.FC<ContextMenuLabelProps> = ({}) => {
+    return (
+
     );
 }
 
 
-const ContextMenu = forwardRef<HTMLDivElement, ContextMenuProps>(({ children, xPos, yPos }, ref) => {
+const ContextMenu: React.FC<ContextMenuProps> = ({ children, xPos, yPos, size }, ref) => {
     const [menuPosition, setMenuPosition] = useState<{top: number | null, left: number | null}>({ top: null, left: null });
 
     const getPosition = useCallback(() => {
@@ -181,19 +191,28 @@ const ContextMenu = forwardRef<HTMLDivElement, ContextMenuProps>(({ children, xP
         getPosition();
     }, [getPosition]);
 
-
     return (
-        <div className={"absolute z-50 w-max rounded-lg bg-zinc-100 dark:bg-black border border-zinc-300 dark:border-edge shadow-2xl"}
-             style={{ top: menuPosition.top !== null ? menuPosition.top : -9999,
+        <div className={cn(contextMenu({size}))}
+             style={{
+                 top: menuPosition.top !== null ? menuPosition.top : -9999,
                  left: menuPosition.left !== null ? menuPosition.left : -9999
              }}
              ref={ref}
         >
-            {children}
+            {React.Children.map(children, (child) => {
+                if (React.isValidElement<ContextMenuItemProps>(child)) {
+                    return React.cloneElement(child, {
+                        size: size,
+                        onClick: () => child.props.onClick?.()
+                    });
+                }
+                return child;
+            })}
         </div>
     );
-});
-ContextMenu.displayName = "ContextMenu";
+}
 
-
-export {ContextMenu, ContextMenuItem, ContextMenuContainer};
+export {
+    ContextMenu,
+    ContextMenuItem
+};
