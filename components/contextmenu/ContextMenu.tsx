@@ -1,6 +1,6 @@
 "use client";
 
-import React, {HTMLAttributes, ReactNode, useCallback, useEffect, useRef, useState} from "react";
+import React, {forwardRef, HTMLAttributes, ReactNode, useCallback, useEffect, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {Check, ChevronRight} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
@@ -12,8 +12,8 @@ const contextMenu = cva(
     "bg-zinc-100 dark:bg-black border border-zinc-300 dark:border-edge shadow-2xl", {
     variants: {
         size: {
-            small: ["text-xs", "p-0.5"],
-            medium: ["text-sm", "p-1"],
+            small: ["text-xs", "p-0.5", "space-y-0.5"],
+            medium: ["text-sm", "p-1", "space-y-1"],
         },
     },
     defaultVariants: {
@@ -57,15 +57,37 @@ interface ContextMenuDropDownItemProps extends HTMLAttributes<HTMLDivElement>, V
     onItemClick?: (item: any) => void;
 }
 
+interface ContextMenuSelectItemProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof contextMenuItem> {
+    title: string;
+    icon?: ReactNode;
+    onClick?: () => void;
+    selected?: boolean;
+}
+
+interface ContextMenuHeaderProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof contextMenuItem> {
+    title: string;
+    description?: string;
+    icon?: ReactNode;
+}
+
+interface ContextMenuFooterProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof contextMenuItem> {
+    title: string;
+    icon?: ReactNode;
+}
+
+interface ContextMenuLabelProps extends HTMLAttributes<HTMLDivElement> {}
+
+interface ContextMenuSeperatorProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof contextMenuItem> {}
+
 
 const ContextMenuDropDownItemPortal: React.FC<{ children: ReactNode }> = ({ children }) => {
     return ReactDOM.createPortal(children, document.body);
 }
 
 const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ size, title, icon, shortcut, onClick, className, ...props }) => {
+
     return (
-        <div className={cn(contextMenuItem({size}),
-             "bg-zinc-200 dark:bg-dark text-zinc-800 hover:text-white", className)}
+        <div className={cn(contextMenuItem({size}))}
              onClick={onClick}
              {...props}
         >
@@ -94,9 +116,7 @@ const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({ size,
         if (items.length > 0) {
             setOpen(!open);
         }
-        if (onClick) {
-            onClick();
-        }
+        onClick?.();
     };
 
     useEffect(() => {
@@ -109,7 +129,7 @@ const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({ size,
 
     return (
         <div ref={menuRef}>
-            <div className={cn(contextMenuItem({size}), "bg-zinc-200 dark:bg-dark text-zinc-800 hover:text-white", className)}
+            <div className={cn(contextMenuItem({size}))}
                  onClick={handleClick}
                  ref={itemRef}
                  {...props}
@@ -133,8 +153,10 @@ const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({ size,
                                  item.selected && "bg-zinc-200 dark:bg-dark text-zinc-800 dark:text-white"
                              )}
                              onClick={() => {
-                                 if (item.selected) setItems(items.map((i) => ({ ...i, selected: false })));
-                                 else setItems(items.map((i) => (i.id === item.id ? { ...i, selected: true } : { ...i, selected: false })));
+                                 if (item.selected)
+                                     setItems(items.map((i) => ({ ...i, selected: false })));
+                                 else
+                                     setItems(items.map((i) => (i.id === item.id ? { ...i, selected: true } : { ...i, selected: false })));
                                  onItemClick(item);
                              }}
                         >
@@ -149,34 +171,84 @@ const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({ size,
     );
 }
 
+const ContextMenuSelectItem: React.FC<ContextMenuSelectItemProps> = ({ size, title, icon, onClick, selected, className, ...props }) => {
+    const [isSelected, setIsSelected] = useState(selected || false);
 
-const ContextMenuSelectItem: React.FC<ContextMenuSelectItemProps> = ({}) => {
+    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.stopPropagation();
+        setIsSelected(!isSelected);
+        onClick?.();
+    }
+
     return (
-
+        <div className={cn(contextMenuItem({size}))}
+             onClick={handleClick}
+             {...props}
+        >
+            <div className={"flex flex-row items-center space-x-2"}>
+                {isSelected && <Check size={16}/> }
+                <span>{title}</span>
+            </div>
+        </div>
     );
 }
 
-const ContextMenuHeader: React.FC<ContextMenuHeaderProps> = ({}) => {
+const ContextMenuHeader: React.FC<ContextMenuHeaderProps> = ({ size, title, description, icon }) => {
     return (
+        <div className={cn("flex flex-col rounded-t-lg border-b border-zinc-300 dark:border-edge text-zinc-800 dark:text-white",
+            size === "small" ? "-m-0.5 mb-0.5 p-1 text-xs" : "-m-1 mb-1 p-2 text-sm")}
+        >
+            <span className={"font-medium"}>{title}</span>
+            {description &&
+                <div className={"flex flex-row items-center"}>
+                    {icon &&
+                        <div className={"mr-2"}>
+                            {icon}
+                        </div>
+                    }
+                    <span className={"text-xs text-zinc-500 dark:text-gray"}>{description}</span>
+                </div>
+            }
 
+        </div>
     );
 }
 
-const ContextMenuFooter: React.FC<ContextMenuFooterProps> = ({}) => {
+const ContextMenuFooter: React.FC<ContextMenuFooterProps> = ({ size, title, icon }) => {
     return (
-
+        <div
+            className={cn("flex flex-row justify-end items-center rounded-b-lg border-t border-zinc-300 dark:border-edge text-zinc-500 dark:text-gray",
+                size === "small" ? "-m-0.5 mt-0.5 p-1 pb-0.5" : "-m-1 mt-1 p-2 pb-1")}
+        >
+            <span className={"text-xs"}>{title}</span>
+            {icon &&
+                <div className={"ml-2"}>
+                    {icon}
+                </div>
+            }
+        </div>
     );
 }
 
 const ContextMenuLabel: React.FC<ContextMenuLabelProps> = ({}) => {
     return (
-
+        <></>
     );
 }
 
+const ContextMenuSeperator: React.FC<ContextMenuSeperatorProps> = ({size}) => {
+    return (
+        <div className={cn("border-b border-zinc-300 dark:border-edge",
+            size === "small" ? "-mx-0.5" : "-mx-1")}
+        />
+    );
+}
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ children, xPos, yPos, size }, ref) => {
-    const [menuPosition, setMenuPosition] = useState<{top: number | null, left: number | null}>({ top: null, left: null });
+const ContextMenu = forwardRef<HTMLDivElement, ContextMenuProps>(({children, xPos, yPos, size}, ref) => {
+    const [menuPosition, setMenuPosition] = useState<{ top: number | null, left: number | null }>({
+        top: null,
+        left: null
+    });
 
     const getPosition = useCallback(() => {
         if (ref && 'current' in ref && ref.current) {
@@ -223,10 +295,16 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ children, xPos, yPos, size },
             })}
         </div>
     );
-}
+});
+ContextMenu.displayName = "ContextMenu";
 
 export {
     ContextMenu,
     ContextMenuItem,
-    ContextMenuDropDownItem
+    ContextMenuDropDownItem,
+    ContextMenuSelectItem,
+    ContextMenuHeader,
+    ContextMenuFooter,
+    ContextMenuLabel,
+    ContextMenuSeperator
 };
