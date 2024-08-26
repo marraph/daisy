@@ -110,9 +110,12 @@ const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({ size,
     const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number } | null>(null);
     const [items, setItems] = useState<{ id: number, title: string, icon: ReactNode, selected: boolean }[]>(selectItems || []);
     const [open, setOpen] = useState(false);
-    const menuRef = useOutsideClick(() => setOpen(false));
-    const dropdownRef = useOutsideClick(() => setOpen(false));
+
+    const componentRef = useOutsideClick((e) => {
+        if (!dropdownRef.current.contains(e.target as Node)) setOpen(false)
+    });
     const itemRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.stopPropagation();
@@ -144,7 +147,7 @@ const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({ size,
 
 
     return (
-        <div ref={menuRef}>
+        <div ref={componentRef}>
             <div className={cn(contextMenuItem({size}), open && "bg-zinc-200 dark:bg-dark")}
                  onClick={handleClick}
                  ref={itemRef}
