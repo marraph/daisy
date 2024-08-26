@@ -259,10 +259,7 @@ const ContextMenuSeperator: React.FC<ContextMenuSeperatorProps> = ({size}) => {
 }
 
 const ContextMenu = forwardRef<HTMLDivElement, ContextMenuProps>(({children, xPos, yPos, size}, ref) => {
-    const [menuPosition, setMenuPosition] = useState<{ top: number | null, left: number | null }>({
-        top: null,
-        left: null
-    });
+    const [menuPosition, setMenuPosition] = useState<{ top: number | null, left: number | null }>({top: null, left: null});
 
     const getPosition = useCallback(() => {
         if (ref && 'current' in ref && ref.current) {

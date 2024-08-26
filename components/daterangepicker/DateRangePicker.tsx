@@ -27,15 +27,17 @@ const daterangepicker = cva("flex flex-row items-center space-x-2 rounded-lg cur
 
 interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof daterangepicker> {
     text: string;
+    closeButton: boolean;
+    dayFormat: "short" | "long";
+    numberOfMonths?: number;
     label?: string;
     preSelectedRange?: DateRange | undefined;
     onClose?: () => void;
     onRangeChange?: (range: DateRange | undefined) => void;
-    closeButton: boolean;
-    dayFormat: "short" | "long";
+
 }
 
-const DateRangePicker: React.FC<DateRangePickerProps> = ({label, onRangeChange, dayFormat, closeButton, onClose, preSelectedRange, text, size, className, ...props}) => {
+const DateRangePicker: React.FC<DateRangePickerProps> = ({ numberOfMonths = 1, label, onRangeChange, dayFormat, closeButton, onClose, preSelectedRange, text, size, className, ...props }) => {
     const menuRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [range, setRange] = useState<DateRange>(preSelectedRange || {from: undefined, to: undefined});
@@ -133,6 +135,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({label, onRangeChange, 
                                 setRange(range);
                                 onRangeChange?.(range);
                             }}
+                            numberOfMonths={numberOfMonths}
                             month={month}
                         />
                     </div>
