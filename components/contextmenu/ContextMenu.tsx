@@ -1,6 +1,6 @@
 "use client";
 
-import React, {forwardRef, HTMLAttributes, ReactNode, useCallback, useEffect, useRef, useState} from "react";
+import React, {forwardRef, HTMLAttributes, ReactNode, RefObject, useCallback, useEffect, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {Check, ChevronRight} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
@@ -51,6 +51,7 @@ interface ContextMenuItemProps extends HTMLAttributes<HTMLDivElement>, VariantPr
 
 interface ContextMenuDropDownItemProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof contextMenuItem> {
     title: string;
+    dropdownRef: RefObject<HTMLDivElement>;
     icon?: ReactNode;
     selectItems?: { id: number, title: string, icon: ReactNode, selected: boolean }[];
     onClick?: () => void;
@@ -106,16 +107,43 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ size, title, icon, sh
     );
 }
 
-const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({ size, title, icon, onClick, selectItems, onItemClick, className, ...props}) => {
+const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({ size, title, icon, onClick, selectItems, onItemClick, dropdownRef, className, ...props}) => {
     const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number } | null>(null);
     const [items, setItems] = useState<{ id: number, title: string, icon: ReactNode, selected: boolean }[]>(selectItems || []);
     const [open, setOpen] = useState(false);
-
-    const componentRef = useOutsideClick((e) => {
-        if (!dropdownRef.current.contains(e.target as Node)) setOpen(false)
-    });
     const itemRef = useRef<HTMLDivElement>(null);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const calculateDropdownPosition = useCallback(() => {
+        if (itemRef.current && dropdownRef.current) {
+            const itemRect = itemRef.current.getBoundingClientRect();
+            const dropdownRect = dropdownRef.current.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            let left = itemRect.right + 8;
+            let top = itemRect.top;
+
+            if (left + dropdownRect.width > viewportWidth) {
+                left = itemRect.left - dropdownRect.width;
+            }
+
+            if (top + dropdownRect.height > viewportHeight) {
+                top = viewportHeight - dropdownRect.height;
+            }
+
+            top = Math.max(0, top);
+
+            setDropdownPosition({ top, left });
+        }
+    }, [dropdownRef]);
+
+    useEffect(() => {
+        if (open) {
+            calculateDropdownPosition();
+            window.addEventListener('resize', calculateDropdownPosition);
+            return () => window.removeEventListener('resize', calculateDropdownPosition);
+        }
+    }, [open, calculateDropdownPosition]);
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.stopPropagation();
@@ -136,18 +164,8 @@ const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({ size,
         onItemClick?.(item);
     }, [onItemClick]);
 
-    useEffect(() => {
-        if (open && itemRef.current) {
-            const rect = itemRef.current.getBoundingClientRect();
-            setDropdownPosition({ top: rect.top, left: rect.right + 8 });
-        } else {
-            setDropdownPosition(null);
-        }
-    }, [open]);
-
-
     return (
-        <div ref={componentRef}>
+        <div>
             <div className={cn(contextMenuItem({size}), open && "bg-zinc-200 dark:bg-dark")}
                  onClick={handleClick}
                  ref={itemRef}
@@ -161,16 +179,19 @@ const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({ size,
                     <ChevronRight size={16}/>
                 }
             </div>
-            {open && dropdownPosition &&
+            {open &&
                 <ContextMenuDropDownItemPortal>
-                    <div className={"absolute flex flex-col space-y-1 p-1 bg-zinc-100 dark:bg-black cursor-pointer rounded-lg border border-zinc-300 dark:border-edge"}
-                         style={{top: dropdownPosition.top, left: dropdownPosition.left}}
+                    <div className={cn("absolute flex flex-col bg-zinc-100 dark:bg-black cursor-pointer rounded-lg border border-zinc-300 dark:border-edge",
+                            size === "small" ? "space-y-0.5 p-0.5" : "space-y-1 p-1"
+                         )}
+                         style={dropdownPosition ? {top: dropdownPosition.top, left: dropdownPosition.left} : {}}
                          ref={dropdownRef}
                     >
                         {items.map((item: any, index: number) =>
                             <div key={index}
-                                 className={cn("flex flex-row items-center text-sm space-x-2 px-2 py-1 rounded-lg text-zinc-700 dark:text-gray hover:bg-zinc-200 dark:hover:bg-dark",
-                                     item.selected && "bg-zinc-200 dark:bg-dark text-zinc-800 dark:text-white"
+                                 className={cn("flex flex-row items-center rounded-lg text-zinc-700 dark:text-gray hover:bg-zinc-200 dark:hover:bg-dark",
+                                     item.selected && "bg-zinc-200 dark:bg-dark text-zinc-800 dark:text-white",
+                                     size === "small" ? "space-x-1 px-1 py-0.5 text-xs" : "space-x-2 px-2 py-1 text-sm"
                                  )}
                                  onClick={(e) => handleItemClick(item, e)}
                             >

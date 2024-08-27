@@ -1,15 +1,18 @@
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 import {
     ContextMenu,
-    ContextMenuItem,
     ContextMenuDropDownItem,
+    ContextMenuFooter,
+    ContextMenuHeader,
+    ContextMenuItem,
+    ContextMenuLabel,
     ContextMenuSelectItem,
-    ContextMenuHeader, ContextMenuSeperator, ContextMenuFooter, ContextMenuLabel
+    ContextMenuSeperator
 } from './ContextMenu';
 import {Meta, StoryObj} from "@storybook/react";
 import {GitBranch, Wrench} from "lucide-react";
-import {Seperator} from "../seperator/Seperator";
 import {useOutsideClick} from "../../hooks/useOutsideClick";
+import {useContextMenu} from '../../hooks/useContextMenu';
 
 const meta: Meta<typeof ContextMenu> = {
     title: "Components/ContextMenu",
@@ -27,35 +30,19 @@ type Story = StoryObj<typeof ContextMenu>;
 export const Default: Story = {
     render: () => {
 
-        const [contextMenu, setContextMenu] = useState({ x: 0, y: 0, visible: false });
+        const { contextMenu, handleContextMenu, closeContextMenu, dropdownRef } = useContextMenu();
 
-        const handleContextMenu = useCallback((e: React.MouseEvent<HTMLElement>) => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            if (e.target instanceof HTMLButtonElement || e.target instanceof SVGElement) {
-                const buttonElement = e.currentTarget;
-                const rect = buttonElement.getBoundingClientRect();
-
-                const coordinates = {
-                    x: rect.left - 52,
-                    y: rect.top + 34
-                };
-                setContextMenu({ x: coordinates.x, y: coordinates.y, visible: true });
-            } else {
-                setContextMenu({ x: e.clientX, y: e.clientY, visible: true });
+        const contextRef = useOutsideClick((e) => {
+            if (!dropdownRef.current?.contains(e.target as Node)) {
+                closeContextMenu();
             }
-        }, []);
-
-        const contextRef = useOutsideClick(() => {
-            setContextMenu({ x: 0, y: 0, visible: false });
         });
 
         return (
             <div className={"h-screen w-screen bg-red-500"} onContextMenu={(e) => handleContextMenu(e)}>
 
                 {contextMenu.visible &&
-                    <ContextMenu xPos={contextMenu.x} yPos={contextMenu.y} ref={contextRef}>
+                    <ContextMenu xPos={contextMenu.x} yPos={contextMenu.y} size={"medium"} ref={contextRef}>
                         <ContextMenuHeader title={"Context Menu"}
                                            description={"This is a context menu"}
                                            icon={<div className={"size-4 rounded-md bg-amber-500"}/>}
@@ -71,6 +58,7 @@ export const Default: Story = {
                         <ContextMenuSelectItem title={"You can select me"}/>
                         <ContextMenuDropDownItem
                             title={"DropDown"}
+                            dropdownRef={dropdownRef}
                             selectItems={[
                                 { id: 1, title: "Item 1", icon: <GitBranch size={14}/>, selected: false },
                                 { id: 2, title: "Item 2", icon: <GitBranch size={14}/>, selected: false },
