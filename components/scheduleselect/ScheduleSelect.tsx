@@ -1,18 +1,20 @@
-import React, {InputHTMLAttributes, ReactNode, useEffect, useMemo, useState} from "react";
+import React, {InputHTMLAttributes, ReactNode, useEffect, useMemo, useRef, useState} from "react";
 import {cn} from "@/utils/cn";
 import {useDropdownPosition} from "@/hooks/useDropdownPosition";
 import {useOutsideClick} from "@/hooks/useOutsideClick";
 import * as chrono from 'chrono-node';
 import {ParsedResult} from 'chrono-node';
 import {format} from "date-fns";
+import {DateRange} from "react-day-picker";
+import {useHotkeys} from "react-hotkeys-hook";
 
-interface InputSelectProps extends InputHTMLAttributes<HTMLInputElement> {
+interface ScheduleSelectProps extends InputHTMLAttributes<HTMLInputElement> {
     icon?: ReactNode;
     label?: string;
-    placeholder?: string;
+    onValueChange?: (value: Date | DateRange) => void;
 }
 
-const InputSelect: React.FC<InputSelectProps> = ({ icon, label, placeholder }) => {
+const ScheduleSelect: React.FC<ScheduleSelectProps> = ({ icon, label, onValueChange, ...props }) => {
     const defaultSchedules = useMemo(() => {
         const array: ParsedResult[] = [];
         array.push(chrono.parse("Tomorrow")[0]);
@@ -25,8 +27,42 @@ const InputSelect: React.FC<InputSelectProps> = ({ icon, label, placeholder }) =
     const [open, setOpen] = useState<boolean>(false);
     const [scheduleResults, setScheduleResults] = useState<ParsedResult[]>(defaultSchedules);
     const [inputValue, setInputValue] = useState<string>("");
+    const [highlightedIndex, setHighlightedIndex] = useState(-1);
     const menuRef = useOutsideClick(() => handleClose());
+    const inputRef = useRef(null);
     const dropdownPosition = useDropdownPosition(menuRef);
+
+    useHotkeys("up", () => open && setHighlightedIndex((prev) => (prev === 0 ? scheduleResults.length - 1 : prev - 1)), [open, scheduleResults]);
+
+    useHotkeys("down", () => open && setHighlightedIndex((prev) => (prev === scheduleResults.length - 1 ? 0 : prev + 1)), [open, scheduleResults]);
+
+    useHotkeys("enter", () => {
+        if (highlightedIndex !== -1 && open) {
+            const item = scheduleResults[highlightedIndex];
+            handleSelect(item);
+        }
+    }, [highlightedIndex]);
+
+    useEffect(() => {
+        const input = inputRef.current;
+        if (input) {
+            input.style.width = input.value.length + 'ch';
+        }
+    }, []);
+
+    const handleSelect = (value: ParsedResult) => {
+        setInputValue(formatScheduleDay(value))
+        setOpen(false);
+
+        if (onValueChange) {
+            if (value.start?.date() && !value.end?.date()) {
+                onValueChange?.(value.start.date());
+            }
+            if (value.start?.date() && value.end?.date()) {
+                onValueChange?.({to: value.start.date(), from: value.end.date()});
+            }
+        }
+    }
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
@@ -36,10 +72,14 @@ const InputSelect: React.FC<InputSelectProps> = ({ icon, label, placeholder }) =
         if (e.target.value.trim() === "") {
             setScheduleResults(defaultSchedules);
         }
+
+        const input = e.target;
+        input.style.width = input.value.length + 'ch';
     }
 
     const handleClose = () => {
         setOpen(false);
+        setHighlightedIndex(-1);
     }
 
     const formatScheduleDay = (value: ParsedResult): string => {
@@ -75,14 +115,28 @@ const InputSelect: React.FC<InputSelectProps> = ({ icon, label, placeholder }) =
                             {icon}
                         </div>
                     )}
-                    <input className={"w-full text-sm rounded-lg font-normal focus-visible:outline-none focus-visible:ring-0 text-zinc-700 dark:text-gray " +
+                    <input className={"min-w-40 max-w-full text-sm rounded-lg font-normal focus-visible:outline-none focus-visible:ring-0 text-zinc-700 dark:text-gray " +
                                 "focus:text-zinc-800 dark:focus:text-white placeholder-zinc-500 dark:placeholder-marcador bg-transparent py-1.5 px-3"}
                            type={"text"}
                            spellCheck={false}
                            onChange={handleOnChange}
+                           onKeyDown={(e) => {
+                                if (e.key === "ArrowDown") {
+                                    e.preventDefault();
+                                    inputRef.current?.blur();
+                                    setHighlightedIndex((prev) => (prev === scheduleResults.length - 1 ? 0 : prev + 1));
+                                }
+                                if (e.key === "Escape") {
+                                    e.preventDefault();
+                                    inputRef.current?.blur();
+                                    handleClose();
+                                }
+                           }}
                            value={inputValue}
                            onClick={() => setOpen(true)}
-                           placeholder={placeholder}
+                           ref={inputRef}
+                           {...props}
+
                     />
                 </div>
 
@@ -99,12 +153,10 @@ const InputSelect: React.FC<InputSelectProps> = ({ icon, label, placeholder }) =
 
                         {scheduleResults.map((schedule, index) => (
                             <div key={index}
-                                 className={"mx-1 p-2 flex flex-row space-x-12 justify-between items-center cursor-pointer rounded-lg " +
-                                     "bg-zinc-100 dark:bg-black-light hover:bg-zinc-200 dark:hover:bg-dark-light"}
-                                 onClick={() => {
-                                     setInputValue(formatScheduleDay(schedule))
-                                     setOpen(false);
-                                 }}
+                                 className={cn("mx-1 p-2 flex flex-row space-x-12 justify-between items-center cursor-pointer rounded-lg " +
+                                     "bg-zinc-100 dark:bg-black-light hover:bg-zinc-200 dark:hover:bg-dark-light",
+                                     highlightedIndex === index && "bg-zinc-200 dark:bg-dark-light")}
+                                 onClick={() => handleSelect(schedule)}
                             >
                                 <span className={"text-sm text-zinc-800 dark:text-white"}>{schedule.text}</span>
                                 <span className={"text-xs text-zinc-400 dark:text-marcador"}>{formatScheduleDay(schedule)}</span>
@@ -113,7 +165,7 @@ const InputSelect: React.FC<InputSelectProps> = ({ icon, label, placeholder }) =
 
                         {scheduleResults.length > 0 &&
                             <div className={"w-full text-right mt-1 px-2 border-t border-zinc-300 dark:border-edge rounded-b-lg"}>
-                                <span className={"text-xs text-zinc-400 dark:text-marcador"}>
+                                <span className={"text-[0.6rem] text-zinc-400 dark:text-marcador"}>
                                     {format(scheduleResults[0].start.date(), 'zzzz')}
                                 </span>
                             </div>
@@ -125,4 +177,4 @@ const InputSelect: React.FC<InputSelectProps> = ({ icon, label, placeholder }) =
     );
 }
 
-export {InputSelect};
+export {ScheduleSelect};
