@@ -39,7 +39,7 @@ export const Default: Story = {
         });
 
         return (
-            <div className={"h-screen w-screen bg-red-500"} onContextMenu={(e) => handleContextMenu(e)}>
+            <div className={"h-[100vh] w-[100vw] bg-red-500 overflow-hidden"} onContextMenu={(e) => handleContextMenu(e)}>
 
                 {contextMenu.visible &&
                     <ContextMenu xPos={contextMenu.x} yPos={contextMenu.y} size={"medium"} ref={contextRef}>
@@ -62,7 +62,9 @@ export const Default: Story = {
                             selectItems={[
                                 { id: 1, title: "Item 1", icon: <GitBranch size={14}/>, selected: false },
                                 { id: 2, title: "Item 2", icon: <GitBranch size={14}/>, selected: false },
-                                { id: 3, title: "Item 3", icon: <GitBranch size={14}/>, selected: false }
+                                { id: 3, title: "Item 3", icon: <GitBranch size={14}/>, selected: false },
+                                { id: 4, title: "Item 4", icon: <GitBranch size={14}/>, selected: false },
+                                { id: 5, title: "Item 5", icon: <GitBranch size={14}/>, selected: false }
                             ]}
                         />
                         <ContextMenuFooter title={"Footer"}

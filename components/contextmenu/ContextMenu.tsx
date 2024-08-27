@@ -4,7 +4,6 @@ import React, {forwardRef, HTMLAttributes, ReactNode, RefObject, useCallback, us
 import {cn} from "../../utils/cn";
 import {Check, ChevronRight} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
-import {useOutsideClick} from "../../hooks/useOutsideClick";
 import ReactDOM from "react-dom";
 
 const contextMenu = cva(
@@ -56,6 +55,7 @@ interface ContextMenuDropDownItemProps extends HTMLAttributes<HTMLDivElement>, V
     selectItems?: { id: number, title: string, icon: ReactNode, selected: boolean }[];
     onClick?: () => void;
     onItemClick?: (item: any) => void;
+    onClose?: () => void;
 }
 
 interface ContextMenuSelectItemProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof contextMenuItem> {
@@ -114,34 +114,50 @@ const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({ size,
     const itemRef = useRef<HTMLDivElement>(null);
 
     const calculateDropdownPosition = useCallback(() => {
-        if (itemRef.current && dropdownRef.current) {
+        if (open && itemRef.current && dropdownRef.current) {
             const itemRect = itemRef.current.getBoundingClientRect();
             const dropdownRect = dropdownRef.current.getBoundingClientRect();
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
+            const scrollX = window.scrollX;
+            const scrollY = window.scrollY;
 
-            let left = itemRect.right + 8;
-            let top = itemRect.top;
+            let top: number, left: number;
 
-            if (left + dropdownRect.width > viewportWidth) {
-                left = itemRect.left - dropdownRect.width;
+            if (itemRect.right + dropdownRect.width + 8 <= viewportWidth) {
+                left = itemRect.right + scrollX + 8;
+            } else if (itemRect.left - dropdownRect.width - 8 >= 0) {
+                left = itemRect.left + scrollX - dropdownRect.width - 8;
+            } else {
+                left = scrollX;
             }
 
-            if (top + dropdownRect.height > viewportHeight) {
-                top = viewportHeight - dropdownRect.height;
+            if (itemRect.top + dropdownRect.height <= viewportHeight) {
+                top = itemRect.top;
+                console.log("y")
+            } else if (viewportHeight - dropdownRect.height >= 0) {
+                top = itemRect.top - dropdownRect.height + itemRect.height;
+                console.log("n")
+            } else {
+                top = scrollY;
             }
-
-            top = Math.max(0, top);
 
             setDropdownPosition({ top, left });
         }
-    }, [dropdownRef]);
+    }, [dropdownRef, open]);
 
     useEffect(() => {
         if (open) {
             calculateDropdownPosition();
-            window.addEventListener('resize', calculateDropdownPosition);
-            return () => window.removeEventListener('resize', calculateDropdownPosition);
+            const handlePositionUpdate = () => {
+                calculateDropdownPosition();
+            };
+            window.addEventListener('resize', handlePositionUpdate);
+            window.addEventListener('scroll', handlePositionUpdate, true);
+            return () => {
+                window.removeEventListener('resize', handlePositionUpdate);
+                window.removeEventListener('scroll', handlePositionUpdate, true);
+            };
         }
     }, [open, calculateDropdownPosition]);
 
@@ -323,7 +339,7 @@ const ContextMenu = forwardRef<HTMLDivElement, ContextMenuProps>(({children, xPo
                 if (React.isValidElement<ContextMenuItemProps>(child)) {
                     return React.cloneElement(child, {
                         size: size,
-                        onClick: () => child.props.onClick?.()
+                        onClick: () => child.props.onClick?.(),
                     });
                 }
                 return child;
