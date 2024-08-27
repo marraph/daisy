@@ -12,6 +12,7 @@ type CalendarSingleProps = Omit<DayPickerSingleProps, 'mode'> & {
 };
 
 type CalendarRangeProps = Omit<DayPickerRangeProps, 'mode'> & {
+    numberOfMonths?: number;
     selected?: DateRange;
     onSelect?: (range: DateRange | undefined) => void;
 };
@@ -69,7 +70,7 @@ const CalendarSingle: React.FC<CalendarSingleProps> = ({ selected, onSelect, cla
     );
 };
 
-const CalendarRange: React.FC<CalendarRangeProps> = ({ selected, onSelect, className, classNames, ...props }) => {
+const CalendarRange: React.FC<CalendarRangeProps> = ({ numberOfMonths, selected, onSelect, className, classNames, ...props }) => {
     const today = new Date();
     const nextMonth = addMonths(today, 1);
     const [month, setMonth] = useState(nextMonth);
@@ -88,6 +89,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({ selected, onSelect, class
             selected={selected}
             onSelect={onSelect}
             month={month}
+            numberOfMonths={numberOfMonths}
             onMonthChange={setMonth}
             showOutsideDays={true}
             className={menuClassNames}

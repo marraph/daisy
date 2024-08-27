@@ -17,7 +17,6 @@ import {CustomScroll} from "react-custom-scroll";
 import {useDropdownPosition} from "../../hooks/useDropdownPosition";
 import {useOutsideClick} from "../../hooks/useOutsideClick";
 import {useHotkeys} from "react-hotkeys-hook";
-
 const combobox = cva(
     "group/combo flex flex-row items-center cursor-pointer rounded-lg font-normal overflow-hidden " +
     "bg-zinc-100 dark:bg-black-light text-zinc-700 dark:text-gray border border-zinc-300 dark:border-edge", {
