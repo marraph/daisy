@@ -20,10 +20,11 @@ export const Default: Story = {
     render: () => {
         return (
             <ScheduleSelect
-                label={"Schedule"}
+                label={"When is your appointment?"}
                 icon={<CalendarClock size={20} />}
-                placeholder={"Write a schedule"}
+                placeholder={"Enter a date or time"}
                 onValueChange={(value) => console.log(value)}
+                preSchedules={["Tomorrow 2 to 4pm", "next year", "tomorrow morning", "today 8pm"]}
             />
         );
     },

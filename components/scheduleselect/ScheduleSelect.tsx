@@ -12,17 +12,24 @@ interface ScheduleSelectProps extends InputHTMLAttributes<HTMLInputElement> {
     icon?: ReactNode;
     label?: string;
     onValueChange?: (value: Date | DateRange) => void;
+    preSchedules?: string[];
 }
 
-const ScheduleSelect: React.FC<ScheduleSelectProps> = ({ icon, label, onValueChange, ...props }) => {
+const ScheduleSelect: React.FC<ScheduleSelectProps> = ({ icon, label, onValueChange, preSchedules, ...props }) => {
     const defaultSchedules = useMemo(() => {
         const array: ParsedResult[] = [];
-        array.push(chrono.parse("Tomorrow")[0]);
-        array.push(chrono.parse("Tomorrow morning")[0]);
-        array.push(chrono.parse("Tomorrow afternoon")[0]);
-        console.log(array[0].start.date());
+        if (preSchedules) {
+            preSchedules.forEach((schedule) => {
+                array.push(chrono.parse(schedule)[0]);
+            });
+        }
+        else {
+            array.push(chrono.parse("Tomorrow morning")[0]);
+            array.push(chrono.parse("Tomorrow afternoon")[0]);
+            array.push(chrono.parse("Next week")[0]);
+        }
         return array;
-    }, []);
+    }, [preSchedules]);
 
     const [open, setOpen] = useState<boolean>(false);
     const [scheduleResults, setScheduleResults] = useState<ParsedResult[]>(defaultSchedules);
