@@ -36,3 +36,23 @@ export const Box: Story = {
         );
     },
 };
+
+export const FallbackRound: Story = {
+    render: () => {
+        return (
+            <Avatar shape={"round"}
+                    size={100}
+            />
+        );
+    },
+};
+
+export const FallbackBox: Story = {
+    render: () => {
+        return (
+            <Avatar shape={"box"}
+                    size={100}
+            />
+        );
+    },
+};
