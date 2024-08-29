@@ -41,7 +41,7 @@
     "@storybook/test": "^8.2.7",
     "chromatic": "^11.3.2",
     "eslint": "^8",
-    "eslint-config-next": "14.2.3",
+    "eslint-config-next": "14.2.7",
     "eslint-plugin-storybook": "^0.8.0",
     "postcss": "^8.4.38",
     "storybook": "^8.2.7",
