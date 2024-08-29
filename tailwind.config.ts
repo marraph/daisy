@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 import colors = require("tailwindcss/colors");
 
 const config: Config = {
-  darkMode: 'selector',
+  darkMode: "selector",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
