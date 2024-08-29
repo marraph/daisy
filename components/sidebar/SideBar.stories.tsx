@@ -1,6 +1,6 @@
 import React from 'react';
 import {Meta, StoryObj} from "@storybook/react";
-import {Calendar, GitBranch, Wrench} from "lucide-react";
+import {Calendar, CircleDashed, GitBranch, Wrench} from "lucide-react";
 import {
     NavigationProvider,
     SideBar, SideBarCollapsible, SideBarCollapsibleItem, SideBarContainer,
@@ -31,20 +31,20 @@ export const Default: Story = {
             <NavigationProvider>
                 <SideBar>
                     <SideBarSeperator/>
-                    <SideBarOrganisation organisationName={"marraph"} icon={<Avatar size={13}/>}/>
+                    <SideBarOrganisation organisationName={"Acme Inc."} icon={<Avatar size={13}/>}/>
                     <SideBarContainer>
                         <SideBarLabel title={"Menu"}/>
-                        <SideBarItem title={"Item1"} icon={<Wrench size={16}/>} href={""}/>
-                        <SideBarItem title={"Item2"} icon={<GitBranch size={16}/>} href={""}/>
-                        <SideBarItem title={"Item3"} icon={<Calendar size={16}/>} href={""}/>
+                        <SideBarItem title={"Issues"} icon={<CircleDashed size={16}/>} href={""}/>
+                        <SideBarItem title={"Branches"} icon={<GitBranch size={16}/>} href={""}/>
+                        <SideBarItem title={"Calendar"} icon={<Calendar size={16}/>} href={""}/>
                         <div className={"py-1"}></div>
-                        <SideBarCollapsible labelTitle={"Collapsible"}>
-                            <SideBarCollapsibleItem title={"Team 1"}/>
-                            <SideBarCollapsibleItem title={"Team 2"}/>
-                            <SideBarCollapsibleItem title={"Team 3"}/>
+                        <SideBarCollapsible labelTitle={"Teams"}>
+                            <SideBarCollapsibleItem title={"Development"}/>
+                            <SideBarCollapsibleItem title={"Support"}/>
+                            <SideBarCollapsibleItem title={"HR-Management"}/>
                         </SideBarCollapsible>
                     </SideBarContainer>
-                    <SideBarProfile userName={"marius@ahsmus.com"}/>
+                    <SideBarProfile userName={"admin@calla.so"}/>
                 </SideBar>
             </NavigationProvider>
         );
