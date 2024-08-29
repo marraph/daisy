@@ -19,32 +19,23 @@ type Story = StoryObj<typeof Input>
 export const Default: Story = {
     render: () => {
         return (
-            <div className={"flex flex-col space-y-2"}>
-                <div className={"flex flex-row space-x-2"}>
-                    <Input placeholder={"Medium input"}
-                           elementSize={"medium"}
-                           label={"Label"}
-                           icon={<Hourglass size={16}/>}
-                    />
-                    <Input placeholder={"Medium input"}
-                           elementSize={"medium"}
-                           label={"Label"}
-                    />
-                </div>
-                <div className={"flex flex-row space-x-2"}>
-                    <Input placeholder={"Small input"}
-                           elementSize={"medium"}
-                           label={"Label"}
-                           border={"none"}
-                           icon={<Hourglass size={16}/>}
-                    />
-                    <Input placeholder={"Small input"}
-                           elementSize={"medium"}
-                           label={"Label"}
-                           border={"none"}
-                    />
-                </div>
-            </div>
+            <Input placeholder={"Medium input"}
+                   elementSize={"medium"}
+                   label={"Label"}
+                   icon={<Hourglass size={16}/>}
+                   successMessage={"Input is correct"}
+                   warningMessage={"Input is almost correct"}
+                   validationRules={[
+                       (value) => ({
+                           isValid: value.length > 0,
+                           message: "Input must not be empty",
+                       }),
+                       (value) => ({
+                           isValid: value.length < 10,
+                           message: "Input can only be 10 characters long",
+                       })
+                   ]}
+            />
         );
     },
 };
