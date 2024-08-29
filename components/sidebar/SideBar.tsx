@@ -31,12 +31,18 @@ interface SideBarLabelProps {
 interface SideBarOrganisationProps {
     organisationName: string;
     icon?: ReactNode;
+    onClick?: () => void;
+    isLoading?: boolean;
 }
 
 interface SideBarProfileProps {
     onClick?: () => void;
     isLoading?: boolean;
     userName?: string;
+}
+
+interface SideBarContainerProps {
+    children: ReactNode;
 }
 
 
@@ -104,38 +110,53 @@ const SideBarLabel: React.FC<SideBarLabelProps> = ({title}) => {
     );
 }
 
-const SideBarOrganisation: React.FC<SideBarOrganisationProps> = ({icon, organisationName}) => {
+const SideBarOrganisation: React.FC<SideBarOrganisationProps> = ({ icon, organisationName, onClick, isLoading }) => {
     return (
-        <div className={"flex flex-row space-x-4 items-center mb-7 border-b border-zinc-300 dark:border-edge px-4 pb-3"}>
-            {icon && icon}
-            <span className={"text-zinc-800 dark:text-white text-3xl"}>{organisationName}</span>
-        </div>
-    );
-}
-
-const SideBarProfile: React.FC<SideBarProfileProps> = ({ onClick, isLoading, userName }) => {
-    return (
-        <div className={cn("group w-64 flex flex-row items-center justify-between cursor-pointer bg-zinc-100 dark:bg-black-light " +
+        <div
+            className={cn("group w-full flex flex-row items-center justify-between cursor-pointer bg-zinc-100 dark:bg-black-light " +
                 "border border-zinc-300 dark:border-edge rounded-lg hover:bg-zinc-200 dark:hover:bg-dark-light")}
-             onClick={onClick}
+            onClick={onClick}
         >
             {isLoading ?
                 <Skeleton className={"w-max"}>
                     <SkeletonElement className={"m-2"} width={43} height={43}/>
-                    <SkeletonColumn className={"items-start space-y-2 mr-0"}>
-                        <SkeletonElement width={110} height={10}/>
-                        <SkeletonElement width={80} height={10}/>
-                    </SkeletonColumn>
+                    <SkeletonElement width={110} height={10}/>
                 </Skeleton>
                 :
-                <div className={cn("flex flex-row items-center space-x-2 overflow-hidden")}>
-                    <Avatar className={cn("p-2")} size={60} shape={"box"}/>
-                    <span className={"text-sm truncate w-full"}>{userName || "Guest"}</span>
+                <div className={"flex flex-col p-2 overflow-hidden"}>
+                    <span className={"text-zinc-400 dark:text-marcador text-xs"}>Workspace</span>
+                    <div className={cn("flex flex-row items-center space-x-2")}>
+                        {icon}
+                        <span className={"text-zinc-800 dark:text-white text-sm truncate"}>{organisationName || "Private Workspace"}</span>
+                    </div>
                 </div>
             }
 
-            <ChevronsUpDown
-                className={cn("m-4 text-zinc-500 dark:text-gray group-hover:text-zinc-800 dark:group-hover:text-white")}/>
+            <ChevronsUpDown size={16} className={cn("m-4 text-zinc-500 dark:text-gray group-hover:text-zinc-800 dark:group-hover:text-white")}/>
+        </div>
+    );
+}
+
+const SideBarProfile: React.FC<SideBarProfileProps> = ({onClick, isLoading, userName}) => {
+    return (
+        <div
+            className={cn("group w-full flex flex-row items-center justify-between cursor-pointer bg-zinc-100 dark:bg-black-light " +
+                "border border-zinc-300 dark:border-edge rounded-lg hover:bg-zinc-200 dark:hover:bg-dark-light")}
+            onClick={onClick}
+        >
+            {isLoading ?
+                <Skeleton className={"w-max"}>
+                    <SkeletonElement className={"m-2"} width={43} height={43}/>
+                    <SkeletonElement width={110} height={10}/>
+                </Skeleton>
+                :
+                <div className={cn("flex flex-row items-center p-2 space-x-2 overflow-hidden")}>
+                    <Avatar size={30} shape={"box"} className={"rounded-lg"}/>
+                    <span className={"text-zinc-800 dark:text-white text-sm truncate"}>{userName || "Guest"}</span>
+                </div>
+            }
+
+            <ChevronsUpDown size={16} className={cn("m-4 text-zinc-500 dark:text-gray group-hover:text-zinc-800 dark:group-hover:text-white")}/>
         </div>
     );
 }
@@ -146,11 +167,19 @@ const SideBarSeperator: React.FC = () => {
     );
 }
 
+const SideBarContainer: React.FC<SideBarContainerProps> = ({ children }) => {
+    return (
+        <div className={"w-full h-full flex flex-col space-y-2"}>
+            {children}
+        </div>
+    );
+}
+
 const SideBar: React.FC<SideBarProps> = ({ children, isLoading }) => {
     return (
-        <div className={"w-max h-screen flex flex-col justify-between bg-zinc-100 dark:bg-black-light border-r border-zinc-300 dark:border-edge p-4 space-y-1"}>
+        <div className={"top-0 left-0 w-max h-screen flex flex-col justify-between bg-zinc-100 dark:bg-black-light border-r border-zinc-300 dark:border-edge p-4 space-y-4"}>
             {React.Children.map(children, child => {
-                if (React.isValidElement<SideBarProfileProps>(child)) {
+                if (React.isValidElement<SideBarProfileProps | SideBarOrganisationProps>(child)) {
                     return React.cloneElement(child, { isLoading: isLoading });
                 }
                 return child;
@@ -166,5 +195,6 @@ export {
     SideBarLabel,
     SideBarOrganisation,
     SideBarProfile,
-    SideBarSeperator
+    SideBarSeperator,
+    SideBarContainer
 }
