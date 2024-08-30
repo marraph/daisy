@@ -1,3 +1,5 @@
+"use client";
+
 import React, {useEffect, useRef, useState} from "react";
 import {ChevronsUpDown} from "lucide-react";
 import {AnimatePresence, motion} from "framer-motion";
