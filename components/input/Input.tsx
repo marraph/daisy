@@ -29,7 +29,7 @@ const inputContainer = cva(
 const input = cva(
     "peer w-full rounded-lg font-normal focus-visible:outline-none focus-visible:ring-0 " +
     "text-zinc-700 dark:text-gray focus:text-zinc-800 dark:focus:text-white " +
-    "placeholder-zinc-500 dark:placeholder-marcador bg-transparent",
+    "placeholder-zinc-500 dark:placeholder-marcador bg-transparent no-spinners",
     {
         variants: {
             border: {
@@ -50,7 +50,6 @@ const input = cva(
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement>, VariantProps<typeof inputContainer> {
     label?: string;
-    placeholder: string;
     icon?: React.ReactNode;
     preSelectedValue?: string | number | null | undefined;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -60,7 +59,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement>, VariantProps
     warningBuffer?: number;
 }
 
-const Input: React.FC<InputProps> = ({ onChange, preSelectedValue, icon, elementSize, border = "default", label, placeholder, successMessage, warningMessage, validationRules, warningBuffer, className, ...props }) => {
+const Input: React.FC<InputProps> = ({ onChange, preSelectedValue, icon, elementSize, border = "default", label, successMessage, warningMessage, validationRules, warningBuffer, className, ...props }) => {
     const { value, setValue, status, message, validateInput } = useInputValidation({
         initialValue: preSelectedValue?.toString() || '',
         validationRules,
@@ -100,7 +99,6 @@ const Input: React.FC<InputProps> = ({ onChange, preSelectedValue, icon, element
                 }
                 <input
                     className={cn(input({elementSize}))}
-                    placeholder={placeholder}
                     spellCheck={false}
                     value={value}
                     onChange={handleOnChange}
