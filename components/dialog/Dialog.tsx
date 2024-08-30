@@ -4,7 +4,7 @@ import React, {
     DialogHTMLAttributes,
     forwardRef,
     HTMLAttributes,
-    MutableRefObject,
+    MutableRefObject, ReactNode,
     useCallback,
     useEffect,
     useImperativeHandle,
@@ -15,15 +15,20 @@ import {Button} from "../button/Button";
 import {CloseButton} from "../closebutton/CloseButton";
 import {DialogProvider, useDialogContext} from "./DialogProvider";
 import ReactDOM from "react-dom";
+import {FieldConfig, useDialogForm} from "@/hooks/useDialogValidation";
+import {TooltipProvider, useTooltip} from "@/components/tooltip/TooltipProvider";
+import {BadgeX} from "lucide-react";
 
 type DialogRef = HTMLDialogElement & {
     show: () => void;
     close: () => void;
 };
 
-interface DialogProps extends DialogHTMLAttributes<HTMLDialogElement> {
+interface DialogProps<T extends Record<string, FieldConfig>> extends Omit<DialogHTMLAttributes<HTMLDialogElement>, 'onSubmit'> {
     width: number;
     onClose?: () => void;
+    fields: T
+    onSubmit: (values: Record<keyof T, any>) => void
 }
 
 interface DialogHeaderProps extends HTMLAttributes<HTMLDivElement> {
@@ -36,7 +41,13 @@ interface DialogFooterProps extends HTMLAttributes<HTMLDivElement> {
     saveButtonTitle: string;
     cancelButtonTitle?: string;
     onClick?: () => void;
-    disabledButton?: boolean;
+}
+
+interface DialogContentProps<T extends Record<string, FieldConfig>> {
+    children: (props: {
+        values: Record<keyof T, any>;
+        setValue: (field: keyof T, value: any) => void;
+    }) => ReactNode;
 }
 
 
@@ -62,49 +73,85 @@ const DialogHeader: React.FC<DialogHeaderProps> = ({ title, description }) => {
     );
 }
 
-const DialogFooter: React.FC<DialogFooterProps> = ({ disabledButton = false, cancelButton = true, cancelButtonTitle = "Cancel", saveButtonTitle, onClick, ...props }) => {
-    const { dialogRef, onClose } = useDialogContext();
+const DialogFooter: React.FC<DialogFooterProps> = ({ cancelButton = true, cancelButtonTitle = "Cancel", saveButtonTitle, onClick, ...props }) => {
+    const { dialogRef, onClose, onSubmit, isValid, errors } = useDialogContext();
+    const { addTooltip, removeTooltip } = useTooltip();
+
+    const hasErrors = Object.values(errors).some((error) => error !== '');
 
     return (
         <div className={"flex flex-row justify-end items-center p-2 space-x-2 rounded-b-lg border border-zinc-300 dark:border-edge bg-zinc-200 dark:bg-black-light "}>
             {props.children}
             {cancelButton &&
-                <Button text={cancelButtonTitle}
-                        className={"h-8"}
-                        onClick={() => {
-                            dialogRef.current.close();
-                            onClose();
-                        }}
+                <Button
+                    text={cancelButtonTitle}
+                    className={"h-8"}
+                    onClick={() => {
+                        dialogRef.current.close();
+                        onClose();
+                    }}
                 />
             }
-            <Button text={saveButtonTitle}
+            <div onMouseEnter={(e) => hasErrors && addTooltip({
+                    anchor: "bc",
+                    message: "",
+                    trigger: e.currentTarget.getBoundingClientRect(),
+                    customTooltip:
+                    <div className={"flex flex-col space-y-2"}>
+                        <div className={"flex flex-row items-center space-x-1 text-xs text-error font-medium"}>
+                            <BadgeX size={12}/>
+                            <span>{Object.values(errors).length === 1 ? "Error:" : "Errors:"}</span>
+                        </div>
+                        <div className={"flex flex-col space-y-0.5 text-xs text-zinc-800 dark:text-gray"}>
+                            {Object.entries(errors).map(([key, value]) => {
+                                if (value !== '') {
+                                    return <span key={key}>{"• " + value}</span>;
+                                }
+                            })}
+                        </div>
+                    </div>
+                })}
+                onMouseLeave={() => removeTooltip()}
+            >
+                <Button
+                    text={saveButtonTitle}
                     theme={"primary"}
                     className={"h-8"}
-                    onClick={() => onClick()}
-                    disabled={disabledButton}
-            />
+                    onClick={onSubmit}
+                    disabled={!isValid}
+                />
+            </div>
         </div>
     );
 }
 
-const DialogContent: React.FC<HTMLAttributes<HTMLDivElement>> = ({ ...props }) => {
+const DialogContent: React.FC<DialogContentProps<any>> = ({ children }) => {
+    const { values, setValue } = useDialogContext();
+
     return (
-        <div className={"border-x border-zinc-300 dark:border-edge items-center p-4"} {...props}>
-            {props.children}
+        <div className={"border-x border-zinc-300 dark:border-edge items-center p-4"}>
+            {children({ values, setValue })}
         </div>
     );
 }
 
-const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, onClose, ...props }, ref) => {
+const Dialog = forwardRef<DialogRef, DialogProps<any>>(({ width, fields, onSubmit, onClose, className, ...props }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
-
     const dialogRef = useRef<DialogRef>(null);
+    const { values, errors, setValue, validateAll, isValid } = useDialogForm(fields);
 
     const handleClose = useCallback(() => {
         onClose && onClose();
         dialogRef.current?.close();
         setIsOpen(false);
     }, [onClose]);
+
+    const handleSubmit = useCallback(() => {
+        if (validateAll()) {
+            onSubmit(values);
+            handleClose();
+        }
+    }, [values, onSubmit, handleClose, validateAll]);
 
     useEffect(() => {
         const dialogElement = dialogRef.current;
@@ -145,6 +192,7 @@ const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, onClose, 
     }));
 
     return (
+        <TooltipProvider>
         <div className={isOpen && "fixed inset-0 backdrop-blur-sm backdrop:bg-black/50"}>
             <dialog
                 className={cn("group rounded-lg bg-zinc-100 dark:bg-black", className)}
@@ -152,11 +200,20 @@ const Dialog = forwardRef<DialogRef, DialogProps>(({ width, className, onClose, 
                 {...props}
                 ref={dialogRef}
             >
-                <DialogProvider dialogRef={dialogRef} onClose={handleClose}>
+                <DialogProvider
+                    dialogRef={dialogRef}
+                    onClose={handleClose}
+                    values={values}
+                    errors={errors}
+                    setValue={setValue}
+                    onSubmit={handleSubmit}
+                    isValid={isValid}
+                >
                     {props.children}
                 </DialogProvider>
             </dialog>
         </div>
+        </TooltipProvider>
     );
 });
 Dialog.displayName = "Dialog";

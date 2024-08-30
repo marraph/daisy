@@ -1,9 +1,8 @@
 import React, {useRef} from 'react';
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogRef} from './Dialog';
 import {Meta, StoryObj} from "@storybook/react";
-import { Button } from '../button/Button';
-import { Input } from '../input/Input';
-import {Switch, SwitchRef} from "../switch/Switch";
+import {Input} from '../input/Input';
+import {Combobox, ComboboxItem} from "@/components/combobox/Combobox";
 
 const meta: Meta<typeof Dialog> = {
     title: "Components/Dialog",
@@ -22,33 +21,58 @@ export const Default = () => {
 
     const dialogRef = useRef<DialogRef>(null);
 
+    const fields = {
+        name: {
+            initialValue: '',
+            validate: (value: string) => ({
+                isValid: value.length >= 3,
+                message: 'Name must be at least 3 characters'
+            })
+        },
+        option: {
+            initialValue: null,
+            validate: (value: string) => ({
+                isValid: value !== null,
+                message: 'Invalid option'
+            })
+        }
+    }
+
+    const handleSubmit = (values: Record<string, any>) => {
+        console.log('Submitted values:', values)
+    }
+
     return (
         <>
-            <Dialog ref={dialogRef} width={600} onClose={() => console.log("close")}>
-                <DialogHeader title={"Example Dialog"}
-                              description={"This is a example dialog"}
-                />
-                <DialogContent className={"space-y-2"}>
-                    <div className={"space-y-2"}>
-                        <Button text={"Button"}></Button>
-                        <Input placeholder={"Placeholder"}></Input>
-                    </div>
+            <Dialog ref={dialogRef} fields={fields} onSubmit={handleSubmit} width={800}>
+                <DialogHeader title="User Information" description="Please enter your details" />
+                <DialogContent>
+                    {({ values, setValue }) => (
+                        <div className="w-max space-y-2">
+                            <Input
+                                id="name"
+                                placeholder={"Name"}
+                                value={values.name}
+                                onChange={(e) => setValue('name', e.target.value)}
+                            />
+                            <Combobox
+                                id={"option"}
+                                buttonTitle={"Combobox"}
+                                getItemTitle={(item: string) => item}
+                                onValueChange={(value) => setValue('option', value)}
+                            >
+                                <ComboboxItem title={"Option 1"} value="Option 1" />
+                                <ComboboxItem title={"Option 2"} value="Option 2" />
+                            </Combobox>
+                        </div>
+                    )}
                 </DialogContent>
-                <DialogFooter saveButtonTitle={"Save"}
-                              disabledButton={false}
-                              cancelButtonTitle={"No"}
-                >
-                    <div className={"flex flex-row items-center space-x-2 text-zinc-700 dark:text-gray text-xs mr-16"}>
-                        <span>{"Create more"}</span>
-                        <Switch/>
-                    </div>
-                </DialogFooter>
+                <DialogFooter saveButtonTitle={"Save"}/>
             </Dialog>
 
             <button className={"bg-black text-white p-2 text-base rounded-lg border border-edge"}
                     onClick={() => dialogRef?.current.show()}>Dialog
             </button>
-
         </>
-);
+    );
 };

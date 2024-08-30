@@ -13,9 +13,10 @@ interface TooltipProps extends HTMLAttributes<HTMLDivElement>{
     color?: string;
     offset?: number;
     shortcut?: string;
+    customTooltip?: ReactNode;
 }
 
-const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> = ({ anchor = "rc", delay = 1000, icon, color, message, offset = 8, shortcut, trigger, lastTooltipTimestamp, ...props }) => {
+const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> = ({ anchor = "rc", delay = 1000, icon, color, message, offset = 8, shortcut, trigger, lastTooltipTimestamp,customTooltip, ...props }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const timeout = useRef<number | null>(null);
@@ -137,12 +138,18 @@ const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> 
                     }}
                     ref={tooltipRef}
                 >
-                    <div className={"flex flex-row space-x-2 items-center text-xs dark:text-xs text-zinc-800 dark:text-white"}>
-                        {icon}
-                        <span>{message}</span>
-                    </div>
-                    {shortcut &&
-                        <span className={"px-1 rounded-sm bg-zinc-200 dark:bg-dark-light text-zinc-600 dark:text-gray"}>{shortcut}</span>
+                    {customTooltip ?
+                        customTooltip
+                        :
+                        <>
+                            <div className={"flex flex-row space-x-2 items-center text-xs dark:text-xs text-zinc-800 dark:text-white"}>
+                                {icon}
+                                <span>{message}</span>
+                            </div>
+                            {shortcut &&
+                                <span className={"px-1 rounded-sm bg-zinc-200 dark:bg-dark-light text-zinc-600 dark:text-gray"}>{shortcut}</span>
+                            }
+                        </>
                     }
                 </div>
             )}
