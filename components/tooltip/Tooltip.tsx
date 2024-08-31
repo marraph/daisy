@@ -26,7 +26,8 @@ const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> 
         if (!tooltipRef.current) return;
         const tooltipRect = tooltipRef.current.getBoundingClientRect();
 
-        let x: number, y: number;
+        let x: number;
+        let y: number;
 
         switch (anchor) {
             //Top
@@ -97,7 +98,7 @@ const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> 
         if (isVisible) {
             calculatePosition();
         }
-    }, [isVisible, calculatePosition, trigger]);
+    }, [isVisible, calculatePosition]);
 
 
     useEffect(() => {
@@ -123,7 +124,7 @@ const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> 
             window.removeEventListener('resize', calculatePosition);
             window.removeEventListener('scroll', calculatePosition);
         };
-    }, [delay, trigger, tooltipRef, isVisible, calculatePosition, lastTooltipTimestamp]);
+    }, [calculatePosition, delay, lastTooltipTimestamp]);
 
     return (
         <>
@@ -157,5 +158,8 @@ const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> 
     );
 };
 
-export {Tooltip};
-export type {TooltipProps, TooltipAnchor};
+export {
+    Tooltip,
+    type TooltipProps,
+    type TooltipAnchor
+};

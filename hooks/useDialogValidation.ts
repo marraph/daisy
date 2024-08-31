@@ -41,17 +41,19 @@ export function useDialogForm<T extends Record<string, FieldConfig>>(fields: T |
     const validateAll = useCallback(() => {
         if (!fields) return true;
         let formIsValid = true;
-        Object.entries(fields).forEach(([key, config]) => {
-            const fieldIsValid = validateField(key, values[key]);
+
+        for (const [key, value] of Object.entries(values)) {
+            if (fields[key] && !fields[key].validate) continue;
+            const fieldIsValid = validateField(key, value);
             if (!fieldIsValid) formIsValid = false;
-        });
+        }
         setIsValid(formIsValid);
         return formIsValid;
     }, [fields, values, validateField]);
 
     useEffect(() => {
         validateAll();
-    }, [values, validateAll]);
+    }, [validateAll]);
 
     return { values, errors, setValue, validateAll, isValid };
 }

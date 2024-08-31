@@ -19,9 +19,9 @@ const ScheduleSelect: React.FC<ScheduleSelectProps> = ({ icon, label, onValueCha
     const defaultSchedules = useMemo(() => {
         const array: ParsedResult[] = [];
         if (preSchedules) {
-            preSchedules.forEach((schedule) => {
+            for (const schedule of preSchedules) {
                 array.push(chrono.parse(schedule)[0]);
-            });
+            }
         }
         else {
             array.push(chrono.parse("Tomorrow morning")[0]);
@@ -53,7 +53,7 @@ const ScheduleSelect: React.FC<ScheduleSelectProps> = ({ icon, label, onValueCha
     useEffect(() => {
         const input = inputRef.current;
         if (input) {
-            input.style.width = input.value.length + 'ch';
+            input.style.width = `${input.value.length}ch`;
         }
     }, []);
 
@@ -81,7 +81,7 @@ const ScheduleSelect: React.FC<ScheduleSelectProps> = ({ icon, label, onValueCha
         }
 
         const input = e.target;
-        input.style.width = input.value.length + 'ch';
+        input.style.width = `${input.value.length}ch`;
     }
 
     const handleClose = () => {
@@ -159,7 +159,7 @@ const ScheduleSelect: React.FC<ScheduleSelectProps> = ({ icon, label, onValueCha
                         }
 
                         {scheduleResults.map((schedule, index) => (
-                            <div key={index}
+                            <div key={schedule.index}
                                  className={cn("mx-1 p-2 flex flex-row space-x-12 justify-between items-center cursor-pointer rounded-lg " +
                                      "bg-zinc-100 dark:bg-black-light hover:bg-zinc-200 dark:hover:bg-dark-light",
                                      highlightedIndex === index && "bg-zinc-200 dark:bg-dark-light")}

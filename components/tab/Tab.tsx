@@ -63,7 +63,7 @@ const TabHeader: React.FC<TabHeaderProps> = ({ children, titles }) => {
         <div className={"h-full flex flex-col"}>
             <div className={"flex flex-row space-x-2"}>
                 {titles.map((title: string, index: number) => (
-                    <div key={index}
+                    <div key={title}
                          ref={(el) => setTabRef(el, index)}
                          className={cn("px-2 py-1  cursor-pointer text-zinc-500 dark:text-gray",
                              ({"text-zinc-800 dark:text-white": activeTab === index}),
@@ -75,7 +75,7 @@ const TabHeader: React.FC<TabHeaderProps> = ({ children, titles }) => {
                     </div>
                 ))}
             </div>
-            <div className={"h-[2px] w-full rounded-full bg-zinc-300 dark:bg-edge"}></div>
+            <div className={"h-[2px] w-full rounded-full bg-zinc-300 dark:bg-edge"}/>
             <div
                 className="h-[2px] absolute rounded-full bg-zinc-800 dark:bg-white transition-all duration-300 ease-in-out"
                 style={indicatorStyle}

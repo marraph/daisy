@@ -4,7 +4,6 @@ import React, {useMemo, useState} from "react";
 import {cn} from "../../utils/cn";
 import {DateRange, DayPicker, DayPickerRangeProps, DayPickerSingleProps} from "react-day-picker";
 import {addMonths, isToday, isWithinInterval, startOfDay} from "date-fns";
-import moment from "moment";
 
 type CalendarSingleProps = Omit<DayPickerSingleProps, 'mode'> & {
     selected?: Date;
@@ -40,7 +39,7 @@ const commonClassNames = {
     day_range_middle: "rounded-none"
 };
 
-const CalendarSingle: React.FC<CalendarSingleProps> = ({ selected, onSelect, className, classNames, ...props }) => {
+const CalendarSingle: React.FC<CalendarSingleProps> = ({ selected, onSelect, ...props }) => {
     const today = new Date();
     const nextMonth = addMonths(today, 1);
     const [month, setMonth] = useState(nextMonth);
@@ -63,14 +62,13 @@ const CalendarSingle: React.FC<CalendarSingleProps> = ({ selected, onSelect, cla
                         : "bg-zinc-200 dark:bg-dark"
                     ),
                 day_selected: "bg-black-light text-white dark:text-black",
-                ...classNames,
             }}
             {...props}
         />
     );
 };
 
-const CalendarRange: React.FC<CalendarRangeProps> = ({ numberOfMonths, selected, onSelect, className, classNames, ...props }) => {
+const CalendarRange: React.FC<CalendarRangeProps> = ({ numberOfMonths, selected, onSelect, ...props }) => {
     const today = new Date();
     const nextMonth = addMonths(today, 1);
     const [month, setMonth] = useState(nextMonth);
@@ -102,7 +100,6 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({ numberOfMonths, selected,
                         : "bg-zinc-300 dark:bg-dark"
                 ),
                 day_selected: "bg-black-light dark:bg-white text-white dark:text-black",
-                ...classNames,
             }}
             {...props}
         />

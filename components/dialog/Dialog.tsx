@@ -1,5 +1,8 @@
 "use client";
 
+import {TooltipProvider, useTooltip} from "@/components/tooltip/TooltipProvider";
+import {FieldConfig, useDialogForm} from "@/hooks/useDialogValidation";
+import {BadgeX} from "lucide-react";
 import React, {
     DialogHTMLAttributes,
     forwardRef,
@@ -15,9 +18,6 @@ import {cn} from "../../utils/cn";
 import {Button} from "../button/Button";
 import {CloseButton} from "../closebutton/CloseButton";
 import {DialogProvider, useDialogContext} from "./DialogProvider";
-import {FieldConfig, useDialogForm} from "@/hooks/useDialogValidation";
-import {TooltipProvider, useTooltip} from "@/components/tooltip/TooltipProvider";
-import {BadgeX} from "lucide-react";
 
 type DialogRef = HTMLDialogElement & {
     show: () => void;
@@ -105,7 +105,7 @@ const DialogFooter: React.FC<DialogFooterProps> = ({ cancelButton = true, cancel
                         <div className={"flex flex-col space-y-0.5 text-xs text-zinc-800 dark:text-gray"}>
                             {Object.entries(errors).map(([key, value]) => {
                                 if (value !== '') {
-                                    return <span key={key}>{"• " + value}</span>;
+                                    return <span key={key}>{`• ${value}`}</span>;
                                 }
                             })}
                         </div>
@@ -143,7 +143,7 @@ const Dialog = forwardRef<DialogRef, DialogProps<any>>(({ width, fields, onSubmi
     const { values, errors, setValue, validateAll, isValid } = useDialogForm(fields);
 
     const handleClose = useCallback(() => {
-        onClose && onClose();
+        onClose?.();
         dialogRef.current?.close();
         setIsOpen(false);
     }, [onClose]);
@@ -188,7 +188,7 @@ const Dialog = forwardRef<DialogRef, DialogProps<any>>(({ width, fields, onSubmi
         close: () => {
             dialogRef.current?.close();
             setIsOpen(false);
-            onClose && onClose();
+            onClose?.();
         },
         ...dialogRef.current,
     }));
@@ -220,4 +220,10 @@ const Dialog = forwardRef<DialogRef, DialogProps<any>>(({ width, fields, onSubmi
 });
 Dialog.displayName = "Dialog";
 
-export {Dialog, DialogHeader, DialogFooter, DialogContent, DialogRef};
+export {
+    Dialog,
+    DialogHeader,
+    DialogFooter,
+    DialogContent,
+    type DialogRef
+};

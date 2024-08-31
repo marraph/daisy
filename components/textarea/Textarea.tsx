@@ -51,4 +51,7 @@ const Textarea = forwardRef<TextareaRef, TextareaProps>(({ label, placeholder, c
 });
 Textarea.displayName = "Textarea";
 
-export {Textarea, TextareaRef};
+export {
+    Textarea,
+    type TextareaRef
+};

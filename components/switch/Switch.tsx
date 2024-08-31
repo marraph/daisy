@@ -47,5 +47,8 @@ const Switch = forwardRef<SwitchRef, SwitchProps>(({ preSelectedValue, className
 });
 Switch.displayName = "Switch";
 
-export {Switch, SwitchRef};
+export {
+    Switch,
+    type SwitchRef
+};
 
