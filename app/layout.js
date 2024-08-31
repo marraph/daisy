@@ -1,8 +1,8 @@
-import { GeistSans } from 'geist/font/sans';
 import "./globals.css";
 import React from "react";
+import {Roboto} from "next/dist/compiled/@next/font/dist/google";
 
-const geist = GeistSans();
+const roboto = Roboto({ weights: [400, 500] });
 
 export const metadata = {
   title: "Create Next App",
@@ -12,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
-            <body className={geist.className}>
+            <body className={roboto.className}>
                 {children}
             </body>
         </html>
