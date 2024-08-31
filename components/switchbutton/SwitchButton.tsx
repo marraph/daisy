@@ -29,11 +29,11 @@ const SwitchButton = forwardRef<SwitchButtonRef, SwitchButtonProps>(({ preSelect
             setFirstWidth(firstRef.current.offsetWidth);
             setSecondWidth(secondRef.current.offsetWidth);
         }
-    }, [firstTitle, secondTitle]);
+    }, []);
 
     const handleClick = () => {
         setSelectedValue(!selectedValue);
-        onClick && onClick();
+        onClick?.();
     };
 
     return (
@@ -69,5 +69,8 @@ const SwitchButton = forwardRef<SwitchButtonRef, SwitchButtonProps>(({ preSelect
 });
 SwitchButton.displayName = "SwitchButton";
 
-export { SwitchButton, SwitchButtonRef }
+export {
+    SwitchButton,
+    type SwitchButtonRef
+};
 

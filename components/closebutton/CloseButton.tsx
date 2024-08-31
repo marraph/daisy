@@ -1,8 +1,8 @@
 "use client";
 
-import React, {forwardRef} from "react";
-import { cn } from "../../utils/cn";
-import { X } from "lucide-react";
+import React from "react";
+import {cn} from "../../utils/cn";
+import {X} from "lucide-react";
 
 interface CloseButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   iconSize?: number;

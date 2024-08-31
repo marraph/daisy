@@ -20,7 +20,7 @@ const TimePicker: React.FC<TimerPickerProps> = ({ label, withMeridiem = false, o
         let newValue = value;
 
         if (value.length === 2) {
-            const intValue = parseInt(value);
+            const intValue = Number.parseInt(value);
             if (withMeridiem) {
                 if (intValue === 0) {
                     newValue = "12";
@@ -50,7 +50,7 @@ const TimePicker: React.FC<TimerPickerProps> = ({ label, withMeridiem = false, o
         let newValue = value;
 
         if (value.length === 2) {
-            const intValue = parseInt(value);
+            const intValue = Number.parseInt(value);
             if (intValue > 59) {
                 newValue = "59";
             }
@@ -72,7 +72,7 @@ const TimePicker: React.FC<TimerPickerProps> = ({ label, withMeridiem = false, o
 
         if (event.key === 'ArrowUp') {
             if (field === 'hours') {
-                const newValue = parseInt(hours) + 1;
+                const newValue = Number.parseInt(hours) + 1;
                 if (withMeridiem) {
                     if (newValue > 12) {
                         setHours('01');
@@ -88,7 +88,7 @@ const TimePicker: React.FC<TimerPickerProps> = ({ label, withMeridiem = false, o
                 }
 
             } else {
-                const newValue = parseInt(minutes) + 1;
+                const newValue = Number.parseInt(minutes) + 1;
                 if (newValue > 59) {
                     setMinutes('00');
                 } else {
@@ -99,7 +99,7 @@ const TimePicker: React.FC<TimerPickerProps> = ({ label, withMeridiem = false, o
 
         if (event.key === 'ArrowDown') {
             if (field === 'hours') {
-                const newValue = parseInt(hours) - 1;
+                const newValue = Number.parseInt(hours) - 1;
                 if (withMeridiem) {
                     if (newValue === 0) {
                         setHours('12');
@@ -118,7 +118,7 @@ const TimePicker: React.FC<TimerPickerProps> = ({ label, withMeridiem = false, o
                     }
                 }
             } else {
-                const newValue = parseInt(minutes) - 1;
+                const newValue = Number.parseInt(minutes) - 1;
                 if (newValue === 0) {
                     setMinutes('59');
                 } else if (newValue < 0) {
@@ -147,7 +147,7 @@ const TimePicker: React.FC<TimerPickerProps> = ({ label, withMeridiem = false, o
             let formattedHours = hours;
             if (withMeridiem) {
                 if (meridiem === "PM" && hours !== "12") {
-                    formattedHours = (parseInt(hours) + 12).toString().padStart(2, '0');
+                    formattedHours = (Number.parseInt(hours) + 12).toString().padStart(2, '0');
                 } else if (meridiem === "AM" && hours === "12") {
                     formattedHours = "00";
                 }

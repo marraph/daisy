@@ -89,7 +89,7 @@ const Input: React.FC<InputProps> = ({ onChange, preSelectedValue, icon, element
                     status === 'success' && border === 'default' && "focus-within:border-success dark:focus-within:border-success",
                     status === 'warning' && border === 'default' && "focus-within:border-warning dark:focus-within:border-warning",
                     status === 'error' && border === 'default' && "focus-within:border-error dark:focus-within:border-error",
-                    status == 'idle' && border === 'default' && "focus-within:border-zinc-500 dark:focus-within:border-white-dark",
+                    status === 'idle' && border === 'default' && "focus-within:border-zinc-500 dark:focus-within:border-white-dark",
                     className)}
             >
                 {icon &&

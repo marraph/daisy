@@ -4,19 +4,22 @@ import React, {
     ChangeEvent,
     forwardRef,
     HTMLAttributes,
-    MutableRefObject,
-    ReactNode, Ref,
-    useCallback, useEffect,
-    useMemo, useRef,
+    ReactNode,
+    Ref,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
     useState
 } from "react";
 import {cn} from "../../utils/cn";
-import {Check, ChevronDown, ChevronsUpDown, ChevronUp, Search} from "lucide-react";
+import {Check, ChevronDown, ChevronUp, Search} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {CustomScroll} from "react-custom-scroll";
 import {useDropdownPosition} from "../../hooks/useDropdownPosition";
 import {useOutsideClick} from "../../hooks/useOutsideClick";
 import {useHotkeys} from "react-hotkeys-hook";
+
 const combobox = cva(
     "group/combo flex flex-row items-center cursor-pointer rounded-lg font-normal overflow-hidden " +
     "bg-zinc-100 dark:bg-black-light text-zinc-700 dark:text-gray border border-zinc-300 dark:border-edge", {
