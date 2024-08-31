@@ -79,7 +79,13 @@ export const Default: Story = {
                                 <TableCell>{invoice.paymentStatus}</TableCell>
                                 <TableCell>{invoice.paymentMethod}</TableCell>
                                 <TableCell>{invoice.totalAmount}</TableCell>
-                                <TableAction onClick={() => console.log("Clicked")}/>
+                                <TableAction
+                                    actionMenu={
+                                    <div className={"bg-red-500"}>
+                                        <span>hello</span>
+                                    </div>
+                                    }
+                                />
                             </TableRow>
                         ))}
                     </TableBody>

@@ -1,23 +1,49 @@
 "use client";
 
-import React, {HTMLAttributes, TableHTMLAttributes} from "react";
+import React, {HTMLAttributes, ReactNode, TableHTMLAttributes, useRef, useState} from "react";
 import {cn} from "../../utils/cn";
 import {Button} from "../button/Button";
 import {EllipsisVertical} from "lucide-react";
+import ReactDOM from "react-dom";
+import {useOutsideClick} from "@/hooks/useOutsideClick";
 
-const TableAction: React.FC<HTMLAttributes<HTMLTableCellElement> & { onClick: (e: React.MouseEvent<HTMLButtonElement>) => void }> = ({ onClick, ...props }) => {
+const TableActionDropDownPortal: React.FC<{ children: ReactNode }> = ({ children }) => {
+    return ReactDOM.createPortal(children, document.body);
+}
+
+const TableAction: React.FC<HTMLAttributes<HTMLTableCellElement> & { actionMenu: ReactNode, onClose?: () => void }> = ({ actionMenu, onClose, ...props }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    const menuRef = useOutsideClick((e) => {
+        if (buttonRef.current && !buttonRef.current.contains(e.target as Node) &&
+            menuRef.current && !menuRef.current.contains(e.target as Node)) {
+            setIsOpen(false);
+            onClose?.();
+        }
+    });
+
     return (
         <td className={cn("pl-2 pr-4")} {...props}>
             <Button text={""}
                     size={"medium"}
-                    className={"p-1.5 bg-zinc-100 hover:bg-zinc-200 float-right"}
+                    className={"w-max p-1.5 bg-zinc-100 hover:bg-zinc-200 float-right"}
                     icon={<EllipsisVertical size={16}/>}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        onClick(e);
-                    }}
+                    ref={buttonRef}
+                    onClick={() => setIsOpen(!isOpen)}
             />
+            {isOpen &&
+                <TableActionDropDownPortal>
+                    <div className={"absolute z-50"}
+                         ref={menuRef}
+                         style={{
+                             top: buttonRef.current?.getBoundingClientRect().bottom + 4,
+                             right: window.innerWidth - buttonRef.current?.getBoundingClientRect().right
+                         }}
+                    >
+                        {actionMenu}
+                    </div>
+                </TableActionDropDownPortal>
+            }
         </td>
     );
 }
