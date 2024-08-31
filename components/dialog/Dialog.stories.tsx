@@ -54,6 +54,8 @@ export const Default = () => {
                                 placeholder={"Name"}
                                 value={values.name}
                                 onChange={(e) => setValue('name', e.target.value)}
+                                validationRules={[fields.name.validate]}
+
                             />
                             <Combobox
                                 id={"option"}
