@@ -1,8 +1,8 @@
 import "./globals.css";
 import React from "react";
-import {Roboto} from "next/dist/compiled/@next/font/dist/google";
+import {Roboto} from "next/font/google";
 
-const roboto = Roboto({ weights: [400, 500] });
+const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700", "900"] });
 
 export const metadata = {
   title: "Create Next App",
