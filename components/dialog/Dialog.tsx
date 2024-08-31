@@ -4,17 +4,17 @@ import React, {
     DialogHTMLAttributes,
     forwardRef,
     HTMLAttributes,
-    MutableRefObject, ReactNode,
+    ReactNode,
     useCallback,
     useEffect,
     useImperativeHandle,
-    useRef, useState
+    useRef,
+    useState
 } from "react";
 import {cn} from "../../utils/cn";
 import {Button} from "../button/Button";
 import {CloseButton} from "../closebutton/CloseButton";
 import {DialogProvider, useDialogContext} from "./DialogProvider";
-import ReactDOM from "react-dom";
 import {FieldConfig, useDialogForm} from "@/hooks/useDialogValidation";
 import {TooltipProvider, useTooltip} from "@/components/tooltip/TooltipProvider";
 import {BadgeX} from "lucide-react";
@@ -27,8 +27,8 @@ type DialogRef = HTMLDialogElement & {
 interface DialogProps<T extends Record<string, FieldConfig>> extends Omit<DialogHTMLAttributes<HTMLDialogElement>, 'onSubmit'> {
     width: number;
     onClose?: () => void;
-    fields: T
-    onSubmit: (values: Record<keyof T, any>) => void
+    fields?: T;
+    onSubmit: (values: Record<keyof T, any>) => void;
 }
 
 interface DialogHeaderProps extends HTMLAttributes<HTMLDivElement> {
@@ -44,10 +44,10 @@ interface DialogFooterProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 interface DialogContentProps<T extends Record<string, FieldConfig>> {
-    children: (props: {
+    children: ((props?: {
         values: Record<keyof T, any>;
         setValue: (field: keyof T, value: any) => void;
-    }) => ReactNode;
+    }) => ReactNode) | ReactNode;
 }
 
 
@@ -130,7 +130,9 @@ const DialogContent: React.FC<DialogContentProps<any>> = ({ children }) => {
 
     return (
         <div className={"border-x border-zinc-300 dark:border-edge items-center p-4"}>
-            {children({ values, setValue })}
+            {typeof children === 'function'
+                ? children({ values, setValue })
+                : children}
         </div>
     );
 }
