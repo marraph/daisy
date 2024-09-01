@@ -20,7 +20,7 @@ export const Default: Story = {
 
 
         return (
-            <OtpInput label={"OTP"}>
+            <OtpInput label={"OTP"} onComplete={(value) => console.log(value)}>
                 <OtpInputGroup>
                     <OtpInputSlot />
                     <OtpInputSlot />
