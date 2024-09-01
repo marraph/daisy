@@ -1,8 +1,8 @@
 "use client";
 
-import { cva, VariantProps } from "class-variance-authority";
-import React, {forwardRef, ReactNode} from "react";
-import { cn } from "../../utils/cn";
+import {cva, VariantProps} from "class-variance-authority";
+import React, {ButtonHTMLAttributes, ReactNode} from "react";
+import {cn} from "../../utils/cn";
 
 const button = cva("w-max relative rounded-lg font-medium text-sm py-2 px-4 flex items-center disabled:cursor-not-allowed disabled:hover:none", {
       variants: {
@@ -25,7 +25,7 @@ const button = cva("w-max relative rounded-lg font-medium text-sm py-2 px-4 flex
       },
     });
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof button> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof button> {
     text: string;
     icon?: ReactNode;
     isLoading?: boolean;
@@ -46,23 +46,22 @@ const ButtonSpinner: React.FC<{ size?: "small" | "medium", theme?: "primary" | "
     </svg>
 );
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ icon, isLoading, theme, size, text, className, ...props }, ref) => {
+const Button: React.FC<ButtonProps> = ({ icon, isLoading, theme, size, text, className, ...props }) => {
     return (
         <button className={cn(button({theme, size}), className)}
                 disabled={isLoading || props.disabled}
-                ref={ref}
                 {...props}
         >
             {isLoading ?
                 <ButtonSpinner size={size} theme={theme}/>
                 :
-                <div className={cn({"mr-2": icon && text.trim() !== ""})}>
+                <div className={cn({"mr-2": icon})}>
                     {icon}
                 </div>
             }
             <span>{text}</span>
         </button>
     );
-});
+}
 
 export {Button};

@@ -55,6 +55,7 @@ export const Default = () => {
                                 value={values.name}
                                 onChange={(e) => setValue('name', e.target.value)}
                                 validationRules={[fields.name.validate]}
+                                showSuccess={true}
 
                             />
                             <Combobox

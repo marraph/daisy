@@ -109,7 +109,7 @@ const Input: React.FC<InputProps> = ({ onChange, preSelectedValue, icon, element
                 />
             </div>
 
-            {status !== 'idle' && (
+            {(status !== 'idle' && (status !== 'success' || (status === 'success' && showSuccess))) && (
                 <div
                     className={cn("ml-1 flex flex-row items-center space-x-1 text-xs",
                         status === 'success' && "text-success",
@@ -120,7 +120,7 @@ const Input: React.FC<InputProps> = ({ onChange, preSelectedValue, icon, element
                     {status === 'success' && showSuccess && <BadgeCheck size={12} />}
                     {status === 'warning' && <BadgeAlert size={12} />}
                     {status === 'error' && <BadgeX size={12} />}
-                    <span>{!showSuccess && status === 'success' ? "" : message}</span>
+                    <span>{message}</span>
                 </div>
             )}
         </div>
