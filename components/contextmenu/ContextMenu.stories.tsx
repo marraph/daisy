@@ -10,9 +10,10 @@ import {
     ContextMenuSeperator
 } from './ContextMenu';
 import {Meta, StoryObj} from "@storybook/react";
-import {GitBranch, Wrench} from "lucide-react";
+import {GitBranch, GitMerge, Trash2, User, Wrench} from "lucide-react";
 import {useOutsideClick} from "../../hooks/useOutsideClick";
 import {useContextMenu} from '../../hooks/useContextMenu';
+import { Avatar } from '../avatar/Avatar';
 
 const meta: Meta<typeof ContextMenu> = {
     title: "Components/ContextMenu",
@@ -39,36 +40,30 @@ export const Default: Story = {
         });
 
         return (
-            <div className={"h-[100vh] w-[100vw] bg-red-500 overflow-hidden"} onContextMenu={(e) => handleContextMenu(e)}>
+            <div className={"h-[100vh] w-[100vw] bg-white overflow-hidden"} onContextMenu={(e) => handleContextMenu(e)}>
 
                 {contextMenu.visible &&
                     <ContextMenu xPos={contextMenu.x} yPos={contextMenu.y} size={"medium"} ref={contextRef}>
-                        <ContextMenuHeader title={"Context Menu"}
-                                           description={"This is a context menu"}
-                                           icon={<div className={"size-4 rounded-md bg-amber-500"}/>}
+                        <ContextMenuHeader title={"Branch #7"}
+                                           description={"feat/chart-improvements"}
+                                           icon={<GitBranch size={12}/>}
                         />
-                        <ContextMenuItem title="Item 1"
-                                         icon={<GitBranch size={14}/>}
-                        />
+                        <ContextMenuLabel title={"Actions"}/>
+                        <ContextMenuItem title="Merge" icon={<GitMerge size={14}/>} shortcut={"⌘ M"}/>
+                        <ContextMenuItem title="Delete" icon={<Trash2 size={14}/>}/>
                         <ContextMenuSeperator/>
-                        <ContextMenuLabel title={"Label"}/>
-                        <ContextMenuItem title="Item 2"/>
-                        <ContextMenuItem title="Item 3" shortcut={"⌘S"}/>
-                        <ContextMenuSeperator/>
-                        <ContextMenuSelectItem title={"You can select me"}/>
+                        <ContextMenuSelectItem title={"Receive Notifications"}/>
                         <ContextMenuDropDownItem
-                            title={"DropDown"}
+                            title={"Add Reviewer"}
+                            icon={<User size={14}/>}
                             dropdownRef={dropdownRef}
                             selectItems={[
-                                { id: 1, title: "Item 1", icon: <GitBranch size={14}/>, selected: false },
-                                { id: 2, title: "Item 2", icon: <GitBranch size={14}/>, selected: false },
-                                { id: 3, title: "Item 3", icon: <GitBranch size={14}/>, selected: false },
-                                { id: 4, title: "Item 4", icon: <GitBranch size={14}/>, selected: false },
-                                { id: 5, title: "Item 5", icon: <GitBranch size={14}/>, selected: false }
+                                { id: 1, title: "Josh", icon: <Avatar size={12}/>, selected: false },
+                                { id: 2, title: "Sarah", icon: <Avatar size={12}/>, selected: false },
+                                { id: 3, title: "Bruno", icon: <Avatar size={12}/>, selected: false },
+                                { id: 4, title: "Raphael", icon: <Avatar size={12}/>, selected: false },
+                                { id: 5, title: "Lisa", icon: <Avatar size={12}/>, selected: false }
                             ]}
-                        />
-                        <ContextMenuFooter title={"Footer"}
-                                           icon={<Wrench size={12}/>}
                         />
                     </ContextMenu>
                 }

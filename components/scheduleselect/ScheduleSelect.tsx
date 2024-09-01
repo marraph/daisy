@@ -1,3 +1,5 @@
+"use client";
+
 import React, {InputHTMLAttributes, ReactNode, useEffect, useMemo, useRef, useState} from "react";
 import {cn} from "@/utils/cn";
 import {useDropdownPosition} from "@/hooks/useDropdownPosition";

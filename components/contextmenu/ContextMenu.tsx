@@ -197,7 +197,7 @@ const ContextMenuDropDownItem: React.FC<ContextMenuDropDownItemProps> = ({ size,
             </div>
             {open &&
                 <ContextMenuDropDownItemPortal>
-                    <div className={cn("absolute flex flex-col bg-zinc-100 dark:bg-black cursor-pointer rounded-lg border border-zinc-300 dark:border-edge",
+                    <div className={cn("absolute flex flex-col bg-zinc-100 dark:bg-black cursor-pointer rounded-lg border border-zinc-300 dark:border-edge shadow-2xl",
                             size === "small" ? "space-y-0.5 p-0.5" : "space-y-1 p-1"
                          )}
                          style={dropdownPosition ? {top: dropdownPosition.top, left: dropdownPosition.left} : {}}
