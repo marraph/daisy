@@ -57,15 +57,17 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement>, VariantProps
     warningMessage?: string;
     validationRules?: ValidationRule[];
     warningBuffer?: number;
+    showSuccess?: boolean;
 }
 
-const Input: React.FC<InputProps> = ({ onChange, preSelectedValue, icon, elementSize, border = "default", label, successMessage, warningMessage, validationRules, warningBuffer, className, ...props }) => {
+const Input: React.FC<InputProps> = ({ onChange, preSelectedValue, icon, elementSize, border = "default", label, successMessage, warningMessage, validationRules, warningBuffer, showSuccess = false, className, ...props }) => {
     const { value, setValue, status, message, validateInput } = useInputValidation({
         initialValue: preSelectedValue?.toString() || '',
         validationRules,
         successMessage,
         warningMessage,
-        warningBuffer
+        warningBuffer,
+        showSuccess
     });
 
     const handleOnBlur = () => {
@@ -86,10 +88,10 @@ const Input: React.FC<InputProps> = ({ onChange, preSelectedValue, icon, element
             )}
 
             <div className={cn(inputContainer({border, elementSize}),
-                    status === 'success' && border === 'default' && "focus-within:border-success dark:focus-within:border-success",
+                    status === 'success' && showSuccess && border === 'default' && "focus-within:border-success dark:focus-within:border-success",
                     status === 'warning' && border === 'default' && "focus-within:border-warning dark:focus-within:border-warning",
                     status === 'error' && border === 'default' && "focus-within:border-error dark:focus-within:border-error",
-                    status == 'idle' && border === 'default' && "focus-within:border-zinc-500 dark:focus-within:border-white-dark",
+                    status === 'idle' && border === 'default' && "focus-within:border-zinc-500 dark:focus-within:border-white-dark",
                     className)}
             >
                 {icon &&
@@ -107,15 +109,15 @@ const Input: React.FC<InputProps> = ({ onChange, preSelectedValue, icon, element
                 />
             </div>
 
-            {status !== 'idle' && (
+            {(status !== 'idle' && (status !== 'success' || (status === 'success' && showSuccess))) && (
                 <div
                     className={cn("ml-1 flex flex-row items-center space-x-1 text-xs",
                         status === 'success' && "text-success",
                         status === 'warning' && "text-warning",
-                        status === 'error' && "text-error"
+                        status === 'error' && "text-error",
                     )}
                 >
-                    {status === 'success' && <BadgeCheck size={12} />}
+                    {status === 'success' && showSuccess && <BadgeCheck size={12} />}
                     {status === 'warning' && <BadgeAlert size={12} />}
                     {status === 'error' && <BadgeX size={12} />}
                     <span>{message}</span>

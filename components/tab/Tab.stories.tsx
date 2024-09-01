@@ -20,13 +20,13 @@ export const Default: Story = {
         return (
             <TabHeader titles={["Tab 1", "Tab 2", "Tab 3"]}>
                 <Tab>
-                    <button>hallo</button>
+                    <button type={"button"}>hallo</button>
                 </Tab>
                 <Tab>
-                    <button>2</button>
+                    <button type={"button"}>2</button>
                 </Tab>
                 <Tab>
-                    <button>button</button>
+                    <button type={"button"}>button</button>
                 </Tab>
             </TabHeader>
         );

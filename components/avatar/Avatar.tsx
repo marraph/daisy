@@ -1,9 +1,10 @@
 "use client";
 
-import { cva, VariantProps } from "class-variance-authority";
-import React, {forwardRef, useState} from "react";
-import { cn } from "../../utils/cn";
+import {type VariantProps, cva } from "class-variance-authority";
 import Image from "next/image"
+import React from "react";
+import {useState} from "react";
+import {cn} from "../../utils/cn";
 
 const avatar = cva("relative inline-block object-cover object-center", {
     variants: {

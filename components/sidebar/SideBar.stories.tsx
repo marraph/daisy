@@ -37,7 +37,7 @@ export const Default: Story = {
                         <SideBarItem title={"Issues"} icon={<CircleDashed size={16}/>} href={""}/>
                         <SideBarItem title={"Branches"} icon={<GitBranch size={16}/>} href={""}/>
                         <SideBarItem title={"Calendar"} icon={<Calendar size={16}/>} href={""}/>
-                        <div className={"py-1"}></div>
+                        <div className={"py-1"}/>
                         <SideBarCollapsible labelTitle={"Teams"}>
                             <SideBarCollapsibleItem title={"Development"}/>
                             <SideBarCollapsibleItem title={"Support"}/>

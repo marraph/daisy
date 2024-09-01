@@ -10,9 +10,10 @@ interface UseInputValidationProps {
     warningBuffer?: number;
     successMessage?: string;
     warningMessage?: string;
+    showSuccess?: boolean;
 }
 
-export function useInputValidation({ initialValue = '', validationRules, warningBuffer = 0, successMessage, warningMessage }: UseInputValidationProps) {
+export function useInputValidation({ initialValue = '', validationRules, warningBuffer = 0, successMessage, warningMessage, showSuccess = false }: UseInputValidationProps) {
     const [value, setValue] = useState(initialValue);
     const [status, setStatus] = useState<ValidationStatus>('idle');
     const [message, setMessage] = useState('');
@@ -31,7 +32,8 @@ export function useInputValidation({ initialValue = '', validationRules, warning
 
         if (errorCount === 0) {
             setStatus('success');
-            setMessage(successMessage ||'Input is valid');
+            if (showSuccess)
+                setMessage(successMessage ||'Input is valid');
         } else if (errorCount <= warningBuffer && warningMessage) {
             setStatus('warning');
             setMessage(warningMessage);
@@ -39,7 +41,7 @@ export function useInputValidation({ initialValue = '', validationRules, warning
             setStatus('error');
             setMessage(errorMessage);
         }
-    }, [successMessage, validationRules, value, warningBuffer, warningMessage]);
+    }, [successMessage, validationRules, value, warningBuffer, warningMessage, showSuccess]);
 
     return { value, setValue, status, message, validateInput };
 }

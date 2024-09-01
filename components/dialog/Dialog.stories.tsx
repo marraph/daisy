@@ -54,6 +54,9 @@ export const Default = () => {
                                 placeholder={"Name"}
                                 value={values.name}
                                 onChange={(e) => setValue('name', e.target.value)}
+                                validationRules={[fields.name.validate]}
+                                showSuccess={true}
+
                             />
                             <Combobox
                                 id={"option"}
@@ -71,7 +74,10 @@ export const Default = () => {
             </Dialog>
 
             <button className={"bg-black text-white p-2 text-base rounded-lg border border-edge"}
-                    onClick={() => dialogRef?.current.show()}>Dialog
+                    onClick={() => dialogRef?.current.show()}
+                    type={"button"}
+            >
+                Dialog
             </button>
         </>
     );

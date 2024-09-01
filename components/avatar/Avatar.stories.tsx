@@ -1,6 +1,6 @@
 import React from 'react';
 import { Avatar } from './Avatar';
-import {Meta, StoryObj} from "@storybook/react";
+import type {Meta, StoryObj} from "@storybook/react";
 
 const meta: Meta<typeof Avatar> = {
     title: "Components/Avatar",
