@@ -1,9 +1,12 @@
 import React from 'react';
 import {Meta, StoryObj} from "@storybook/react";
-import {Calendar, CircleDashed, GitBranch, Wrench} from "lucide-react";
+import {Calendar, CircleDashed, GitBranch} from "lucide-react";
 import {
     NavigationProvider,
-    SideBar, SideBarCollapsible, SideBarCollapsibleItem, SideBarContainer,
+    SideBar,
+    SideBarCollapsible,
+    SideBarCollapsibleItem,
+    SideBarContainer,
     SideBarItem,
     SideBarLabel,
     SideBarOrganisation,

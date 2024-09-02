@@ -1,7 +1,7 @@
 "use client";
 
 import React, {MouseEventHandler} from "react";
-import {cn} from "../../utils/cn";
+import {cn} from "@/utils/cn";
 import {ChevronRight} from "lucide-react";
 
 interface BreadcrumbProps extends React.HTMLAttributes<HTMLDivElement> {

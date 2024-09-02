@@ -1,9 +1,7 @@
 "use client"
 
-import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
-import { cn } from "../../utils/cn";
-import { motion } from "framer-motion";
-import {SwitchRef} from "../switch/Switch";
+import React, {forwardRef, useEffect, useRef, useState} from "react";
+import {motion} from "framer-motion";
 
 interface SwitchButtonProps extends React.HTMLAttributes<HTMLDivElement> {
     firstTitle: string;
