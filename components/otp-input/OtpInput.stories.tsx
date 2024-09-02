@@ -18,9 +18,8 @@ type Story = StoryObj<typeof OtpInput>
 export const Default: Story = {
     render: () => {
 
-
         return (
-            <OtpInput label={"OTP"} onComplete={(value) => console.log(value)}>
+            <OtpInput label={"OTP"} size={"lg"} expectedValue={"1111"} errorMessage={"Wrong code"}>
                 <OtpInputGroup>
                     <OtpInputSlot />
                     <OtpInputSlot />
@@ -30,6 +29,7 @@ export const Default: Story = {
                     <OtpInputSlot />
                 </OtpInputGroup>
             </OtpInput>
+
         );
     },
 };
