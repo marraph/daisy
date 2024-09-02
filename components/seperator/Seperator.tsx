@@ -1,7 +1,7 @@
 "use client";
 
 import React, {HTMLAttributes} from "react";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 
 const Seperator: React.FC<HTMLAttributes<HTMLHRElement>> = ({ className, ...props}) => {
     return (

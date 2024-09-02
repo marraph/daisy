@@ -1,5 +1,5 @@
 import React, {DialogHTMLAttributes, forwardRef, ReactNode, useImperativeHandle, useRef, useState} from "react";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 import {DialogRef} from "@/components/dialog/Dialog";
 import {Shortcut} from "@/components/shortcut/Shortcut";
 import {Seperator} from "@/components/seperator/Seperator";

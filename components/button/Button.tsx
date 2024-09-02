@@ -2,7 +2,7 @@
 
 import {cva, VariantProps} from "class-variance-authority";
 import React, {ButtonHTMLAttributes, ReactNode} from "react";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 
 const button = cva("w-max relative rounded-lg font-medium text-sm py-2 px-4 flex items-center disabled:cursor-not-allowed disabled:hover:none", {
       variants: {

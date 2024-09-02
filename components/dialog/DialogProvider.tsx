@@ -1,6 +1,6 @@
 import React, {createContext, RefObject, useContext} from 'react';
 import {DialogRef} from "./Dialog";
-import {FieldConfig} from "@/hooks/useDialogValidation";
+import {FieldConfig} from "../../hooks/useDialogValidation";
 
 interface DialogContextProps<T extends Record<string, FieldConfig>> {
     dialogRef: RefObject<DialogRef>;

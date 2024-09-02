@@ -1,11 +1,11 @@
 import React, {createContext, ReactNode, useContext, useEffect, useState} from "react";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 import {ArrowLeftFromLine, ArrowRightFromLine, ChevronDown, ChevronRight, ChevronsUpDown, Plus} from "lucide-react";
 import {Skeleton, SkeletonElement} from "@/components/skeleton/Skeleton";
 import {Avatar} from "@/components/avatar/Avatar";
 import {useRouter} from "next/router";
 import Link from "next/link";
-import {useMediaQuery} from "@/hooks/useMediaQuery";
+import {useMediaQuery} from "../../hooks/useMediaQuery";
 
 interface NavigationContextType {
     currentPath: string;

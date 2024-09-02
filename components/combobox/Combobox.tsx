@@ -12,12 +12,12 @@ import React, {
     useRef,
     useState
 } from "react";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 import {Check, ChevronDown, ChevronUp, Search} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {CustomScroll} from "react-custom-scroll";
-import {useDropdownPosition} from "@/hooks/useDropdownPosition";
-import {useOutsideClick} from "@/hooks/useOutsideClick";
+import {useDropdownPosition} from "../../hooks/useDropdownPosition";
+import {useOutsideClick} from "../../hooks/useOutsideClick";
 import {useHotkeys} from "react-hotkeys-hook";
 
 const combobox = cva(

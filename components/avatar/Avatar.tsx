@@ -4,7 +4,7 @@ import {type VariantProps, cva } from "class-variance-authority";
 import Image from "next/image"
 import React from "react";
 import {useState} from "react";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 
 const avatar = cva("relative inline-block object-cover object-center", {
     variants: {

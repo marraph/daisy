@@ -2,7 +2,7 @@
 
 import React, {InputHTMLAttributes, ReactNode, useContext, useEffect, useRef, useState} from "react";
 import {cva, VariantProps} from "class-variance-authority";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 
 const input = cva("bg-zinc-100 dark:bg-black-light focus:outline-none text-center border-r " +
     "border-r border-zinc-300 dark:border-edge focus-visible:outline-none focus-visible:ring-0 " +

@@ -1,7 +1,7 @@
 "use client";
 
 import React, {forwardRef, useRef} from "react";
-import { cn } from "@/utils/cn";
+import { cn } from "../../utils/cn";
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
     text?: string;

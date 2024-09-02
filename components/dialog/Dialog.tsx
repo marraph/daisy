@@ -1,7 +1,7 @@
 "use client";
 
 import {TooltipProvider, useTooltip} from "@/components/tooltip/TooltipProvider";
-import {FieldConfig, useDialogForm} from "@/hooks/useDialogValidation";
+import {FieldConfig, useDialogForm} from "../../hooks/useDialogValidation";
 import {BadgeX} from "lucide-react";
 import React, {
     DialogHTMLAttributes,

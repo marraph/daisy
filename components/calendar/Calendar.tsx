@@ -1,7 +1,7 @@
 "use client";
 
 import React, {useMemo, useState} from "react";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 import {DateRange, DayPicker, DayPickerRangeProps, DayPickerSingleProps} from "react-day-picker";
 import {addMonths, isToday, isWithinInterval, startOfDay} from "date-fns";
 

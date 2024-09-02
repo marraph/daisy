@@ -1,7 +1,7 @@
 "use client";
 
 import React, {forwardRef, type HTMLAttributes, type ReactNode, type RefObject, useCallback, useEffect, useRef, useState} from "react";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 import {Check, ChevronRight} from "lucide-react";
 import {cva, type VariantProps} from "class-variance-authority";
 import ReactDOM from "react-dom";

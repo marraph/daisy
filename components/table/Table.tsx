@@ -1,11 +1,11 @@
 "use client";
 
 import React, {HTMLAttributes, ReactNode, TableHTMLAttributes, useRef, useState} from "react";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 import {Button} from "../button/Button";
 import {EllipsisVertical} from "lucide-react";
 import ReactDOM from "react-dom";
-import {useOutsideClick} from "@/hooks/useOutsideClick";
+import {useOutsideClick} from "../../hooks/useOutsideClick";
 
 const TableActionDropDownPortal: React.FC<{ children: ReactNode }> = ({ children }) => {
     return ReactDOM.createPortal(children, document.body);

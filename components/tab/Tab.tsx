@@ -1,7 +1,7 @@
 "use client";
 
 import React, {HTMLAttributes, ReactNode, useCallback, useEffect, useRef, useState} from "react";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 
 interface TabProps extends HTMLAttributes<HTMLDivElement> {
     children: ReactNode;

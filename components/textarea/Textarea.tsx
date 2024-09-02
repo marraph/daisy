@@ -1,7 +1,7 @@
 "use client";
 
 import React, {forwardRef, useImperativeHandle, useRef, useState} from "react";
-import {cn} from "@/utils/cn";
+import {cn} from "../../utils/cn";
 
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     placeholder: string;
