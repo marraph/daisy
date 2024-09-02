@@ -2,7 +2,7 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 import React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "@/utils/cn";
 
 const badge = cva("w-max flex items-center font-semibold space-x-2", {
     variants: {

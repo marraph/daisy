@@ -2,7 +2,6 @@ import React from 'react';
 import {
     ContextMenu,
     ContextMenuDropDownItem,
-    ContextMenuFooter,
     ContextMenuHeader,
     ContextMenuItem,
     ContextMenuLabel,
@@ -10,10 +9,10 @@ import {
     ContextMenuSeperator
 } from './ContextMenu';
 import {Meta, StoryObj} from "@storybook/react";
-import {GitBranch, GitMerge, Trash2, User, Wrench} from "lucide-react";
-import {useOutsideClick} from "../../hooks/useOutsideClick";
-import {useContextMenu} from '../../hooks/useContextMenu';
-import { Avatar } from '../avatar/Avatar';
+import {GitBranch, GitMerge, Trash2, User} from "lucide-react";
+import {useOutsideClick} from "@/hooks/useOutsideClick";
+import {useContextMenu} from "@/hooks/useContextMenu";
+import {Avatar} from '../avatar/Avatar';
 
 const meta: Meta<typeof ContextMenu> = {
     title: "Components/ContextMenu",

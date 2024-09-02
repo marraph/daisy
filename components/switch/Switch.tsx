@@ -1,8 +1,7 @@
 "use client";
 
-import React, {forwardRef, HTMLAttributes, useImperativeHandle, useRef, useState} from "react";
-import {cn} from "../../utils/cn";
-import {GitBranch} from "lucide-react";
+import React, {forwardRef, useImperativeHandle, useRef, useState} from "react";
+import {cn} from "@/utils/cn";
 
 interface SwitchProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
     preSelectedValue?: boolean;

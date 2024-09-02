@@ -1,7 +1,7 @@
 "use client";
 
 import React, {InputHTMLAttributes} from "react";
-import {cn} from "../../utils/cn";
+import {cn} from "@/utils/cn";
 import {cva, VariantProps} from "class-variance-authority";
 import {useInputValidation, ValidationRule} from "@/hooks/useInputValidation";
 import {BadgeAlert, BadgeCheck, BadgeX} from "lucide-react";

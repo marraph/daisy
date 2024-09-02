@@ -1,7 +1,7 @@
 "use client";
 
 import React, {HTMLAttributes, ReactNode, TableHTMLAttributes, useRef, useState} from "react";
-import {cn} from "../../utils/cn";
+import {cn} from "@/utils/cn";
 import {Button} from "../button/Button";
 import {EllipsisVertical} from "lucide-react";
 import ReactDOM from "react-dom";

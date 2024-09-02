@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import {cn} from "../../utils/cn";
+import {cn} from "@/utils/cn";
 import {X} from "lucide-react";
 
 interface CloseButtonProps extends React.HTMLAttributes<HTMLButtonElement> {

@@ -1,7 +1,7 @@
 "use client";
 
-import React, {forwardRef, HTMLAttributes} from "react";
-import { cn } from "../../utils/cn";
+import React, {HTMLAttributes} from "react";
+import {cn} from "@/utils/cn";
 
 interface SkeletonElementProps extends HTMLAttributes<HTMLDivElement> {
     width: number;

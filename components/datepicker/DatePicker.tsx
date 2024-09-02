@@ -1,14 +1,14 @@
 "use client";
 
 import React, {useCallback, useRef, useState} from "react";
-import {cn} from "../../utils/cn";
+import {cn} from "@/utils/cn";
 import {CalendarSingle} from "../calendar/Calendar";
 import {CalendarDays, ChevronsUpDown} from "lucide-react";
 import {cva, VariantProps} from "class-variance-authority";
 import {CloseButton} from "../closebutton/CloseButton";
 import moment from "moment";
-import {useOutsideClick} from "../../hooks/useOutsideClick";
-import {useDropdownPosition} from "../../hooks/useDropdownPosition";
+import {useOutsideClick} from "@/hooks/useOutsideClick";
+import {useDropdownPosition} from "@/hooks/useDropdownPosition";
 import {useHotkeys} from "react-hotkeys-hook";
 
 const datepicker = cva("flex flex-row items-center justify-between space-x-2 rounded-lg cursor-pointer border border-zinc-300 dark:border-edge " +

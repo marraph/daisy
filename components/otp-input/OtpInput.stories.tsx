@@ -1,5 +1,5 @@
 import {Meta, StoryObj} from "@storybook/react";
-import {OtpInput, OtpInputGroup, OtpInputSlot} from "../../components/otp-input/OtpInput";
+import {OtpInput, OtpInputGroup, OtpInputSlot} from "@/components/otp-input/OtpInput";
 import React from "react";
 
 const meta: Meta<typeof OtpInput> = {
