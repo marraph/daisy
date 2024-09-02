@@ -3,9 +3,7 @@
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["components/*"],
-      "@/hooks/*": ["hooks/*"],
-      "@/utils/*": ["utils/*"]
+      "@/*": ["./*"]
     }
   }
 }
