@@ -14,6 +14,7 @@ import {Seperator} from "@/components/seperator/Seperator";
 import {CornerDownLeft, MoveDown, MoveUp, Search} from "lucide-react";
 import {Input} from "@/components/input/Input";
 import {useHotkeys} from "react-hotkeys-hook";
+import {useOutsideClick} from "@/hooks/useOutsideClick";
 
 interface CommandMenuProps extends DialogHTMLAttributes<HTMLDialogElement> {
     children: ReactNode;
@@ -73,6 +74,7 @@ const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ children, ...prop
     const [inputFocused, setInputFocused] = useState<boolean>(true);
     const dialogRef = useRef<DialogRef>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+    const menuRef = useOutsideClick(() => handleClose());
 
     const getSelectableItems = () => {
         return React.Children.toArray(children).filter(
@@ -80,23 +82,24 @@ const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ children, ...prop
         );
     }
 
+    const handleClose = () => {
+        dialogRef.current?.close();
+        setIsOpen(false);
+        setSelectedIndex(-1);
+        setInputFocused(true);
+    }
+
     const itemCount = getSelectableItems().length;
 
     useHotkeys('esc', () => {
-        dialogRef.current?.close()
-        setIsOpen(false)
-        setSelectedIndex(-1)
-        setInputFocused(true)
+        handleClose();
     })
 
     useHotkeys('enter', () => {
         if (selectedIndex >= 0 && selectedIndex < itemCount) {
             const selectedItem = getSelectableItems()[selectedIndex] as React.ReactElement
             selectedItem.props.onClick?.()
-            dialogRef.current?.close()
-            setIsOpen(false)
-            setSelectedIndex(-1)
-            setInputFocused(true)
+            handleClose();
         }
     })
 
@@ -131,10 +134,7 @@ const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ children, ...prop
             setIsOpen(true);
         },
         close: () => {
-            dialogRef.current?.close();
-            setIsOpen(false);
-            setSelectedIndex(-1);
-            setInputFocused(true);
+            handleClose();
         },
         ...dialogRef.current,
     }));
@@ -153,7 +153,9 @@ const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ children, ...prop
                 {...props}
                 ref={dialogRef}
             >
-                <div className={"flex flex-col"}>
+                <div className={"flex flex-col"}
+                     ref={menuRef}
+                >
                     <div className={"w-full flex flex-row items-center px-2 pt-2"}>
                         <Search size={18}
                                 className={"text-zinc-400 dark:text-marcador ml-4 mr-2"}
@@ -168,14 +170,11 @@ const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ children, ...prop
                     </div>
                     <Seperator/>
                     <div className={"flex flex-col space-y-2 p-2"}>
-                        {React.Children.map(children, (child) => {
-                            let commandItemIndex = 0;
+                        {React.Children.map(children, (child, index) => {
                             if (React.isValidElement<CommandMenuItemProps>(child)) {
-                                const currentIndex = commandItemIndex;
-                                commandItemIndex++;
                                 return React.cloneElement(child, {
                                     ...child.props,
-                                    selected: currentIndex === selectedIndex,
+                                    selected: index === selectedIndex,
                                 });
                             }
                             return child;
