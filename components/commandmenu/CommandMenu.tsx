@@ -15,16 +15,20 @@ import {CornerDownLeft, MoveDown, MoveUp, Search} from "lucide-react";
 import {Input} from "@/components/input/Input";
 import {useHotkeys} from "react-hotkeys-hook";
 import {useOutsideClick} from "@/hooks/useOutsideClick";
+import {AnimatePresence, motion} from "framer-motion";
 
 interface CommandMenuProps extends DialogHTMLAttributes<HTMLDialogElement> {
     children: ReactNode;
+    isOpen?: boolean;
+    onClose?: () => void;
+    animation: "slide" | "fade";
 }
 
 interface CommandMenuItemProps {
     title: string;
     secondaryTitle?: string;
     icon?: ReactNode;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent) => void;
     shortcut?: string;
     disabled?: boolean;
     selected?: boolean;
@@ -68,11 +72,9 @@ const CommandMenuItem: React.FC<CommandMenuItemProps> = ({ title, secondaryTitle
     );
 }
 
-const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ children, ...props }, ref) => {
-    const [isOpen, setIsOpen] = useState(false);
+const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ isOpen, onClose, children, animation = "fade", ...props }, ref) => {
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
     const [inputFocused, setInputFocused] = useState<boolean>(true);
-    const dialogRef = useRef<DialogRef>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const menuRef = useOutsideClick(() => handleClose());
 
@@ -82,62 +84,42 @@ const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ children, ...prop
         );
     }
 
+    const itemCount = getSelectableItems().length;
+
     const handleClose = () => {
-        dialogRef.current?.close();
-        setIsOpen(false);
         setSelectedIndex(-1);
         setInputFocused(true);
+        onClose?.();
     }
 
-    const itemCount = getSelectableItems().length;
 
     useHotkeys('esc', () => {
         handleClose();
     })
 
-    useHotkeys('enter', () => {
+    useHotkeys('enter', (e) => {
         if (selectedIndex >= 0 && selectedIndex < itemCount) {
-            const selectedItem = getSelectableItems()[selectedIndex] as React.ReactElement
-            selectedItem.props.onClick?.()
+            const selectedItem = getSelectableItems()[selectedIndex] as React.ReactElement;
+            e.preventDefault();
+            e.stopPropagation();
+            selectedItem.props.onClick?.();
             handleClose();
         }
     })
 
     useHotkeys('up', () => {
         if (isOpen) {
-            if (inputFocused) {
-                setInputFocused(false)
-                setSelectedIndex(itemCount - 1)
-            } else {
-                setSelectedIndex((prev) => (prev <= 0 ? itemCount - 1 : prev - 1))
-            }
+            setInputFocused(false)
+            setSelectedIndex((prev) => (prev <= 0 ? itemCount - 1 : prev - 1))
         }
     })
 
     useHotkeys('down', () => {
         if (isOpen) {
-            if (inputFocused) {
-                setInputFocused(false)
-                setSelectedIndex(0)
-            } else {
-                setSelectedIndex((prev) => (prev >= itemCount - 1 ? 0 : prev + 1))
-            }
+            setInputFocused(false)
+            setSelectedIndex((prev) => (prev >= itemCount - 1 ? 0 : prev + 1))
         }
     })
-
-    useImperativeHandle(ref, () => ({
-        show: () => {
-            dialogRef.current?.showModal();
-            inputRef.current?.focus();
-            setSelectedIndex(-1);
-            setInputFocused(true);
-            setIsOpen(true);
-        },
-        close: () => {
-            handleClose();
-        },
-        ...dialogRef.current,
-    }));
 
     useEffect(() => {
         if (isOpen && inputFocused) {
@@ -146,65 +128,85 @@ const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ children, ...prop
     }, [isOpen, inputFocused])
 
     return (
-        <div className={isOpen && "fixed inset-0 backdrop-blur-sm backdrop:bg-black/50"}>
-            <dialog
-                className={cn("group rounded-lg bg-zinc-100 dark:bg-black border border-zinc-300 dark:border-edge")}
-                style={{width: 760}}
-                {...props}
-                ref={dialogRef}
-            >
-                <div className={"flex flex-col"}
-                     ref={menuRef}
+        <AnimatePresence>
+            {isOpen &&
+                <motion.div
+                    className={isOpen && "fixed inset-0 flex items-center justify-center backdrop-blur-sm backdrop:bg-black/50"}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                 >
-                    <div className={"w-full flex flex-row items-center px-2 pt-2"}>
-                        <Search size={18}
-                                className={"text-zinc-400 dark:text-marcador ml-4 mr-2"}
-                        />
-                        <Input placeholder={"Search or type a command"}
-                               border={"none"}
-                               className={"w-full h-12 text-md m-0 mr-2 p-0 bg-zinc-100 dark:bg-black"}
-                               onFocus={() => setInputFocused(true)}
-                               onBlur={() => setInputFocused(false)}
-                               ref={inputRef}
-                        />
-                    </div>
-                    <Seperator/>
-                    <div className={"flex flex-col space-y-2 p-2"}>
-                        {React.Children.map(children, (child, index) => {
-                            if (React.isValidElement<CommandMenuItemProps>(child)) {
-                                return React.cloneElement(child, {
-                                    ...child.props,
-                                    selected: index === selectedIndex,
-                                });
-                            }
-                            return child;
-                        })}
-                    </div>
-                    <Seperator/>
-                    <div className={"flex flex-row items-center space-x-8 px-4 h-12 bg-zinc-200 dark:bg-dark text-zinc-500 dark:text-gray text-sm"}>
-                        <div className={"flex flex-row items-center space-x-2"}>
-                            <span>{"Close"}</span>
-                            <Shortcut text={"ESC"}/>
+                    <motion.div
+                        initial={animation === "fade" ? {scale: 0.7, opacity: 0} : { y: "50%", opacity: 0 }}
+                        animate={animation === "fade" ? {scale: 1, opacity: 1} : { y: 0, opacity: 1 }}
+                        exit={ animation === "fade" ? {scale: 0.7, opacity: 0} : { y: "50%", opacity: 0 }}
+                        transition={{type: "spring", damping: 25, stiffness: 300}}
+                        className={cn("w-[760px] rounded-lg bg-zinc-100 dark:bg-black border border-zinc-300 dark:border-edge")}
+                        role="dialog"
+                        aria-modal="true"
+                        ref={menuRef}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className={"flex flex-col"}>
+                            <div className={"w-full flex flex-row items-center px-2 pt-2"}>
+                                <Search size={18}
+                                        className={"text-zinc-400 dark:text-marcador ml-4 mr-2"}
+                                />
+                                <Input placeholder={"Search or type a command"}
+                                       border={"none"}
+                                       className={"w-full h-12 text-md m-0 mr-2 p-0 bg-zinc-100 dark:bg-black"}
+                                       onFocus={() => setInputFocused(true)}
+                                       onBlur={() => setInputFocused(false)}
+                                       ref={inputRef}
+                                />
+                            </div>
+                            <Seperator/>
+                            <div className={"flex flex-col space-y-2 p-2"}>
+                                {(() => {
+                                    let itemIndex = -1;
+                                    return React.Children.map(children, (child) => {
+                                        if (React.isValidElement<CommandMenuItemProps>(child) && child.type === CommandMenuItem) {
+                                            itemIndex++;
+                                            return React.cloneElement(child, {
+                                                ...child.props,
+                                                selected: itemIndex === selectedIndex,
+                                                onClick: (e: React.MouseEvent) => {
+                                                    child.props.onClick?.(e);
+                                                    handleClose();
+                                                }
+                                            });
+                                        }
+                                        return child;
+                                    });
+                                })()}
+                            </div>
+                            <Seperator/>
+                            <div className={"flex flex-row items-center space-x-8 px-4 h-12 bg-zinc-200 dark:bg-dark text-zinc-500 dark:text-gray text-sm"}>
+                                <div className={"flex flex-row items-center space-x-2"}>
+                                    <span>{"Close"}</span>
+                                    <Shortcut text={"ESC"}/>
+                                </div>
+                                <div className={"flex flex-row items-center space-x-2"}>
+                                    <span>{"Select"}</span>
+                                    <Shortcut>
+                                        <CornerDownLeft size={16}/>
+                                    </Shortcut>
+                                </div>
+                                <div className={"flex flex-row items-center space-x-1"}>
+                                    <span className={"mr-1"}>{"Navigate"}</span>
+                                    <Shortcut>
+                                        <MoveUp size={16}/>
+                                    </Shortcut>
+                                    <Shortcut>
+                                        <MoveDown size={16}/>
+                                    </Shortcut>
+                                </div>
+                            </div>
                         </div>
-                        <div className={"flex flex-row items-center space-x-2"}>
-                            <span>{"Select"}</span>
-                            <Shortcut>
-                                <CornerDownLeft size={16}/>
-                            </Shortcut>
-                        </div>
-                        <div className={"flex flex-row items-center space-x-1"}>
-                            <span className={"mr-1"}>{"Navigate"}</span>
-                            <Shortcut>
-                                <MoveUp size={16}/>
-                            </Shortcut>
-                            <Shortcut>
-                                <MoveDown size={16}/>
-                            </Shortcut>
-                        </div>
-                    </div>
-                </div>
-            </dialog>
-        </div>
+                    </motion.div>
+                </motion.div>
+            }
+        </AnimatePresence>
     );
 });
 
