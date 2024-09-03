@@ -21,7 +21,7 @@ const config = {
 
   docs: {},
 
-  staticDirs: ["..\\public"],
+  staticDirs: ["../public"],
 
   typescript: {
     reactDocgen: "react-docgen-typescript"

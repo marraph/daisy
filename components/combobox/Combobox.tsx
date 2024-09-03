@@ -82,9 +82,9 @@ const ComboboxItem = forwardRef(<T,>({size, title, value, query, isSelected, isH
             <span>
                 {parts.map((part, index) => (
                     part.toLowerCase() === query?.toLowerCase() ?
-                        <span key={index} className="text-zinc-900 dark:text-white">{part}</span>
+                        <span key={part} className="text-zinc-900 dark:text-white">{part}</span>
                     :
-                        <span key={index}>{part}</span>
+                        <span key={part}>{part}</span>
                     )
                 )}
             </span>
@@ -213,12 +213,11 @@ const Combobox = forwardRef(<T, >({
                                 <ComboboxItem
                                     {...child.props}
                                     onClick={() => {
-                                        child.props.onClick && child.props.onClick();
+                                        child.props.onClick?.();
                                         handleItemClick(child.props.value);
                                     }}
                                     isSelected={selectedValue === child.props.value}
                                     isHighlighted={highlightedIndex === index}
-                                    key={index}
                                     size={size}
                                     query={highlightQuery ? searchQuery : undefined}
                                     ref={(el) => {itemRefs.current[index] = el as HTMLDivElement}}

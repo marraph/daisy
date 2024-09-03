@@ -1,10 +1,19 @@
-import React, {DialogHTMLAttributes, forwardRef, ReactNode, useImperativeHandle, useRef, useState} from "react";
+import React, {
+    DialogHTMLAttributes,
+    forwardRef,
+    ReactNode,
+    useEffect,
+    useImperativeHandle,
+    useRef,
+    useState
+} from "react";
 import {cn} from "../../utils/cn";
 import {DialogRef} from "@/components/dialog/Dialog";
 import {Shortcut} from "@/components/shortcut/Shortcut";
 import {Seperator} from "@/components/seperator/Seperator";
 import {CornerDownLeft, MoveDown, MoveUp, Search} from "lucide-react";
 import {Input} from "@/components/input/Input";
+import {useHotkeys} from "react-hotkeys-hook";
 
 interface CommandMenuProps extends DialogHTMLAttributes<HTMLDialogElement> {
     children: ReactNode;
@@ -17,10 +26,11 @@ interface CommandMenuItemProps {
     onClick?: () => void;
     shortcut?: string;
     disabled?: boolean;
+    selected?: boolean;
 }
 
 interface CommandMenuLabelProps {
-    title: string;
+    label: string;
 }
 
 const CommandMenuSeperator: React.FC = () => {
@@ -29,15 +39,18 @@ const CommandMenuSeperator: React.FC = () => {
     );
 }
 
-const CommandMenuLabel: React.FC<CommandMenuLabelProps> = ({ title }) => {
+const CommandMenuLabel: React.FC<CommandMenuLabelProps> = ({ label }) => {
     return (
-        <span className={"px-2 text-sm text-zinc-400 dark:text-marcador"}>{title}</span>
+        <span className={"px-2 text-sm text-zinc-400 dark:text-marcador"}>{label}</span>
     );
 }
 
-const CommandMenuItem: React.FC<CommandMenuItemProps> = ({ title, secondaryTitle, icon, shortcut, onClick, disabled = false }) => {
+const CommandMenuItem: React.FC<CommandMenuItemProps> = ({ title, secondaryTitle, icon, shortcut, onClick, selected, disabled = false }) => {
     return (
-        <div className={"w-full flex flex-row items-center justify-between px-4 py-2 rounded-lg cursor-pointer hover:bg-zinc-200 dark:hover:bg-dark"}
+        <div className={cn("w-full flex flex-row items-center justify-between px-4 py-2 " +
+                "rounded-lg cursor-pointer hover:bg-zinc-200 dark:hover:bg-dark",
+                selected ? "bg-zinc-200 dark:bg-dark" : ""
+            )}
              onClick={onClick}
         >
             <div className={"w-max flex flex-row items-center space-x-2 text-zinc-800 dark:text-white text-md"}>
@@ -56,19 +69,81 @@ const CommandMenuItem: React.FC<CommandMenuItemProps> = ({ title, secondaryTitle
 
 const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ children, ...props }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+    const [inputFocused, setInputFocused] = useState<boolean>(true);
     const dialogRef = useRef<DialogRef>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const getSelectableItems = () => {
+        return React.Children.toArray(children).filter(
+            (child) => React.isValidElement(child) && child.type === CommandMenuItem
+        );
+    }
+
+    const itemCount = getSelectableItems().length;
+
+    useHotkeys('esc', () => {
+        dialogRef.current?.close()
+        setIsOpen(false)
+        setSelectedIndex(-1)
+        setInputFocused(true)
+    })
+
+    useHotkeys('enter', () => {
+        if (selectedIndex >= 0 && selectedIndex < itemCount) {
+            const selectedItem = getSelectableItems()[selectedIndex] as React.ReactElement
+            selectedItem.props.onClick?.()
+            dialogRef.current?.close()
+            setIsOpen(false)
+            setSelectedIndex(-1)
+            setInputFocused(true)
+        }
+    })
+
+    useHotkeys('up', () => {
+        if (isOpen) {
+            if (inputFocused) {
+                setInputFocused(false)
+                setSelectedIndex(itemCount - 1)
+            } else {
+                setSelectedIndex((prev) => (prev <= 0 ? itemCount - 1 : prev - 1))
+            }
+        }
+    })
+
+    useHotkeys('down', () => {
+        if (isOpen) {
+            if (inputFocused) {
+                setInputFocused(false)
+                setSelectedIndex(0)
+            } else {
+                setSelectedIndex((prev) => (prev >= itemCount - 1 ? 0 : prev + 1))
+            }
+        }
+    })
 
     useImperativeHandle(ref, () => ({
         show: () => {
             dialogRef.current?.showModal();
+            inputRef.current?.focus();
+            setSelectedIndex(-1);
+            setInputFocused(true);
             setIsOpen(true);
         },
         close: () => {
             dialogRef.current?.close();
             setIsOpen(false);
+            setSelectedIndex(-1);
+            setInputFocused(true);
         },
         ...dialogRef.current,
     }));
+
+    useEffect(() => {
+        if (isOpen && inputFocused) {
+            inputRef.current?.focus()
+        }
+    }, [isOpen, inputFocused])
 
     return (
         <div className={isOpen && "fixed inset-0 backdrop-blur-sm backdrop:bg-black/50"}>
@@ -86,26 +161,21 @@ const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ children, ...prop
                         <Input placeholder={"Search or type a command"}
                                border={"none"}
                                className={"w-full h-12 text-md m-0 mr-2 p-0 bg-zinc-100 dark:bg-black"}
+                               onFocus={() => setInputFocused(true)}
+                               onBlur={() => setInputFocused(false)}
+                               ref={inputRef}
                         />
                     </div>
                     <Seperator/>
                     <div className={"flex flex-col space-y-2 p-2"}>
-                        {React.Children.map(children, (child, index) => {
+                        {React.Children.map(children, (child) => {
+                            let commandItemIndex = 0;
                             if (React.isValidElement<CommandMenuItemProps>(child)) {
+                                const currentIndex = commandItemIndex;
+                                commandItemIndex++;
                                 return React.cloneElement(child, {
-                                    key: index,
-                                    title: child.props.title,
-                                    secondaryTitle: child.props.secondaryTitle,
-                                    icon: child.props.icon,
-                                    onClick: child.props.onClick,
-                                    shortcut: child.props.shortcut,
-                                    disabled: child.props.disabled
-                                });
-                            }
-                            if (React.isValidElement<CommandMenuLabelProps>(child)) {
-                                return React.cloneElement(child, {
-                                    key: index,
-                                    title: child.props.title,
+                                    ...child.props,
+                                    selected: currentIndex === selectedIndex,
                                 });
                             }
                             return child;

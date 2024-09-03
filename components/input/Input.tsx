@@ -1,6 +1,6 @@
 "use client";
 
-import React, {InputHTMLAttributes} from "react";
+import React, {forwardRef, InputHTMLAttributes} from "react";
 import {cn} from "../../utils/cn";
 import {cva, VariantProps} from "class-variance-authority";
 import {useInputValidation, ValidationRule} from "../../hooks/useInputValidation";
@@ -60,7 +60,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement>, VariantProps
     showSuccess?: boolean;
 }
 
-const Input: React.FC<InputProps> = ({ onChange, preSelectedValue, icon, elementSize, border = "default", label, successMessage, warningMessage, validationRules, warningBuffer, showSuccess = false, className, ...props }) => {
+const Input = forwardRef<HTMLInputElement, InputProps>(({ onChange, preSelectedValue, icon, elementSize, border = "default", label, successMessage, warningMessage, validationRules, warningBuffer, showSuccess = false, className, ...props }, ref) => {
     const { value, setValue, status, message, validateInput } = useInputValidation({
         initialValue: preSelectedValue?.toString() || '',
         validationRules,
@@ -125,6 +125,7 @@ const Input: React.FC<InputProps> = ({ onChange, preSelectedValue, icon, element
             )}
         </div>
     );
-}
+});
+Input.displayName = "Input";
 
 export {Input};

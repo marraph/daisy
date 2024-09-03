@@ -30,12 +30,12 @@ export const Default = () => {
     return (
         <>
             <CommandMenu ref={dialogRef}>
-                <CommandMenuLabel title={"Quick Actions"}/>
+                <CommandMenuLabel label={"Quick Actions"}/>
                 <CommandMenuItem title={"Open issue"} icon={<CircleDashed size={16}/>} shortcut={"⌘ T"}/>
                 <CommandMenuItem title={"Create appointment"} icon={<CalendarFold size={16}/>} shortcut={"⌘ A"}/>
                 <CommandMenuItem title={"Invite a new user"} icon={<Mail size={16}/>} shortcut={"⌘ I"}/>
                 <CommandMenuSeperator/>
-                <CommandMenuLabel title={"Recent"}/>
+                <CommandMenuLabel label={"Recent"}/>
                 <CommandMenuItem title={"Edit Task: "} icon={<FilePenLine size={16}/>} secondaryTitle={"Improve performance"}/>
                 <CommandMenuItem title={"Dashboard"} icon={<LayoutDashboard size={16}/>} secondaryTitle={"Go to your dashboard"}/>
                 <CommandMenuItem title={"Projects"} icon={<Box size={16}/>} secondaryTitle={"View your active projects"}/>
