@@ -26,69 +26,72 @@ const Tooltip: React.FC<TooltipProps & { lastTooltipTimestamp: number | null }> 
         if (!tooltipRef.current) return;
         const tooltipRect = tooltipRef.current.getBoundingClientRect();
 
+        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
         let x: number;
         let y: number;
 
         switch (anchor) {
             //Top
             case "tl":
-                x = trigger.left;
-                y = trigger.top - offset - tooltipRect.height;
+                x = trigger.left + scrollX;
+                y = trigger.top + scrollY - offset - tooltipRect.height;
                 break;
             case "tc":
-                x = trigger.left + (trigger.width / 2) - (tooltipRect.width / 2);
-                y = trigger.top - offset - tooltipRect.height;
+                x = trigger.left + scrollX + (trigger.width / 2) - (tooltipRect.width / 2);
+                y = trigger.top + scrollY - offset - tooltipRect.height;
                 break;
             case "tr":
-                x = trigger.right - tooltipRect.width;
-                y = trigger.top - offset - tooltipRect.height;
+                x = trigger.right + scrollX - tooltipRect.width;
+                y = trigger.top + scrollY - offset - tooltipRect.height;
                 break;
 
             // Bottom
             case "bl":
-                x = trigger.left;
-                y = trigger.bottom + offset;
+                x = trigger.left + scrollX;
+                y = trigger.bottom + scrollY + offset;
                 break;
             case "bc":
-                x = trigger.left + (trigger.width / 2) - (tooltipRect.width / 2);
-                y = trigger.bottom + offset;
+                x = trigger.left + scrollX + (trigger.width / 2) - (tooltipRect.width / 2);
+                y = trigger.bottom + scrollY + offset;
                 break;
             case "br":
-                x = trigger.right - tooltipRect.width;
-                y = trigger.bottom + offset;
+                x = trigger.right + scrollX - tooltipRect.width;
+                y = trigger.bottom + scrollY + offset;
                 break;
 
             // Left
             case "lt":
-                x = trigger.left - offset - tooltipRect.width;
-                y = trigger.top;
+                x = trigger.left + scrollX - offset - tooltipRect.width;
+                y = trigger.top + scrollY;
                 break;
             case "lc":
-                x = trigger.left - offset - tooltipRect.width;
-                y = trigger.top + (trigger.height / 2) - (tooltipRect.height / 2);
+                x = trigger.left + scrollX - offset - tooltipRect.width;
+                y = trigger.top + scrollY + (trigger.height / 2) - (tooltipRect.height / 2);
                 break;
             case "lb":
-                x = trigger.left - offset - tooltipRect.width;
-                y = trigger.bottom - tooltipRect.height;
+                x = trigger.left + scrollX - offset - tooltipRect.width;
+                y = trigger.bottom + scrollY - tooltipRect.height;
                 break;
 
             // Right
             case "rt":
-                x = trigger.right + offset;
-                y = trigger.top;
+                x = trigger.right + scrollX + offset;
+                y = trigger.top + scrollY;
                 break;
             case "rc":
-                x = trigger.right + offset;
-                y = trigger.top + (trigger.height / 2) - (tooltipRect.height / 2);
+                x = trigger.right + scrollX + offset;
+                y = trigger.top + scrollY + (trigger.height / 2) - (tooltipRect.height / 2);
                 break;
             case "rb":
-                x = trigger.right + offset;
-                y = trigger.bottom - tooltipRect.height;
+                x = trigger.right + scrollX + offset;
+                y = trigger.bottom + scrollY - tooltipRect.height;
                 break;
 
             default:
-                x = trigger.left;
-                y = trigger.top;
+                x = trigger.left + scrollX;
+                y = trigger.top + scrollY;
         }
 
         setPosition({ x, y });
