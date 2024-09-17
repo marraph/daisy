@@ -3,11 +3,12 @@ import {cn} from "../../utils/cn";
 import {DialogRef} from "@/components/dialog/Dialog";
 import {Shortcut} from "@/components/shortcut/Shortcut";
 import {Seperator} from "@/components/seperator/Seperator";
-import {CornerDownLeft, MoveDown, MoveUp, Search} from "lucide-react";
+import {CornerDownLeft, Info, MoveDown, MoveUp, Search} from "lucide-react";
 import {Input} from "@/components/input/Input";
 import {useHotkeys} from "react-hotkeys-hook";
 import {useOutsideClick} from "../../hooks/useOutsideClick";
 import {AnimatePresence, motion} from "framer-motion";
+import {CloseButton} from "@/components/closebutton/CloseButton";
 
 interface CommandMenuProps extends DialogHTMLAttributes<HTMLDialogElement> {
     items: CommandMenuItemProps[];
@@ -31,7 +32,7 @@ interface CommandMenuItemProps {
 
 const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ isOpen, onClose, items, showItems, animation = "fade", ...props }, ref) => {
     const [searchTerm, setSearchTerm] = useState<string>("");
-    const [filteredItems, setFilteredItems] = useState(items);
+    const [filteredItems, setFilteredItems] = useState(showItems);
 
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
     const [inputFocused, setInputFocused] = useState<boolean>(true);
@@ -58,13 +59,6 @@ const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ isOpen, onClose, 
             setFilteredItems(showItems);
         }
     }
-
-    useEffect(() => {
-        if (isOpen) {
-            setFilteredItems(showItems);
-        }
-    }, []);
-
 
     useHotkeys('esc', () => {
         handleClose();
@@ -120,24 +114,42 @@ const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ isOpen, onClose, 
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className={"flex flex-col"}>
-                            <div className={"w-full flex flex-row items-center px-2 pt-2"}>
-                                <Search size={18}
-                                        className={"text-zinc-400 dark:text-marcador ml-4 mr-2"}
-                                />
-                                <Input
-                                    placeholder={"Search or type a command"}
-                                    border={"none"}
-                                    className={"w-full h-12 text-md m-0 mr-2 p-0 bg-zinc-100 dark:bg-black"}
-                                    value={searchTerm}
-                                    onChange={handleSearch}
-                                    ref={inputRef}
+                            <div className={"w-full flex flex-row items-center justify-between pl-2 pr-4 pt-2 text-zinc-500 dark:text-gray"}>
+                                <div className={"w-full flex flex-row items-center"}>
+                                    <Search size={18}
+                                            className={"ml-4 mr-2"}
+                                    />
+                                    <Input
+                                        placeholder={"Search or type a command"}
+                                        border={"none"}
+                                        className={"w-full h-12 text-md m-0 mr-2 p-0 bg-zinc-100 dark:bg-black"}
+                                        value={searchTerm}
+                                        onChange={handleSearch}
+                                        ref={inputRef}
+                                        size={80}
+                                    />
+                                </div>
+
+                                <CloseButton
+                                    className={"dark:bg-black"}
+                                    onClick={() => {
+                                        setSelectedIndex(-1);
+                                        setInputFocused(true);
+                                        setSearchTerm('');
+                                        setFilteredItems(showItems);
+                                    }}
                                 />
                             </div>
                             <Seperator/>
                             <div className={"flex flex-col space-y-2 p-2 max-h-[400px] overflow-y-auto"}>
                                 {filteredItems.length === 0 &&
-                                    <div className={"flex flex-row items-center justify-center text-zinc-500 dark:text-gray"}>
-                                        {"No results found"}
+                                    <div
+                                        className={"py-4 flex flex-col space-y-2 items-center justify-center"}>
+                                        <div className={"flex flex-row space-x-1 items-center text-zinc-500 dark:text-gray"}>
+                                            <Info size={16}/>
+                                            <span>{"No results found"}</span>
+                                        </div>
+                                        <span className={"text-zinc-400 dark:text-marcador"}>{"Search something different..."}</span>
                                     </div>
                                 }
                                 {filteredItems.length > 0 && filteredItems.map((item) => (
@@ -148,14 +160,14 @@ const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ isOpen, onClose, 
                                             item.selected ? "bg-zinc-200 dark:bg-dark" : "",
                                             item.disabled ? "opacity-50 cursor-not-allowed" : ""
                                     )}
+                                        onMouseEnter={() => console.log(item.selected)}
                                          onClick={item.onClick}
                                     >
-                                        <div
-                                            className={"w-max flex flex-row items-center space-x-2 text-zinc-800 dark:text-white text-md"}>
+                                        <div className={"w-max flex flex-row items-center space-x-2 text-md text-zinc-800 dark:text-white"}>
                                             {item.icon}
                                             <span>{item.title}</span>
                                             {item.description &&
-                                                <span className={"text-gray-500 dark:text-gray"}>{item.description}</span>
+                                                <span className={"text-sm text-zinc-500 dark:text-gray"}>{item.description}</span>
                                             }
                                         </div>
                                         {item.shortcut &&
@@ -166,7 +178,7 @@ const CommandMenu = forwardRef<DialogRef, CommandMenuProps>(({ isOpen, onClose, 
                             </div>
                             <Seperator/>
                             <div
-                                className={"flex flex-row items-center rounded-b-lg space-x-8 px-4 h-12 bg-zinc-200 dark:bg-dark text-zinc-500 dark:text-gray text-sm"}>
+                                className={"flex flex-row items-center rounded-b-lg space-x-8 px-6 h-12 bg-zinc-200 dark:bg-dark text-zinc-500 dark:text-gray text-sm"}>
                                 <div className={"flex flex-row items-center space-x-2"}>
                                     <span>{"Close"}</span>
                                     <Shortcut text={"ESC"}/>

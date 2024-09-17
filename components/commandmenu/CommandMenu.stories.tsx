@@ -50,11 +50,10 @@ export const Default = () => {
             id: 1,
             title: "Open File",
             description: "Open an existing file from your system",
-            icon: <File size={20} />,  // Lucide icon for file
+            icon: <File size={20}/>,  // Lucide icon for file
             onClick: (e) => console.log("Open File clicked"),
             shortcut: "Ctrl+O",
             disabled: false,
-            selected: false,
             keywords: ["open", "file", "load"]
         },
         {
@@ -71,7 +70,6 @@ export const Default = () => {
             title: "Delete Item",
             icon: <Trash2 size={20} />,  // Lucide icon for delete
             onClick: (e) => console.log("Delete clicked"),
-            selected: true,
             keywords: ["delete", "remove", "trash"],
             disabled: false
         },
