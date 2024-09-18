@@ -6,6 +6,7 @@ import {Avatar} from "@/components/avatar/Avatar";
 import {useRouter} from "next/router";
 import Link from "next/link";
 import {useMediaQuery} from "../../hooks/useMediaQuery";
+import {TooltipProvider, useTooltip} from "../../components/tooltip/TooltipProvider";
 
 interface NavigationContextType {
     currentPath: string;
@@ -100,6 +101,7 @@ interface SideBarContainerProps {
 const SideBarItem: React.FC<SideBarItemProps> = ({ title, icon, href, onClick, onMouseEnter, onMouseLeave, isCollapsed }) => {
     const { currentPath } = useNavigation();
     const isSelected = currentPath === href;
+    const { addTooltip, removeTooltip } = useTooltip();
 
     return (
         <Link href={href} passHref>
@@ -109,8 +111,17 @@ const SideBarItem: React.FC<SideBarItemProps> = ({ title, icon, href, onClick, o
                     {"bg-zinc-200 dark:bg-dark-light text-zinc-800 dark:text-white border border-zinc-300 dark:border-edge": isSelected},
                     isCollapsed ? "justify-center" : "flex-row space-x-4 px-4")}
                  onClick={onClick}
-                 onMouseEnter={onMouseEnter}
-                 onMouseLeave={onMouseLeave}
+                 onMouseEnter={(e) => {
+                     onMouseEnter?.(e)
+                     isCollapsed && addTooltip({
+                        message: title,
+                        trigger: e.currentTarget.getBoundingClientRect(),
+                     })
+                 }}
+                 onMouseLeave={(e) => {
+                     onMouseLeave?.(e)
+                     removeTooltip()
+                 }}
             >
                 {icon}
                 {!isCollapsed &&
@@ -175,13 +186,24 @@ const SideBarLabel: React.FC<SideBarLabelProps> = ({ title, isCollapsed }) => {
 }
 
 const SideBarOrganisation: React.FC<SideBarOrganisationProps> = ({ icon, organisationName, onClick, onMouseEnter, onMouseLeave, isLoading, isCollapsed }) => {
+    const { addTooltip, removeTooltip } = useTooltip();
+
     return (
         <>
             {isCollapsed ?
                 <div className={"w-full flex items-center justify-center cursor-pointer hover:bg-zinc-200 dark:hover:bg-dark-light size-10 rounded-lg"}
                      onClick={onClick}
-                     onMouseEnter={onMouseEnter}
-                     onMouseLeave={onMouseLeave}
+                     onMouseEnter={(e) => {
+                         onMouseEnter?.(e)
+                         isCollapsed && addTooltip({
+                             message: "Workspace",
+                             trigger: e.currentTarget.getBoundingClientRect(),
+                         })
+                     }}
+                     onMouseLeave={(e) => {
+                         onMouseLeave?.(e)
+                         removeTooltip()
+                     }}
                 >
                     {icon}
                 </div>
@@ -217,13 +239,24 @@ const SideBarOrganisation: React.FC<SideBarOrganisationProps> = ({ icon, organis
 }
 
 const SideBarProfile: React.FC<SideBarProfileProps> = ({onClick, onMouseEnter, onMouseLeave, isLoading, userName, isCollapsed }) => {
+    const { addTooltip, removeTooltip } = useTooltip();
+
     return (
         <>
             {isCollapsed ?
                 <div className={"w-full flex justify-center cursor-pointer"}
                      onClick={onClick}
-                     onMouseEnter={onMouseEnter}
-                     onMouseLeave={onMouseLeave}
+                     onMouseEnter={(e) => {
+                         onMouseEnter?.(e)
+                         isCollapsed && addTooltip({
+                             message: "Profile",
+                             trigger: e.currentTarget.getBoundingClientRect(),
+                         })
+                     }}
+                     onMouseLeave={(e) => {
+                         onMouseLeave?.(e)
+                         removeTooltip()
+                     }}
                 >
                     <Avatar size={24} shape={"box"} className={"rounded-lg my-2"}/>
                 </div>
@@ -292,36 +325,39 @@ const SideBar: React.FC<SideBarProps> = ({ children, isLoading }) => {
     }, [isMobile]);
 
     return (
-        <div className={cn("top-0 left-0 w-max h-screen flex flex-col justify-between p-4 space-y-4 " +
-            "bg-zinc-100 dark:bg-black-light border-r border-zinc-300 dark:border-edge", !isCollapsed && "min-w-60")}
-        >
-            <div className={"w-full flex justify-end"}>
-                <div className={"w-max p-1 text-zinc-500 dark:text-gray hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-dark-light " +
-                        "rounded-lg cursor-pointer"}
-                     onClick={() => setIsCollapsed(!isCollapsed)}
-                >
-                    {isCollapsed ? <ArrowRightFromLine size={16}/> : <ArrowLeftFromLine size={16}/>}
+        <TooltipProvider>
+            <div className={cn("top-0 left-0 w-max h-screen flex flex-col justify-between p-4 space-y-4 " +
+                "bg-zinc-100 dark:bg-black-light border-r border-zinc-300 dark:border-edge", !isCollapsed && "min-w-60")}
+            >
+                <div className={"w-full flex justify-end"}>
+                    <div className={"w-max p-1 text-zinc-500 dark:text-gray hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-dark-light " +
+                            "rounded-lg cursor-pointer"}
+                         onClick={() => setIsCollapsed(!isCollapsed)}
+                    >
+                        {isCollapsed ? <ArrowRightFromLine size={16}/> : <ArrowLeftFromLine size={16}/>}
+                    </div>
                 </div>
-            </div>
 
-            {React.Children.map(children, (child, index) => {
-                if (React.isValidElement<SideBarProfileProps | SideBarOrganisationProps>(child)) {
-                    return React.cloneElement(child, {
-                        isLoading: isLoading,
-                        isCollapsed: isCollapsed,
-                        key: `${child.type}-${isCollapsed}-${index}`,
-                        onClick: isCollapsed ? () => setIsCollapsed(false) : child.props.onClick,
-                    });
-                }
-                if (React.isValidElement<SideBarContainerProps>(child)) {
-                    return React.cloneElement(child, {
-                        isCollapsed: isCollapsed,
-                        key: `${child.type}-${isCollapsed}-${index}`
-                    });
-                }
-                return child;
-            })}
-        </div>
+                {React.Children.map(children, (child, index) => {
+                    if (React.isValidElement<SideBarProfileProps | SideBarOrganisationProps>(child)) {
+                        return React.cloneElement(child, {
+                            isLoading: isLoading,
+                            isCollapsed: isCollapsed,
+                            key: `${child.type}-${isCollapsed}-${index}`,
+                            onClick: isCollapsed ? () => setIsCollapsed(false) : child.props.onClick,
+                        });
+                    }
+                    if (React.isValidElement<SideBarContainerProps>(child)) {
+                        return React.cloneElement(child, {
+                            isCollapsed: isCollapsed,
+                            key: `${child.type}-${isCollapsed}-${index}`
+                        });
+                    }
+                    return child;
+                })}
+            </div>
+        </TooltipProvider>
+
     );
 }
 
